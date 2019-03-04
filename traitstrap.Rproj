@@ -1,7 +1,12 @@
 Version: 1.0
 
+<<<<<<< HEAD
 RestoreWorkspace: Default
 SaveWorkspace: Default
+=======
+RestoreWorkspace: No
+SaveWorkspace: No
+>>>>>>> 93416d6c28f70a0e9e9aa01760609cdb14377d1b
 AlwaysSaveHistory: Default
 
 EnableCodeIndexing: Yes
@@ -11,3 +16,10 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
+<<<<<<< HEAD
+=======
+
+BuildType: Package
+PackageUseDevtools: Yes
+PackageInstallArgs: --no-multiarch --with-keep.source
+>>>>>>> 93416d6c28f70a0e9e9aa01760609cdb14377d1b
