@@ -1,0 +1,12 @@
+Package: traitstrap
+Title: Bootstrap trait values
+Version: 0.0.0.9000
+Authors@R: c(
+  person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre")), 
+  person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut")
+  )
+Description: Calculate trait moments
+Depends: R (>= 3.4.4)
+License: MIT
+Encoding: UTF-8
+LazyData: true
