@@ -3,10 +3,16 @@ Title: Bootstrap trait values
 Version: 0.0.0.9000
 Authors@R: c(
   person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre")), 
-  person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut")
+  person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut"))
   )
-Description: Calculate trait moments
+Description: Calculate trait moments from trait and community data.
 Depends: R (>= 3.4.4)
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
+Imports: dplyr,
+    magrittr,
+    purrr,
+    rlang,
+    e1071
