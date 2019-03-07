@@ -19,29 +19,31 @@
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! maybe_missing .data
  
-trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"), taxon_col = "taxon",  trait_col = "trait", value_col = "Value", abundance_col = "Cover", other_col = "Year"){
-  
-  out <- ((length(scale_hierarchy)):1) %>%  
-    map_df({
+trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"), taxon_col = "taxon",  trait_col = "trait", value_col = "Value", abundance_col = "Cover", other_col = ""){
+  out <- length(scale_hierarchy):1 %>%  
+    map_df(~{#browser()
+      scale_level <- .
       scale_drop <- character(0L)
-      if(. < length(scale_hierarchy)){
-        scale_drop <- scale_hierarchy[.:length(scale_hierarchy)]
+      if(scale_level < length(scale_hierarchy)){
+        scale_drop <- scale_hierarchy[(scale_level + 1):length(scale_hierarchy)]
       }
-      scale_keep <- scale_hierarchy[1:.]
+      scale_keep <- scale_hierarchy[1:scale_level]
 
-     traits %>% select(-one_of(scale_drop))
+     traits <- traits %>% select(-one_of(scale_drop))
      comm %>% 
         left_join(traits, by = c(scale_keep, taxon_col)) %>% 
-        group_by(!!!scale_keep, !!!taxon_col, !!!trait_col, !!!maybe_missing(other_col)) %>% 
-      mutate(weight = !!!abundance_col/n()) %>% 
+        group_by_at(vars(one_of(c(scale_keep, taxon_col, trait_col, maybe_missing(other_col))))) %>%
+      rename(weight = !!abundance_col) %>% 
+      mutate(weight = weight/n()) %>% 
 #      group_by(!!!keep_scale, !!!trait_col, !!!other_col) %>% 
-      mutate(level = factor(scale_hierarchy[.], levels = scale_hierarchy, ordered = TRUE))
+      mutate(level = factor(scale_hierarchy[scale_level], levels = scale_hierarchy, ordered = TRUE))
   }) %>% 
     filter(!is.na(!!!value_col)) %>% 
     filter(level == min(.data$level)) %>% 
-    group_by(!!!scale_keep, !!!trait_col, !!!maybe_missing(other_col))
+    group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
-  class(out) <- "imputed_traits"
+  class(out) <- c(class(out), "imputed_traits")
+  out
   }
 
 
@@ -63,10 +65,10 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! maybe_missing
 
-trait_bootstrap <- function(traits_comm, nrep = 100, sample_size = 200){  
+trait_np_bootstrap <- function(traits_comm, nrep = 100, sample_size = 200){  
 #  stopifnot(class(traits_com) == "imputed_traits")
   
-  bootstrapMoments_All <- map_df(1:nrep, ~sample_n(traits_comm, size = sample_size,  replace = TRUE, weight = traits_comm$weight), .id = "n") %>% 
+  bootstrapMoments_All <- map_df(1:nrep, ~sample_n(traits_comm, size = sample_size,  replace = TRUE, weight = weight), .id = "n") %>% 
     group_by(n, add = TRUE) %>% 
     # get all the happy moments
     summarise(mean = mean(Value), variance = var(Value), skewness = skewness(Value), kurtosis = kurtosis(Value))
