@@ -6,7 +6,7 @@
 \usage{
 trait_impute(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID",
   "PlotID"), taxon_col = "taxon", trait_col = "trait",
-  value_col = "Value", abundance_col = "Cover", other_col = "Year")
+  value_col = "Value", abundance_col = "Cover", other_col = "")
 }
 \arguments{
 \item{comm}{community data in long format}
