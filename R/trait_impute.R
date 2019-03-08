@@ -18,6 +18,7 @@
 #' @importFrom dplyr select one_of mutate group_by filter left_join n group_by_at
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
+#' @export
  
 trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"), taxon_col = "taxon",  trait_col = "trait", value_col = "Value", abundance_col = "Cover", other_col = ""){
   out <- length(scale_hierarchy):1 %>%  
@@ -70,6 +71,7 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
 #' @importFrom magrittr %>%
 #' @importFrom dplyr sample_n group_by summarise_at vars one_of
 #' @importFrom purrr map_df
+#' @export
 
 trait_np_bootstrap <- function(traits_comm, nrep = 100, sample_size = 200){  
 #  stopifnot(class(traits_com) == "imputed_traits")
@@ -97,7 +99,7 @@ trait_np_bootstrap <- function(traits_comm, nrep = 100, sample_size = 200){
 #' @importFrom magrittr %>%
 #' @importFrom dplyr n group_by summarise_at vars one_of group_by_at summarise
 #' @importFrom rlang .data
-
+#' @export
 
 SummariseBootMoments <- function(BootstrapMoments){
   groups <- c(attr(BootstrapMoments, "scale_hierarchy"), 
