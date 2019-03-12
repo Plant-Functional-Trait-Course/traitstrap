@@ -15,9 +15,10 @@
 #' 
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select one_of mutate group_by filter left_join n
+#' @importFrom dplyr select one_of mutate group_by filter left_join n group_by_at
 #' @importFrom purrr map_df
-#' @importFrom rlang !!! maybe_missing .data
+#' @importFrom rlang !!! !! .data
+#' @export
  
 trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"), taxon_col = "taxon",  trait_col = "trait", value_col = "Value", abundance_col = "Cover", other_col = ""){
   out <- length(scale_hierarchy):1 %>%  
@@ -32,17 +33,24 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
      traits <- traits %>% select(-one_of(scale_drop))
      comm %>% 
         left_join(traits, by = c(scale_keep, taxon_col)) %>% 
-        group_by_at(vars(one_of(c(scale_keep, taxon_col, trait_col, maybe_missing(other_col))))) %>%
+        group_by_at(vars(one_of(c(scale_keep, taxon_col, trait_col, other_col)))) %>%
       rename(weight = !!abundance_col) %>% 
       mutate(weight = weight/n()) %>% 
-#      group_by(!!!keep_scale, !!!trait_col, !!!other_col) %>% 
       mutate(level = factor(scale_hierarchy[scale_level], levels = scale_hierarchy, ordered = TRUE))
   }) %>% 
     filter(!is.na(!!!value_col)) %>% 
     filter(level == min(.data$level)) %>% 
     group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
+  attr(out, "scale_hierarchy") <- scale_hierarchy
+  attr(out, "taxon_col") <- taxon_col
+  attr(out, "trait_col") <- trait_col
+  attr(out, "value_col") <- value_col
+  attr(out, "abundance_col") <- abundance_col
+  attr(out, "other_col") <- other_col
+  
   class(out) <- c(class(out), "imputed_traits")
+  
   out
   }
 
@@ -61,17 +69,52 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
 #' @importFrom stats var 
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
-#' @importFrom dplyr sample_n group_by summarise
+#' @importFrom dplyr sample_n group_by summarise_at vars one_of
 #' @importFrom purrr map_df
-#' @importFrom rlang !!! maybe_missing
+#' @export
 
 trait_np_bootstrap <- function(traits_comm, nrep = 100, sample_size = 200){  
 #  stopifnot(class(traits_com) == "imputed_traits")
-  
-  bootstrapMoments_All <- map_df(1:nrep, ~sample_n(traits_comm, size = sample_size,  replace = TRUE, weight = weight), .id = "n") %>% 
+  value_col <- attr(traits_comm, "value_col")
+  bootstrapMoments <- map_df(1:nrep, ~sample_n(traits_comm, size = sample_size,  replace = TRUE, weight = weight), .id = "n") %>% 
     group_by(n, add = TRUE) %>% 
     # get all the happy moments
-    summarise(mean = mean(Value), variance = var(Value), skewness = skewness(Value), kurtosis = kurtosis(Value))
+    summarise_at(.vars = vars(one_of(value_col)), .funs = list(mean = mean, variance = var, skewness = skewness, kurtosis = kurtosis))
   
-  return(bootstrapMoments_All)
+  attr(bootstrapMoments, "scale_hierarchy") <- attr(traits_comm, "scale_hierarchy")
+  attr(bootstrapMoments, "trait_col") <- attr(traits_comm, "trait_col") 
+  attr(bootstrapMoments, "other_col") <- attr(traits_comm, "other_col")
+  return(bootstrapMoments)
 }
+
+
+#' Summarise Bootstrap traits
+#' @description Bootstraptraits 
+#' @param BootstrapMoments trait moments from trait_np_bootstrap
+
+#' @description 
+#' 
+#' @return 
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom dplyr n group_by summarise_at vars one_of group_by_at summarise
+#' @importFrom rlang .data
+#' @export
+
+SummariseBootMoments <- function(BootstrapMoments){
+  groups <- c(attr(BootstrapMoments, "scale_hierarchy"), 
+              attr(BootstrapMoments, "trait_col"),
+              attr(BootstrapMoments, "other_col"))
+              
+  # calculate means of moments 
+  sBootstrapMoments <- BootstrapMoments %>% 
+    group_by_at(vars(one_of(groups))) %>% 
+    summarise(n = n(),
+              Mean = mean(.data$mean), CIlow.mean = .data$Mean - sd(.data$mean), CIhigh.mean = .data$Mean + sd(.data$mean),
+              Var = mean(.data$variance), CIlow.var = .data$Var - sd(.data$variance), CIhigh.var = .data$Var + sd(.data$variance),
+              Skew = mean(.data$skewness), CIlow.skew = .data$Skew - sd(.data$skewness), CIhigh.skew = .data$Skew + sd(.data$skewness),
+              Kurt = mean(.data$kurtosis), CIlow.kurt = .data$Kurt - sd(.data$kurtosis), CIhigh.Kurt = .data$Kurt + sd(.data$kurtosis)) 
+  
+  return(sBootstrapMoments)
+}
+
