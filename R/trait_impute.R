@@ -21,25 +21,29 @@
 #' @export
  
 trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"), taxon_col = "taxon",  trait_col = "trait", value_col = "Value", abundance_col = "Cover", other_col = ""){
-  out <- length(scale_hierarchy):1 %>%  
+  out <- length(scale_hierarchy):0 %>%  #iterate over grouping hierarchy
     map_df(~{#browser()
-      scale_level <- .
+      scale_level <- . #catch the . -meaning changes within the dplyr chain
       scale_drop <- character(0L)
       if(scale_level < length(scale_hierarchy)){
         scale_drop <- scale_hierarchy[(scale_level + 1):length(scale_hierarchy)]
       }
-      scale_keep <- scale_hierarchy[1:scale_level]
-
+      scale_keep <- character(0L)
+      if(scale_level > 0){
+        scale_keep <- scale_hierarchy[1:scale_level]
+      }
      traits <- traits %>% select(-one_of(scale_drop))
-     comm %>% 
-        left_join(traits, by = c(scale_keep, taxon_col)) %>% 
-        group_by_at(vars(one_of(c(scale_keep, taxon_col, trait_col, other_col)))) %>%
-      rename(weight = !!abundance_col) %>% 
-      mutate(weight = weight/n()) %>% 
-      mutate(level = factor(scale_hierarchy[scale_level], levels = scale_hierarchy, ordered = TRUE))
+     comm %>%
+       group_by_at(vars(one_of(c(scale_keep, other_col)))) %>%
+       rename(abundance = !!abundance_col) %>% 
+       mutate(sum_abun = sum(abundance)) %>% 
+       left_join(traits, by = c(scale_keep, taxon_col)) %>% 
+       group_by_at(vars(one_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%  
+       mutate(weight = abundance/n()) %>% 
+       mutate(level = factor(scale_hierarchy[scale_level], levels = scale_hierarchy, ordered = TRUE))
   }) %>% 
     filter(!is.na(!!!value_col)) %>% 
-    filter(level == min(.data$level)) %>% 
+    filter(level == max(.data$level)) %>% 
     group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
   attr(out, "scale_hierarchy") <- scale_hierarchy
@@ -59,7 +63,7 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
 
 #' Bootstrap traits
 #' @description Bootstrap impute traits 
-#' @param traits_comm imputed trait and community data in long format
+#' @param imputed_traits imputed trait and community data in long format
 #' @param nrep number of bootstrap replicates
 #' @param sample_size number of plants per sample
 #' @description 
@@ -73,17 +77,17 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
 #' @importFrom purrr map_df
 #' @export
 
-trait_np_bootstrap <- function(traits_comm, nrep = 100, sample_size = 200){  
+trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){  
 #  stopifnot(class(traits_com) == "imputed_traits")
-  value_col <- attr(traits_comm, "value_col")
-  bootstrapMoments <- map_df(1:nrep, ~sample_n(traits_comm, size = sample_size,  replace = TRUE, weight = weight), .id = "n") %>% 
+  value_col <- attr(imputed_traits, "value_col")
+  bootstrapMoments <- map_df(1:nrep, ~sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight), .id = "n") %>% 
     group_by(n, add = TRUE) %>% 
     # get all the happy moments
     summarise_at(.vars = vars(one_of(value_col)), .funs = list(mean = mean, variance = var, skewness = skewness, kurtosis = kurtosis))
   
-  attr(bootstrapMoments, "scale_hierarchy") <- attr(traits_comm, "scale_hierarchy")
-  attr(bootstrapMoments, "trait_col") <- attr(traits_comm, "trait_col") 
-  attr(bootstrapMoments, "other_col") <- attr(traits_comm, "other_col")
+  attr(bootstrapMoments, "scale_hierarchy") <- attr(imputed_traits, "scale_hierarchy")
+  attr(bootstrapMoments, "trait_col") <- attr(imputed_traits, "trait_col") 
+  attr(bootstrapMoments, "other_col") <- attr(imputed_traits, "other_col")
   return(bootstrapMoments)
 }
 
@@ -118,3 +122,24 @@ SummariseBootMoments <- function(BootstrapMoments){
   return(sBootstrapMoments)
 }
 
+
+
+#' Summarise Bootstrap traits
+#' @description Bootstraptraits 
+#' @param BootstrapMoments trait moments from trait_np_bootstrap
+
+#' @description 
+#' 
+#' @return 
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom dplyr n group_by summarise_at vars one_of group_by_at summarise
+#' @importFrom rlang .data
+#' @export
+
+
+autoplot.imputed_trait <- function(imputed_traits)
+  
+k %>% group_by(level, Taxon, add = TRUE) %>% distinct(abundance, .keep_all = TRUE) %>%  summarise(s = sum(abundance)/sum_abun) %>% summarise(s = sum(s)) %>% ggplot(aes(x = interaction(PlotID, Site), y = s, fill = level)) + geom_col() + facet_wrap(~Trait)
+  
+  
