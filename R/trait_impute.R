@@ -36,7 +36,14 @@ trait_impute <- function(comm, traits,
   }
   
   #add global to scale_hierachy if necessary
-  if(isTRUE){
+  if(isTRUE(global)){
+    #check not already a "global" column
+    if(any(names(traits) == "global")){
+      stop(glue("Cannot add global column.\\
+                global column already exists. Maybe set 'global = FALSE'"))
+    }
+    #add global column to traits
+    trait <- trait %>% mutate(global = "global")
     scale_hierarchy <- c("global", scale_hierarchy)
   }
     
