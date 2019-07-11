@@ -5,8 +5,8 @@
 \title{Impute traits}
 \usage{
 trait_impute(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID",
-  "PlotID"), taxon_col = "taxon", trait_col = "trait",
-  value_col = "Value", abundance_col = "Cover", other_col = "")
+  "PlotID"), global = TRUE, taxon_col = "taxon", trait_col = "trait",
+  value_col = "Value", abundance_col = "Cover", other_col = character(0))
 }
 \arguments{
 \item{comm}{community data in long format}
@@ -14,6 +14,8 @@ trait_impute(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID",
 \item{traits}{trait data in long format}
 
 \item{scale_hierarchy}{character vector of site/block/plot hierarchy (large to small)}
+
+\item{global}{logical; calculate traits at global scale. Must not be a column called global in the traits data.}
 
 \item{taxon_col}{character; name of taxon column in comm and traits}
 
