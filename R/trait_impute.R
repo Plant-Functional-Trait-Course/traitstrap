@@ -8,6 +8,7 @@
 #' @param value_col character; name of trait value column in traits
 #' @param abundance_col character; name of species abundance column in comm
 #' @param other_col name of other grouping columns in comm
+#' @param global logical; calculate traits at global scale. Must not be a column called global in the traits data.
 #' 
 #' @description 
 #' 
@@ -39,11 +40,12 @@ trait_impute <- function(comm, traits,
   if(isTRUE(global)){
     #check not already a "global" column
     if(any(names(traits) == "global")){
-      stop(glue("Cannot add global column.\\
-                global column already exists. Maybe set 'global = FALSE'"))
+      stop(glue("Cannot add global column as column called\\
+                global already exists. Maybe set 'global = FALSE'"))
     }
     #add global column to traits
-    trait <- trait %>% mutate(global = "global")
+    traits <- traits %>% mutate(global = "global")
+    comm <- comm %>% mutate(global = "global")
     scale_hierarchy <- c("global", scale_hierarchy)
   }
     
@@ -78,7 +80,7 @@ trait_impute <- function(comm, traits,
          )
   }) %>% 
     filter(!is.na(!!!value_col)) %>% #remove NA values
-    filter(level == max(.data$level)) %>% 
+    filter(.data$level == max(.data$level)) %>% 
     group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
   #set arguments as attributes so next functions have access to them
@@ -189,17 +191,19 @@ SummariseBootMoments <- function(BootstrapMoments){
 #' @return 
 #' 
 #' @importFrom magrittr %>%
-#' @importFrom dplyr n group_by summarise_at vars one_of group_by_at summarise
+#' @importFrom dplyr group_by summarise distinct
 #' @importFrom rlang .data
+#' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes
 #' @export
 
 
-autoplot.imputed_trait <- function(imputed_traits)
+autoplot.imputed_trait <- function(imputed_traits){
   
-k %>% group_by(level, Taxon, add = TRUE) %>% 
-  distinct(abundance, .keep_all = TRUE) %>%  
-  summarise(s = sum(abundance)/sum_abun) %>% 
-  summarise(s = sum(s)) %>% 
-  ggplot(aes(x = interaction(PlotID, Site), y = s, fill = level)) + 
-  geom_col() + 
-  facet_wrap(~Trait)
+  imputed_traits %>% group_by(.data$level, .data$Taxon, add = TRUE) %>% 
+    distinct(.data$abundance, .keep_all = TRUE) %>%  
+    summarise(s = sum(.data$abundance)/.data$sum_abun) %>% 
+    summarise(s = sum(.data$s)) %>% 
+    ggplot(aes(x = interaction(.data$PlotID, .data$Site), y = .data$s, fill = .data$level)) + 
+    geom_col() + 
+    facet_wrap(~.data$Trait)
+}

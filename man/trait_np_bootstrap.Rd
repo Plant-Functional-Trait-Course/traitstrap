@@ -4,10 +4,10 @@
 \alias{trait_np_bootstrap}
 \title{Bootstrap traits}
 \usage{
-trait_np_bootstrap(traits_comm, nrep = 100, sample_size = 200)
+trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200)
 }
 \arguments{
-\item{traits_comm}{imputed trait and community data in long format}
+\item{imputed_traits}{imputed trait and community data in long format}
 
 \item{nrep}{number of bootstrap replicates}
 

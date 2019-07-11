@@ -1,13 +1,15 @@
 Package: traitstrap
 Title: Bootstrap trait values
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
   person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre")), 
   person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut"))
   )
 Description: Calculate trait moments from trait and community data.
+URL: https://github.com/richardjtelford/traitstrap/
+BugReports: https://github.com/richardjtelford/traitstrap/issues
 Depends: R (>= 3.4.4)
-License: MIT + file LICENSE
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
@@ -15,4 +17,6 @@ Imports: dplyr,
     magrittr,
     purrr,
     rlang,
-    e1071
+    e1071,
+    glue,
+    ggplot2
