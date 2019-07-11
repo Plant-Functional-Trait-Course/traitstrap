@@ -20,10 +20,16 @@
 #' @importFrom rlang !!! !! .data
 #' @export
  
-trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"), taxon_col = "taxon",  trait_col = "trait", value_col = "Value", abundance_col = "Cover", other_col = ""){
+trait_impute <- function(comm, traits, 
+                         scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"),
+                         taxon_col = "taxon",  trait_col = "trait", 
+                         value_col = "Value", abundance_col = "Cover", 
+                         other_col = character(0)){
   out <- length(scale_hierarchy):0 %>%  #iterate over grouping hierarchy
     map_df(~{#browser()
       scale_level <- . #catch the . -meaning changes within the dplyr chain
+      
+      #drop scales from the hierarchy
       scale_drop <- character(0L)
       if(scale_level < length(scale_hierarchy)){
         scale_drop <- scale_hierarchy[(scale_level + 1):length(scale_hierarchy)]
@@ -38,14 +44,18 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
        rename(abundance = !!abundance_col) %>% 
        mutate(sum_abun = sum(abundance)) %>% 
        left_join(traits, by = c(scale_keep, taxon_col)) %>% 
-       group_by_at(vars(one_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%  
-       mutate(weight = abundance/n()) %>% 
-       mutate(level = factor(scale_hierarchy[scale_level], levels = scale_hierarchy, ordered = TRUE))
+       group_by_at(vars(one_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%
+       mutate(
+         weight = abundance/n(),
+         level = factor(scale_hierarchy[scale_level], 
+                        levels = scale_hierarchy, ordered = TRUE)
+         )
   }) %>% 
     filter(!is.na(!!!value_col)) %>% 
     filter(level == max(.data$level)) %>% 
     group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
+  #set arguments as attributes so next functions have access to them
   attr(out, "scale_hierarchy") <- scale_hierarchy
   attr(out, "taxon_col") <- taxon_col
   attr(out, "trait_col") <- trait_col
@@ -80,10 +90,17 @@ trait_impute <- function(comm, traits, scale_hierarchy = c("Country", "Site", "B
 trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){  
 #  stopifnot(class(traits_com) == "imputed_traits")
   value_col <- attr(imputed_traits, "value_col")
-  bootstrapMoments <- map_df(1:nrep, ~sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight), .id = "n") %>% 
+  bootstrapMoments <- map_df(
+    1:nrep,
+    ~sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight),
+    .id = "n"
+    ) %>% 
     group_by(n, add = TRUE) %>% 
     # get all the happy moments
-    summarise_at(.vars = vars(one_of(value_col)), .funs = list(mean = mean, variance = var, skewness = skewness, kurtosis = kurtosis))
+    summarise_at(
+      .vars = vars(one_of(value_col)), 
+      .funs = list(mean = mean, variance = var, 
+                   skewness = skewness, kurtosis = kurtosis))
   
   attr(bootstrapMoments, "scale_hierarchy") <- attr(imputed_traits, "scale_hierarchy")
   attr(bootstrapMoments, "trait_col") <- attr(imputed_traits, "trait_col") 
@@ -113,11 +130,24 @@ SummariseBootMoments <- function(BootstrapMoments){
   # calculate means of moments 
   sBootstrapMoments <- BootstrapMoments %>% 
     group_by_at(vars(one_of(groups))) %>% 
-    summarise(n = n(),
-              Mean = mean(.data$mean), CIlow.mean = .data$Mean - sd(.data$mean), CIhigh.mean = .data$Mean + sd(.data$mean),
-              Var = mean(.data$variance), CIlow.var = .data$Var - sd(.data$variance), CIhigh.var = .data$Var + sd(.data$variance),
-              Skew = mean(.data$skewness), CIlow.skew = .data$Skew - sd(.data$skewness), CIhigh.skew = .data$Skew + sd(.data$skewness),
-              Kurt = mean(.data$kurtosis), CIlow.kurt = .data$Kurt - sd(.data$kurtosis), CIhigh.Kurt = .data$Kurt + sd(.data$kurtosis)) 
+    summarise(
+      n = n(),
+      Mean = mean(.data$mean),
+      CIlow.mean = .data$Mean - sd(.data$mean),
+      CIhigh.mean = .data$Mean + sd(.data$mean),
+      
+      Var = mean(.data$variance),
+      CIlow.var = .data$Var - sd(.data$variance),
+      CIhigh.var = .data$Var + sd(.data$variance),
+      
+      Skew = mean(.data$skewness),
+      CIlow.skew = .data$Skew - sd(.data$skewness),
+      CIhigh.skew = .data$Skew + sd(.data$skewness),
+      
+      Kurt = mean(.data$kurtosis),
+      CIlow.kurt = .data$Kurt - sd(.data$kurtosis),
+      CIhigh.Kurt = .data$Kurt + sd(.data$kurtosis)
+    )
   
   return(sBootstrapMoments)
 }
@@ -140,6 +170,10 @@ SummariseBootMoments <- function(BootstrapMoments){
 
 autoplot.imputed_trait <- function(imputed_traits)
   
-k %>% group_by(level, Taxon, add = TRUE) %>% distinct(abundance, .keep_all = TRUE) %>%  summarise(s = sum(abundance)/sum_abun) %>% summarise(s = sum(s)) %>% ggplot(aes(x = interaction(PlotID, Site), y = s, fill = level)) + geom_col() + facet_wrap(~Trait)
-  
-  
+k %>% group_by(level, Taxon, add = TRUE) %>% 
+  distinct(abundance, .keep_all = TRUE) %>%  
+  summarise(s = sum(abundance)/sum_abun) %>% 
+  summarise(s = sum(s)) %>% 
+  ggplot(aes(x = interaction(PlotID, Site), y = s, fill = level)) + 
+  geom_col() + 
+  facet_wrap(~Trait)
