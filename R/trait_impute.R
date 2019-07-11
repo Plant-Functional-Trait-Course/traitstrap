@@ -18,14 +18,29 @@
 #' @importFrom dplyr select one_of mutate group_by filter left_join n group_by_at
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
+#' @importFrom glue glue glue_collapse
 #' @export
  
 trait_impute <- function(comm, traits, 
                          scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"),
+                         global = TRUE,
                          taxon_col = "taxon",  trait_col = "trait", 
                          value_col = "Value", abundance_col = "Cover", 
                          other_col = character(0)){
-  out <- length(scale_hierarchy):0 %>%  #iterate over grouping hierarchy
+  #check data have all scales in scale_hierarchy
+  if(!all(scale_hierarchy %in% names(comm))){
+    bad_scales <- glue_collapse(
+      x = scale_hierarchy[!scale_hierarchy %in% names(comm)], 
+      sep = ", ", last = ", and ")
+    stop(glue("scale_heirarchy levels {bad_scales} not in names(comm)"))
+  }
+  
+  #add global to scale_hierachy if necessary
+  if(isTRUE){
+    scale_hierarchy <- c("global", scale_hierarchy)
+  }
+    
+  out <- length(scale_hierarchy):1 %>%  #iterate over grouping hierarchy
     map_df(~{#browser()
       scale_level <- . #catch the . -meaning changes within the dplyr chain
       
@@ -40,18 +55,22 @@ trait_impute <- function(comm, traits,
       }
      traits <- traits %>% select(-one_of(scale_drop))
      comm %>%
+       #group by kept scales
        group_by_at(vars(one_of(c(scale_keep, other_col)))) %>%
+       #calculate sum abundance
        rename(abundance = !!abundance_col) %>% 
        mutate(sum_abun = sum(abundance)) %>% 
+       #join to traits
        left_join(traits, by = c(scale_keep, taxon_col)) %>% 
        group_by_at(vars(one_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%
+       #calculate weights
        mutate(
          weight = abundance/n(),
          level = factor(scale_hierarchy[scale_level], 
                         levels = scale_hierarchy, ordered = TRUE)
          )
   }) %>% 
-    filter(!is.na(!!!value_col)) %>% 
+    filter(!is.na(!!!value_col)) %>% #remove NA values
     filter(level == max(.data$level)) %>% 
     group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
