@@ -49,7 +49,11 @@ trait_impute <- function(comm, traits,
     scale_hierarchy <- c("global", scale_hierarchy)
   }
     
-  out <- length(scale_hierarchy):1 %>%  #iterate over grouping hierarchy
+  #remove NA trait values
+  traits <- traits %>% filter(!is.na(!!value_col))
+  
+  #iterate over grouping hierarchy
+  out <- length(scale_hierarchy):1 %>%  
     map_df(~{#browser()
       scale_level <- . #catch the . -meaning changes within the dplyr chain
       
@@ -69,8 +73,8 @@ trait_impute <- function(comm, traits,
        #calculate sum abundance
        rename(abundance = !!abundance_col) %>% 
        mutate(sum_abun = sum(abundance)) %>% 
-       #join to traits
-       left_join(traits, by = c(scale_keep, taxon_col)) %>% 
+       #join to traits 
+       inner_join(traits, by = c(scale_keep, taxon_col)) %>% 
        group_by_at(vars(one_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%
        #calculate weights
        mutate(
