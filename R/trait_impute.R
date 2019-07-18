@@ -16,7 +16,7 @@
 #' 
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select one_of mutate group_by filter left_join n group_by_at
+#' @importFrom dplyr select one_of mutate group_by filter left_join n group_by_at rename
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
@@ -52,6 +52,15 @@ trait_impute <- function(comm, traits,
   #remove NA trait values
   traits <- traits %>% filter(!is.na(!!value_col))
   
+  #calculate plot scale sum of abundances
+  comm <- comm %>% 
+    group_by_at(vars(one_of(c(scale_hierarchy, other_col)))) %>%
+    #calculate sum abundance
+    rename(abundance = !!abundance_col) %>% 
+    mutate(sum_abun = sum(.data$abundance)) 
+  
+  
+  
   #iterate over grouping hierarchy
   out <- length(scale_hierarchy):1 %>%  
     map_df(~{#browser()
@@ -70,15 +79,12 @@ trait_impute <- function(comm, traits,
      comm %>%
        #group by kept scales
        group_by_at(vars(one_of(c(scale_keep, other_col)))) %>%
-       #calculate sum abundance
-       rename(abundance = !!abundance_col) %>% 
-       mutate(sum_abun = sum(abundance)) %>% 
        #join to traits 
        inner_join(traits, by = c(scale_keep, taxon_col)) %>% 
        group_by_at(vars(one_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%
        #calculate weights
        mutate(
-         weight = abundance/n(),
+         weight = .data$abundance/n(),
          level = factor(scale_hierarchy[scale_level], 
                         levels = scale_hierarchy, ordered = TRUE)
          )
@@ -186,28 +192,38 @@ SummariseBootMoments <- function(BootstrapMoments){
 
 
 
-#' Summarise Bootstrap traits
-#' @description Bootstraptraits 
-#' @param BootstrapMoments trait moments from trait_np_bootstrap
-
-#' @description 
+#' Summarise Imputed Traits
+#' @param imputed_traits trait moments from trait_np_bootstrap
+#' @description Shows at which level the data are coming from in each plot.
 #' 
-#' @return 
+#' @return a ggplot
 #' 
 #' @importFrom magrittr %>%
-#' @importFrom dplyr group_by summarise distinct
+#' @importFrom dplyr group_by summarise distinct bind_cols ungroup one_of
 #' @importFrom rlang .data
-#' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes
+#' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes scale_y_continuous labs
 #' @export
 
 
 autoplot.imputed_trait <- function(imputed_traits){
+  #get scale_hierarchy and concatenate to make an ID
+  scale_hierarchy <- attr(imputed_traits, which = "scale_hierarchy")
+  scale_hierarchy <- scale_hierarchy[scale_hierarchy != "global"]
+  id <- imputed_traits %>% 
+    ungroup() %>% 
+    select(one_of(scale_hierarchy)) %>% 
+    apply(1, paste, collapse = "_")
   
-  imputed_traits %>% group_by(.data$level, .data$Taxon, add = TRUE) %>% 
+  imputed_traits %>% 
+    bind_cols(.id = id) %>% 
+    group_by(.data$.id, .data$level, .data$Taxon, add = TRUE) %>% 
     distinct(.data$abundance, .keep_all = TRUE) %>%  
     summarise(s = sum(.data$abundance)/.data$sum_abun) %>% 
     summarise(s = sum(.data$s)) %>% 
-    ggplot(aes(x = interaction(.data$PlotID, .data$Site), y = .data$s, fill = .data$level)) + 
+    ggplot(aes(x = .data$.id, 
+               y = .data$s, fill = .data$level)) + 
     geom_col() + 
+    scale_y_continuous(expand = c(0, 0)) +
+    labs(x = "Plot", y = "Proportion of cover", fill = "Data source") + 
     facet_wrap(~.data$Trait)
 }
