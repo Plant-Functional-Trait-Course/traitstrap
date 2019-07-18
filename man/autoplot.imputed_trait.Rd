@@ -2,18 +2,16 @@
 % Please edit documentation in R/trait_impute.R
 \name{autoplot.imputed_trait}
 \alias{autoplot.imputed_trait}
-\title{Summarise Bootstrap traits}
+\title{Summarise Imputed Traits}
 \usage{
 \method{autoplot}{imputed_trait}(imputed_traits)
 }
 \arguments{
-\item{BootstrapMoments}{trait moments from trait_np_bootstrap}
+\item{imputed_traits}{trait moments from trait_np_bootstrap}
 }
 \value{
-
+a ggplot
 }
 \description{
-Bootstraptraits
-
-
+Shows at which level the data are coming from in each plot.
 }
