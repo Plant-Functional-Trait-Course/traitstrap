@@ -1,4 +1,4 @@
-#' Bootstrap traits
+#' Bootstrap traits parametrically
 #' @description Bootstrap imputed traits using parametric bootstrapping 
 #' @param imputed_traits imputed trait and community data in long format
 #' @param distribution_type the type of statistical distribution to use. Character or named list. Currently accepts "normal","lognormal", and "beta".  
