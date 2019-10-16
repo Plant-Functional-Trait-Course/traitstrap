@@ -130,15 +130,15 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
   value_col <- attr(imputed_traits, "value_col")
   bootstrapMoments <- map_df(
     1:nrep,
-    ~sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight),
-    .id = "n"
-    ) %>% 
-    group_by(n, add = TRUE) %>% 
-    # get all the happy moments
-    summarise_at(
+    ~{sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight) %>% 
+        # get all the happy moments
+      summarise_at(
       .vars = vars(one_of(value_col)), 
       .funs = list(mean = mean, variance = var, 
-                   skewness = skewness, kurtosis = kurtosis))
+                   skewness = skewness, kurtosis = kurtosis))},
+    .id = "n"
+    )
+    
   
   attr(bootstrapMoments, "scale_hierarchy") <- attr(imputed_traits, "scale_hierarchy")
   attr(bootstrapMoments, "trait_col") <- attr(imputed_traits, "trait_col") 
