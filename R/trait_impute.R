@@ -20,6 +20,7 @@
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
+#' @importFrom tibble lst
 #' @export
  
 trait_impute <- function(comm, traits, 
@@ -94,13 +95,10 @@ trait_impute <- function(comm, traits,
     group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
   #set arguments as attributes so next functions have access to them
-  attr(out, "scale_hierarchy") <- scale_hierarchy
-  attr(out, "taxon_col") <- taxon_col
-  attr(out, "trait_col") <- trait_col
-  attr(out, "value_col") <- value_col
-  attr(out, "abundance_col") <- abundance_col
-  attr(out, "other_col") <- other_col
-  
+  attrib <- tibble::lst(scale_hierarchy, taxon_col, trait_col, 
+                        value_col, abundance_col, other_col)
+  attr(out, "attrib") <- attrib
+
   class(out) <- c(class(out), "imputed_traits")
   
   out
@@ -127,7 +125,8 @@ trait_impute <- function(comm, traits,
 
 trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){  
 #  stopifnot(class(traits_com) == "imputed_traits")
-  value_col <- attr(imputed_traits, "value_col")
+  attrib <- attr(imputed_traits, "attrib")
+  value_col <- attrib$value_col
   bootstrapMoments <- map_df(
     1:nrep,
     ~{sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight) %>% 
@@ -139,10 +138,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
     .id = "n"
     )
     
-  
-  attr(bootstrapMoments, "scale_hierarchy") <- attr(imputed_traits, "scale_hierarchy")
-  attr(bootstrapMoments, "trait_col") <- attr(imputed_traits, "trait_col") 
-  attr(bootstrapMoments, "other_col") <- attr(imputed_traits, "other_col")
+  attr(bootstrapMoments, "attrib") <- attrib
   return(bootstrapMoments)
 }
 
@@ -161,9 +157,10 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
 #' @export
 
 SummariseBootMoments <- function(BootstrapMoments){
-  groups <- c(attr(BootstrapMoments, "scale_hierarchy"), 
-              attr(BootstrapMoments, "trait_col"),
-              attr(BootstrapMoments, "other_col"))
+  attrib <- attr(BootstrapMoments, "attrib")
+  groups <- c(attrib$scale_hierarchy, 
+              attrib$trait_col,
+              attrib$other_col)
               
   # calculate means of moments 
   sBootstrapMoments <- BootstrapMoments %>% 
@@ -207,7 +204,8 @@ SummariseBootMoments <- function(BootstrapMoments){
 
 autoplot.imputed_trait <- function(imputed_traits){
   #get scale_hierarchy and concatenate to make an ID
-  scale_hierarchy <- attr(imputed_traits, which = "scale_hierarchy")
+  attrib <- attr(imputed_traits, "attrib")
+  scale_hierarchy <- attrib$scale_hierarchy
   scale_hierarchy <- scale_hierarchy[scale_hierarchy != "global"]
   id <- imputed_traits %>% 
     ungroup() %>% 
