@@ -189,20 +189,20 @@ SummariseBootMoments <- function(BootstrapMoments){
 
 
 
-#' Summarise Imputed Traits
+#' Fortify Imputed Traits
 #' @param imputed_traits trait moments from trait_np_bootstrap
-#' @description Shows at which level the data are coming from in each plot.
+#' @description Calculates at which level the data are coming from in each plot.
 #' 
-#' @return a ggplot
+#' @return a tibble
 #' 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr group_by summarise distinct bind_cols ungroup one_of
 #' @importFrom rlang .data
-#' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes scale_y_continuous labs
+#' @importFrom ggplot2 fortify
 #' @export
 
 
-autoplot.imputed_trait <- function(imputed_traits){
+fortify.imputed_trait <- function(imputed_traits){
   #get scale_hierarchy and concatenate to make an ID
   attrib <- attr(imputed_traits, "attrib")
   scale_hierarchy <- attrib$scale_hierarchy
@@ -212,16 +212,42 @@ autoplot.imputed_trait <- function(imputed_traits){
     select(one_of(scale_hierarchy)) %>% 
     apply(1, paste, collapse = "_")
   
-  imputed_traits %>% 
+  imputed_traits_summary <- imputed_traits %>% 
     bind_cols(.id = id) %>% 
-    group_by(.data$.id, .data$level, .data$Taxon, add = TRUE) %>% 
+    group_by(.data$.id, .data$level, .data[[attrib$trait_col]], .data[[attrib$taxon_col]], add = TRUE) %>% 
     distinct(.data$abundance, .keep_all = TRUE) %>%  
     summarise(s = sum(.data$abundance)/.data$sum_abun) %>% 
-    summarise(s = sum(.data$s)) %>% 
-    ggplot(aes(x = .data$.id, 
+    summarise(s = sum(.data$s))
+  
+  attr(imputed_traits_summary, "attrib") <- attrib
+  
+  return(imputed_traits_summary)
+}
+
+
+
+#' Coverage plot of Imputed Traits
+#' @param imputed_traits trait moments from trait_np_bootstrap
+#' @description Shows at which level the data are coming from in each plot.
+#' 
+#' @return a ggplot
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom dplyr group_by summarise distinct bind_cols ungroup one_of
+#' @importFrom rlang .data
+#' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes scale_y_continuous labs fortify
+#' @export
+
+
+autoplot.imputed_trait <- function(imputed_traits){
+  #get scale_hierarchy and concatenate to make an ID
+  attrib <- attr(imputed_traits, "attrib")
+  
+  imputed_traits_summary <- fortify.imputed_trait(imputed_traits)
+  ggplot(imputed_traits_summary, aes(x = .data$.id, 
                y = .data$s, fill = .data$level)) + 
     geom_col() + 
     scale_y_continuous(expand = c(0, 0)) +
     labs(x = "Plot", y = "Proportion of cover", fill = "Data source") + 
-    facet_wrap(~.data$Trait)
+    facet_wrap(~.data[[attrib$trait_col]])
 }
