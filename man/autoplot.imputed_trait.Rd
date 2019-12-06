@@ -2,7 +2,7 @@
 % Please edit documentation in R/trait_impute.R
 \name{autoplot.imputed_trait}
 \alias{autoplot.imputed_trait}
-\title{Summarise Imputed Traits}
+\title{Coverage plot of Imputed Traits}
 \usage{
 \method{autoplot}{imputed_trait}(imputed_traits)
 }
