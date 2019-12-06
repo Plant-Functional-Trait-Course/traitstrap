@@ -99,7 +99,7 @@ trait_impute <- function(comm, traits,
                         value_col, abundance_col, other_col)
   attr(out, "attrib") <- attrib
 
-  class(out) <- c(class(out), "imputed_traits")
+  class(out) <- c("imputed_trait", class(out))
   
   out
   }
@@ -236,6 +236,14 @@ fortify.imputed_trait <- function(imputed_traits){
 #' @importFrom dplyr group_by summarise distinct bind_cols ungroup one_of
 #' @importFrom rlang .data
 #' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes scale_y_continuous labs fortify
+#' @examples 
+#' data(community)
+#' data(trait)
+#' imputed_traits <-trait_impute(comm = community, traits = trait, 
+#'                  scale_hierarchy = c("Site", "PlotID"), 
+#'                  taxon_col = "Taxon", value_col = "Value",
+#'                  trait_col = "Trait", abundance_col = "Cover")
+#' autoplot(imputed_traits) 
 #' @export
 
 
