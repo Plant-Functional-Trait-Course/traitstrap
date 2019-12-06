@@ -3,3 +3,4 @@
 ^R/bootstrap\.R$
 ^LICENSE$
 ^data-raw$
+^README\.Rmd$

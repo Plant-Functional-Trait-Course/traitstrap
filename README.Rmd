@@ -1,14 +1,26 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-traitstrap
-==========
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# traitstrap
 
 <!-- badges: start -->
 <!-- badges: end -->
+
 The goal of traitstrap is to impute traits in hierarchical sampling designs.
 
-Installation
-------------
+## Installation
 
 You can install traitstrap from [GitHub](https://github.com/) with:
 
