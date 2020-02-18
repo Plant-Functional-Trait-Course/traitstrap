@@ -9,6 +9,7 @@
 #' @param abundance_col character; name of species abundance column in comm
 #' @param other_col name of other grouping columns in comm
 #' @param global logical; calculate traits at global scale. Must not be a column called global in the traits data.
+#' @param keep_all logical; keep trait data at all available levels or just finest scale available
 #' 
 #' @description 
 #' 
@@ -28,7 +29,8 @@ trait_impute <- function(comm, traits,
                          global = TRUE,
                          taxon_col = "taxon",  trait_col = "trait", 
                          value_col = "Value", abundance_col = "Cover", 
-                         other_col = character(0)){
+                         other_col = character(0), 
+                         keep_all = FALSE){
   #check data have all scales in scale_hierarchy
   if(!all(scale_hierarchy %in% names(comm))){
     bad_scales <- glue_collapse(
@@ -91,9 +93,14 @@ trait_impute <- function(comm, traits,
          )
   }) %>% 
     filter(!is.na(!!!value_col)) %>% #remove NA values
-    filter(.data$level == max(.data$level)) %>% 
     group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
 
+  if(!keep_all){#keep only finest scale trait data available
+    out <- out %>% 
+      filter(.data$level == max(.data$level)) 
+  }
+  
+  
   #set arguments as attributes so next functions have access to them
   attrib <- tibble::lst(scale_hierarchy, taxon_col, trait_col, 
                         value_col, abundance_col, other_col)

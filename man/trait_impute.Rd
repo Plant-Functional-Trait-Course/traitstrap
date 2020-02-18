@@ -13,7 +13,8 @@ trait_impute(
   trait_col = "trait",
   value_col = "Value",
   abundance_col = "Cover",
-  other_col = character(0)
+  other_col = character(0),
+  keep_all = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ trait_impute(
 \item{abundance_col}{character; name of species abundance column in comm}
 
 \item{other_col}{name of other grouping columns in comm}
+
+\item{keep_all}{logical; keep trait data at all available levels or just finest scale available}
 }
 \value{
 a tibble with extra class \code{imputed_trait}
