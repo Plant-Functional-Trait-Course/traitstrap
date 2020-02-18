@@ -14,7 +14,7 @@ trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200)
 \item{sample_size}{number of plants per sample}
 }
 \value{
-
+a tibble
 }
 \description{
 Bootstrap impute traits

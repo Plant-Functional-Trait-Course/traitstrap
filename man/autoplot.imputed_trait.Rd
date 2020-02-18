@@ -16,6 +16,7 @@ a ggplot
 Shows at which level the data are coming from in each plot.
 }
 \examples{
+require("ggplot2")
 data(community)
 data(trait)
 imputed_traits <-trait_impute(comm = community, traits = trait, 

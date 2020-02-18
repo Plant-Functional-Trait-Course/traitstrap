@@ -12,11 +12,11 @@
 #' 
 #' @description 
 #' 
-#' @return 
+#' @return a tibble with extra class \code{imputed_trait}
 #' 
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select one_of mutate group_by filter left_join n group_by_at rename
+#' @importFrom dplyr select one_of mutate group_by filter left_join n group_by_at rename inner_join
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
@@ -114,7 +114,7 @@ trait_impute <- function(comm, traits,
 #' @param sample_size number of plants per sample
 #' @description 
 #' 
-#' @return 
+#' @return a tibble
 #' 
 #' @importFrom stats var 
 #' @importFrom e1071 skewness kurtosis
@@ -150,7 +150,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
 
 #' @description 
 #' 
-#' @return 
+#' @return tibble with the grouping variables and the mean of each moment (+/- 1SD)
 #' 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr n group_by summarise_at vars one_of group_by_at summarise
@@ -238,6 +238,7 @@ fortify.imputed_trait <- function(imputed_traits){
 #' @importFrom rlang .data
 #' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes scale_y_continuous labs fortify
 #' @examples 
+#' require("ggplot2")
 #' data(community)
 #' data(trait)
 #' imputed_traits <-trait_impute(comm = community, traits = trait, 

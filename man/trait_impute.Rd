@@ -4,10 +4,17 @@
 \alias{trait_impute}
 \title{Impute traits}
 \usage{
-trait_impute(comm, traits, scale_hierarchy = c("Country", "Site",
-  "BlockID", "PlotID"), global = TRUE, taxon_col = "taxon",
-  trait_col = "trait", value_col = "Value", abundance_col = "Cover",
-  other_col = character(0))
+trait_impute(
+  comm,
+  traits,
+  scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"),
+  global = TRUE,
+  taxon_col = "taxon",
+  trait_col = "trait",
+  value_col = "Value",
+  abundance_col = "Cover",
+  other_col = character(0)
+)
 }
 \arguments{
 \item{comm}{community data in long format}
@@ -29,7 +36,7 @@ trait_impute(comm, traits, scale_hierarchy = c("Country", "Site",
 \item{other_col}{name of other grouping columns in comm}
 }
 \value{
-
+a tibble with extra class \code{imputed_trait}
 }
 \description{
 Impute traits
