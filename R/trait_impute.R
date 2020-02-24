@@ -92,13 +92,16 @@ trait_impute <- function(comm, traits,
                         levels = scale_hierarchy, ordered = TRUE)
          )
   }) %>% 
-    filter(!is.na(!!!value_col)) %>% #remove NA values
-    group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
+    filter(!is.na(!!!value_col))#remove NA values
+
 
   if(!keep_all){#keep only finest scale trait data available
     out <- out %>% 
       filter(.data$level == max(.data$level)) 
   }
+  
+  out <- out %>%     
+    group_by_at(.vars = vars(one_of(c(scale_hierarchy, trait_col, other_col))))
   
   
   #set arguments as attributes so next functions have access to them
