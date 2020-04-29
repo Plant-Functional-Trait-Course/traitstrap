@@ -167,7 +167,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
 #' @importFrom rlang .data
 #' @export
 
-SummariseBootMoments <- function(BootstrapMoments){
+trait_summarise_boot_moments <- function(BootstrapMoments){
   attrib <- attr(BootstrapMoments, "attrib")
   groups <- c(attrib$scale_hierarchy, 
               attrib$trait_col,

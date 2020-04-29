@@ -2,9 +2,9 @@
 
 S3method(autoplot,imputed_trait)
 S3method(fortify,imputed_trait)
-export(SummariseBootMoments)
 export(trait_impute)
 export(trait_np_bootstrap)
+export(trait_summarise_boot_moments)
 importFrom(dplyr,bind_cols)
 importFrom(dplyr,distinct)
 importFrom(dplyr,filter)
