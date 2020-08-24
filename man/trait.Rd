@@ -4,14 +4,16 @@
 \name{trait}
 \alias{trait}
 \title{Trait data}
-\format{A data frame with 53940 rows and 10 variables:
+\format{
+A data frame with 53940 rows and 10 variables:
 \describe{
   \item{Taxon}{species name}
   \item{Site}{site name}
   \item{PlotID}{plot name}
   \item{Trait}{trait name with unit}
   \item{Value}{trait value}
-}}
+}
+}
 \source{
 \url{http://https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
 }
