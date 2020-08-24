@@ -10,7 +10,7 @@
 #' @importFrom stats var 
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
-#' @importFrom dplyr sample_n group_by summarise_at vars any_of
+#' @importFrom dplyr slice_sample group_by summarise_at vars any_of
 #' @importFrom purrr map_df
 #' @export
 
@@ -20,7 +20,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
   value_col <- attrib$value_col
   bootstrapMoments <- map_df(
     1:nrep,
-    ~{sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight) %>% 
+    ~{slice_sample(imputed_traits, n = sample_size,  replace = TRUE, weight_by = weight) %>% 
         # get all the happy moments
         summarise_at(
           .vars = vars(any_of(value_col)), 

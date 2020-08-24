@@ -110,7 +110,12 @@ CWM_Bootstrapping <- function(dat, nrep = 100, samplesize = 200){
     group_by(Country, Year, Site, Gradient, BlockID, PlotID, Trait)
   
   
-  BootstrapMoments_All <- rerun(.n = nrep, sample_n(TraitWeights_all, size = samplesize,  replace = TRUE, weight = TraitWeights_all$weight)) %>%
+  BootstrapMoments_All <- rerun(.n = nrep, 
+                                slice_sample(TraitWeights_all, 
+                                         n = samplesize,  
+                                         replace = TRUE, 
+                                         weight_by = TraitWeights_all$weight)
+                                ) %>%
     bind_rows(.id = "n") %>% 
     group_by(n, add = TRUE) %>% 
     # get all the happy moments
