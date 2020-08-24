@@ -17,7 +17,7 @@
 #' 
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select any_of mutate group_by filter left_join n group_by_at rename inner_join
+#' @importFrom dplyr select any_of mutate group_by filter left_join n  rename inner_join across
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
@@ -57,7 +57,7 @@ trait_impute <- function(comm, traits,
   
   #calculate plot scale sum of abundances
   comm <- comm %>% 
-    group_by_at(vars(any_of(c(scale_hierarchy, other_col)))) %>%
+    group_by(across(any_of(c(scale_hierarchy, other_col)))) %>%
     #calculate sum abundance
     rename(abundance = !!abundance_col) %>% 
     mutate(sum_abun = sum(.data$abundance)) 
@@ -81,10 +81,10 @@ trait_impute <- function(comm, traits,
      traits <- traits %>% select(-any_of(scale_drop))
      comm %>%
        #group by kept scales
-       group_by_at(vars(any_of(c(scale_keep, other_col)))) %>%
+       group_by(across(any_of(c(scale_keep, other_col)))) %>%
        #join to traits 
        inner_join(traits, by = c(scale_keep, taxon_col)) %>% 
-       group_by_at(vars(any_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%
+       group_by(across(any_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%
        #calculate weights
        mutate(
          weight = .data$abundance/n(),
@@ -101,7 +101,7 @@ trait_impute <- function(comm, traits,
   }
   
   out <- out %>%     
-    group_by_at(.vars = vars(any_of(c(scale_hierarchy, trait_col, other_col))))
+    group_by(across(any_of(c(scale_hierarchy, trait_col, other_col))))
   
   
   #set arguments as attributes so next functions have access to them
