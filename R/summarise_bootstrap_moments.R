@@ -7,7 +7,7 @@
 #' @return tibble with the grouping variables and the mean of each moment (+/- 1SD)
 #' 
 #' @importFrom magrittr %>%
-#' @importFrom dplyr n group_by summarise_at any_of summarise across
+#' @importFrom dplyr n group_by any_of summarise across
 #' @importFrom rlang .data
 #' @export
 
