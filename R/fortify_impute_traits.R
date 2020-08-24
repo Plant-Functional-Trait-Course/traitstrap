@@ -5,7 +5,7 @@
 #' @return a tibble
 #' 
 #' @importFrom magrittr %>%
-#' @importFrom dplyr group_by summarise distinct bind_cols ungroup one_of
+#' @importFrom dplyr group_by summarise distinct bind_cols ungroup any_of
 #' @importFrom rlang .data
 #' @importFrom ggplot2 fortify
 #' @export
@@ -18,7 +18,7 @@ fortify.imputed_trait <- function(imputed_traits){
   scale_hierarchy <- scale_hierarchy[scale_hierarchy != "global"]
   id <- imputed_traits %>% 
     ungroup() %>% 
-    select(one_of(scale_hierarchy)) %>% 
+    select(any_of(scale_hierarchy)) %>% 
     apply(1, paste, collapse = "_")
   
   imputed_traits_summary <- imputed_traits %>% 

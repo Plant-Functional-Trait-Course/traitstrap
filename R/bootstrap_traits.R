@@ -10,7 +10,7 @@
 #' @importFrom stats var 
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
-#' @importFrom dplyr sample_n group_by summarise_at vars one_of
+#' @importFrom dplyr sample_n group_by summarise_at vars any_of
 #' @importFrom purrr map_df
 #' @export
 
@@ -23,7 +23,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
     ~{sample_n(imputed_traits, size = sample_size,  replace = TRUE, weight = weight) %>% 
         # get all the happy moments
         summarise_at(
-          .vars = vars(one_of(value_col)), 
+          .vars = vars(any_of(value_col)), 
           .funs = list(mean = mean, variance = var, 
                        skewness = skewness, kurtosis = kurtosis))},
     .id = "n"
