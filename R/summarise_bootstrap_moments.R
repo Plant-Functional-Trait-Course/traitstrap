@@ -7,7 +7,7 @@
 #' @return tibble with the grouping variables and the mean of each moment (+/- 1SD)
 #' 
 #' @importFrom magrittr %>%
-#' @importFrom dplyr n group_by any_of summarise across
+#' @importFrom dplyr n group_by any_of summarise across rename
 #' @importFrom rlang .data
 #' @export
 
@@ -20,23 +20,24 @@ trait_summarise_boot_moments <- function(BootstrapMoments){
   # calculate means of moments 
   sBootstrapMoments <- BootstrapMoments %>% 
     group_by(across(any_of(groups))) %>% 
+    rename(MEAN = .data$mean) %>% #capitalise to simplify code below
     summarise(
       n = n(),
-      Mean = mean(.data$mean),
-      CIlow.mean = .data$Mean - sd(.data$mean),
-      CIhigh.mean = .data$Mean + sd(.data$mean),
+      mean = mean(.data$MEAN),
+      ci_low_mean = .data$mean - sd(.data$MEAN),
+      ci_high_mean = .data$mean + sd(.data$MEAN),
       
-      Var = mean(.data$variance),
-      CIlow.var = .data$Var - sd(.data$variance),
-      CIhigh.var = .data$Var + sd(.data$variance),
+      var = mean(.data$variance),
+      ci_low_var = .data$var - sd(.data$variance),
+      ci_high_var = .data$var + sd(.data$variance),
       
-      Skew = mean(.data$skewness),
-      CIlow.skew = .data$Skew - sd(.data$skewness),
-      CIhigh.skew = .data$Skew + sd(.data$skewness),
+      skew = mean(.data$skewness),
+      ci_low_skew = .data$skew - sd(.data$skewness),
+      ci_high_skew = .data$skew + sd(.data$skewness),
       
-      Kurt = mean(.data$kurtosis),
-      CIlow.kurt = .data$Kurt - sd(.data$kurtosis),
-      CIhigh.Kurt = .data$Kurt + sd(.data$kurtosis)
+      kurt = mean(.data$kurtosis),
+      ci_low_kurt = .data$kurt - sd(.data$kurtosis),
+      ci_high_Kurt = .data$kurt + sd(.data$kurtosis)
     )
   
   return(sBootstrapMoments)
