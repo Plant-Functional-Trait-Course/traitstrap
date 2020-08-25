@@ -67,7 +67,7 @@ trait_impute <- function(comm, traits,
   #iterate over grouping hierarchy
   out <- length(scale_hierarchy):1 %>%  
     map_df(~{#browser()
-      scale_level <- . #catch the . -meaning changes within the dplyr chain
+      scale_level <- .x #catch the . -meaning changes within the dplyr chain
       
       #drop scales from the hierarchy
       scale_drop <- character(0L)
