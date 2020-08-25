@@ -4,13 +4,15 @@
 \name{community}
 \alias{community}
 \title{Community data}
-\format{A data frame with 53940 rows and 10 variables:
+\format{
+A data frame with 53940 rows and 10 variables:
 \describe{
   \item{Taxon}{species name}
   \item{Cover}{cover, in percent}
   \item{Site}{site name}
   \item{PlotID}{plot name}
-}}
+}
+}
 \source{
 \url{http://https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
 }
