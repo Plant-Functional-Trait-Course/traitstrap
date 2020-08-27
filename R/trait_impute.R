@@ -24,19 +24,21 @@
 #' @importFrom tibble lst
 #' @export
  
-trait_impute <- function(comm, traits, 
-                         scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"),
-                         global = TRUE,
-                         taxon_col = "taxon",  trait_col = "trait", 
-                         value_col = "Value", abundance_col = "Cover", 
-                         other_col = character(0), 
-                         keep_all = FALSE){
+trait_impute <- function(
+  comm, 
+  traits, 
+  scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"),
+  global = TRUE,
+  taxon_col = "taxon",  trait_col = "trait", 
+  value_col = "Value", abundance_col = "Cover", 
+  other_col = character(0), 
+  keep_all = FALSE){
   #check data have all scales in scale_hierarchy
   if(!all(scale_hierarchy %in% names(comm))){
     bad_scales <- glue_collapse(
       x = scale_hierarchy[!scale_hierarchy %in% names(comm)], 
       sep = ", ", last = ", and ")
-    stop(glue("scale_heirarchy levels {bad_scales} not in names(comm)"))
+    stop(glue("scale_hierarchy levels {bad_scales} not in names(comm)"))
   }
   
   #add global to scale_hierachy if necessary
