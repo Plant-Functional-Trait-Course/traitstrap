@@ -24,9 +24,9 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
                    replace = TRUE, weight_by = weight) %>% 
         # get all the happy moments
         summarise(
-          across(any_of(value_col)), 
+          across(any_of(value_col), 
           list(mean = mean, variance = var, 
-               skewness = skewness, kurtosis = kurtosis))},
+               skewness = skewness, kurtosis = kurtosis)))},
     .id = "n"
   )
   
