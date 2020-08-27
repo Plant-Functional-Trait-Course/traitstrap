@@ -31,7 +31,9 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
   )
   
   attr(bootstrapMoments, "attrib") <- attrib
-  class(bootstrapMoments)<- class(bootstrapMoments)[!class(bootstrapMoments) == "imputed_trait"]#make bootstrapMoments an ordinary tibble
+  
+  # make bootstrapMoments an ordinary tibble
+  class(bootstrapMoments) <- class(bootstrapMoments)[!class(bootstrapMoments) == "imputed_trait"] 
   return(bootstrapMoments)
 }
 

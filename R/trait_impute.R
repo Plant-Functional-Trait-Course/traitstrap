@@ -84,7 +84,10 @@ trait_impute <- function(comm, traits,
        group_by(across(any_of(c(scale_keep, other_col)))) %>%
        #join to traits 
        inner_join(traits, by = c(scale_keep, taxon_col)) %>% 
-       group_by(across(any_of(c(trait_col, taxon_col, "sum_abun"))), .add = TRUE) %>%
+       group_by(
+         across(any_of(c(trait_col, taxon_col, "sum_abun"))), 
+         .add = TRUE
+       ) %>%
        #calculate weights
        mutate(
          weight = .data$abundance/n(),
