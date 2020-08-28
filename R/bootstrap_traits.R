@@ -10,7 +10,7 @@
 #' @importFrom stats var 
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
-#' @importFrom dplyr slice_sample group_by summarise across any_of
+#' @importFrom dplyr slice_sample group_by summarise across
 #' @importFrom purrr map_df
 #' @export
 
@@ -24,9 +24,12 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){
                    replace = TRUE, weight_by = weight) %>% 
         # get all the happy moments
         summarise(
-          across(any_of(value_col), 
-          list(mean = mean, variance = var, 
-               skewness = skewness, kurtosis = kurtosis)))},
+          mean = mean(.data[[value_col]]), 
+          variance = var(.data[[value_col]]), 
+          skewness = skewness(.data[[value_col]]), 
+          kurtosis = kurtosis(.data[[value_col]])
+        )
+      },
     .id = "n"
   )
   
