@@ -8,6 +8,7 @@
 #' @param value_col character; name of trait value column in traits
 #' @param abundance_col character; name of species abundance column in comm
 #' @param other_col name of other grouping columns in comm
+#' @param treatment_col optional name of treatment_col in comm. Must refer to a factor where first level is control.
 #' @param global logical; calculate traits at global scale. Must not be a column called global in the traits data.
 #' @param keep_all logical; keep trait data at all available levels or just finest scale available
 #' 
@@ -31,8 +32,10 @@ trait_impute <- function(
   global = TRUE,
   taxon_col = "taxon",  trait_col = "trait", 
   value_col = "Value", abundance_col = "Cover", 
+  treatment_col,
   other_col = character(0), 
   keep_all = FALSE){
+  
   #check data have all scales in scale_hierarchy
   if(!all(scale_hierarchy %in% names(comm))){
     bad_scales <- glue_collapse(
@@ -40,6 +43,17 @@ trait_impute <- function(
       sep = ", ", last = ", and ")
     stop(glue("scale_hierarchy levels {bad_scales} not in names(comm)"))
   }
+  
+  #if used, check treatment_col is valid
+  if(!missing(treatment_col)){
+    if(!treatment_col %in% names(comm)){
+      stop(glue("treatment_col {treatment_col} not in names(comm)"))
+    }
+    if(!is.factor(comm[[treatment_col]])){
+      stop(glue("treatment_col {treatment_col} is not a factor in comm"))
+    }
+  }
+  
   
   #add global to scale_hierachy if necessary
   if(isTRUE(global)){
@@ -64,16 +78,19 @@ trait_impute <- function(
     rename(abundance = !!abundance_col) %>% 
     mutate(sum_abun = sum(.data$abundance)) 
   
-  
+  # make ordered factor of scale hierarchy
+  scale_hierarchy <- factor(scale_hierarchy, 
+                            levels = rev(scale_hierarchy), 
+                            ordered = TRUE)
   
   #iterate over grouping hierarchy
-  out <- length(scale_hierarchy):1 %>%  
+  out <- scale_hierarchy %>%  
     map_df(~{#browser()
       scale_level <- .x #catch the . -meaning changes within the dplyr chain
       
       #drop scales from the hierarchy
       scale_drop <- character(0L)
-      if(scale_level < length(scale_hierarchy)){
+      if(scale_level != max(scale_hierarchy)){
         scale_drop <- scale_hierarchy[(scale_level + 1):length(scale_hierarchy)]
       }
       scale_keep <- character(0L)
