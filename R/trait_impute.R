@@ -18,7 +18,7 @@
 #' 
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select any_of mutate group_by filter left_join n  rename inner_join across
+#' @importFrom dplyr select any_of mutate group_by filter left_join n inner_join across
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
@@ -75,8 +75,7 @@ trait_impute <- function(
   comm <- comm %>% 
     group_by(across(any_of(c(scale_hierarchy, other_col)))) %>%
     #calculate sum abundance
-    rename(abundance = !!abundance_col) %>% 
-    mutate(sum_abun = sum(.data$abundance)) 
+    mutate(sum_abun = sum(.data[[abundance_col]])) 
   
   # make ordered factor of scale hierarchy
   scale_hierarchy <- factor(scale_hierarchy, 
@@ -109,7 +108,7 @@ trait_impute <- function(
        ) %>%
        #calculate weights
        mutate(
-         weight = .data$abundance/n(),
+         weight = .data[[abundance_col]]/n(),
          level = factor(scale_hierarchy[scale_level], 
                         levels = scale_hierarchy, ordered = TRUE)
          )
