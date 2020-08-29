@@ -84,20 +84,16 @@ trait_impute <- function(
   
   #iterate over grouping hierarchy
   out <- scale_hierarchy %>%  
-    map_df(~{#browser()
-      scale_level <- .x #catch the . -meaning changes within the dplyr chain
+    map_df(~{browser()
+      scale_level <- .x 
       
       #drop scales from the hierarchy
-      scale_drop <- character(0L)
-      if(scale_level != max(scale_hierarchy)){
-        scale_drop <- scale_hierarchy[(scale_level + 1):length(scale_hierarchy)]
-      }
-      scale_keep <- character(0L)
-      if(scale_level > 0){
-        scale_keep <- scale_hierarchy[1:scale_level]
-      }
-     traits <- traits %>% select(-any_of(scale_drop))
-     comm %>%
+      scale_drop <- scale_hierarchy[scale_hierarchy < scale_level]
+      #scales to keep 
+      scale_keep <- scale_hierarchy[scale_hierarchy >= scale_level]
+      
+      traits <- traits %>% select(-any_of(scale_drop))
+      comm %>%
        #group by kept scales
        group_by(across(any_of(c(scale_keep, other_col)))) %>%
        #join to traits 
