@@ -46,7 +46,11 @@ trait_impute <- function(
   }
   
   #if used, check treatment_col is valid
-  if(!missing(treatment_col)){
+  
+  if(missing(treatment_col)){
+    use_treat <- FALSE
+  } else{
+    use_treat <- TRUE
     if(!treatment_col %in% names(comm)){
       stop(glue("treatment_col {treatment_col} not in names(comm)"))
     }
@@ -92,13 +96,13 @@ trait_impute <- function(
   
   #iterate over grouping hierarchy
   out <- scale_hierarchy %>%  
-    map_df(~{browser()
+    map_df(~{#browser()
       scale_level <- .x 
       
       #drop scales from the hierarchy
-      scale_drop <- scale_hierarchy[scale_hierarchy < scale_level]
+      scale_drop <- as.character(scale_hierarchy[scale_hierarchy < scale_level])
       #scales to keep 
-      scale_keep <- scale_hierarchy[scale_hierarchy >= scale_level]
+      scale_keep <- as.character(scale_hierarchy[scale_hierarchy >= scale_level])
       
       traits <- traits %>% select(-any_of(scale_drop))
       result <- comm %>%
@@ -113,16 +117,17 @@ trait_impute <- function(
          .add = TRUE
        ) 
       #filter if using treatment_col
-      if(!missing(treatment_col) & treatment_level == scale_level){
-        col_comm <- paste0(treatment_col, "_comm")
-        col_trait <- paste0(treatment_col, "_trait")
-        result <- result %>% 
-          filter( # same treatment OR first level (must be control)
-            .data[[col_comm]] == .data[[col_trait]] |
-            .data[[col_comm]] == levels(.data[[col_trait]])[1]
-            )
+      if(use_treat){
+        if(treatment_level == scale_level){
+          col_comm <- paste0(treatment_col, "_comm")
+          col_trait <- paste0(treatment_col, "_trait")
+          result <- result %>% 
+            filter( # same treatment OR first level (must be control)
+              .data[[col_comm]] == .data[[col_trait]] |
+              .data[[col_comm]] == levels(.data[[col_trait]])[1]
+              )
+        }
       }
-      
       result %>%
        #calculate weights
        mutate(
