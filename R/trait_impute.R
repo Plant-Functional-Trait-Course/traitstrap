@@ -9,6 +9,7 @@
 #' @param abundance_col character; name of species abundance column in comm
 #' @param other_col name of other grouping columns in comm
 #' @param treatment_col optional name of treatment_col in comm. Must refer to a factor where first level is control.
+#' @param treatment_level optional name of scale_hierarchy at which treatment should be filtered
 #' @param global logical; calculate traits at global scale. Must not be a column called global in the traits data.
 #' @param keep_all logical; keep trait data at all available levels or just finest scale available
 #' 
@@ -32,7 +33,7 @@ trait_impute <- function(
   global = TRUE,
   taxon_col = "taxon",  trait_col = "trait", 
   value_col = "Value", abundance_col = "Cover", 
-  treatment_col,
+  treatment_col, treatment_level,
   other_col = character(0), 
   keep_all = FALSE){
   
@@ -52,6 +53,13 @@ trait_impute <- function(
     if(!is.factor(comm[[treatment_col]])){
       stop(glue("treatment_col {treatment_col} is not a factor in comm"))
     }
+    #check treatment_level is valid
+    if(missing(treatment_level)){
+      stop("treatment_level must be specified when treatment_col is used")
+    }
+    if(!treatment_level %in% scale_hierarchy){
+      stop("treatment_level must be in scale_hierarchy")
+    } 
   }
   
   
@@ -93,21 +101,34 @@ trait_impute <- function(
       scale_keep <- scale_hierarchy[scale_hierarchy >= scale_level]
       
       traits <- traits %>% select(-any_of(scale_drop))
-      comm %>%
+      result <- comm %>%
        #group by kept scales
        group_by(across(any_of(c(scale_keep, other_col)))) %>%
        #join to traits 
-       inner_join(traits, by = c(scale_keep, taxon_col)) %>% 
+       inner_join(traits, 
+                  by = c(scale_keep, taxon_col), 
+                  suffix = c("_comm", "_trait")) %>% 
        group_by(
          across(any_of(c(trait_col, taxon_col, "sum_abun"))), 
          .add = TRUE
-       ) %>%
+       ) 
+      #filter if using treatment_col
+      if(!missing(treatment_col) & treatment_level == scale_level){
+        col_comm <- paste0(treatment_col, "_comm")
+        col_trait <- paste0(treatment_col, "_trait")
+        result <- result %>% 
+          filter( # same treatment OR first level (must be control)
+            .data[[col_comm]] == .data[[col_trait]] |
+            .data[[col_comm]] == levels(.data[[col_trait]])[1]
+            )
+      }
+      
+      result %>%
        #calculate weights
        mutate(
          weight = .data[[abundance_col]]/n(),
-         level = factor(scale_hierarchy[scale_level], 
-                        levels = scale_hierarchy, ordered = TRUE)
-         )
+         level = scale_level
+       )
   }) %>% 
     filter(!is.na(!!!value_col))#remove NA values
 
@@ -130,14 +151,3 @@ trait_impute <- function(
   
   out
   }
-
-
-
-
-
-
-
-
-
-
-

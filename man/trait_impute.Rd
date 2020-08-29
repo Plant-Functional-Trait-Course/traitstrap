@@ -13,6 +13,8 @@ trait_impute(
   trait_col = "trait",
   value_col = "Value",
   abundance_col = "Cover",
+  treatment_col,
+  treatment_level,
   other_col = character(0),
   keep_all = FALSE
 )
@@ -33,6 +35,10 @@ trait_impute(
 \item{value_col}{character; name of trait value column in traits}
 
 \item{abundance_col}{character; name of species abundance column in comm}
+
+\item{treatment_col}{optional name of treatment_col in comm. Must refer to a factor where first level is control.}
+
+\item{treatment_level}{optional name of scale_hierarchy at which treatment should be filtered}
 
 \item{other_col}{name of other grouping columns in comm}
 
