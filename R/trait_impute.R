@@ -54,6 +54,9 @@ trait_impute <- function(
     if(!treatment_col %in% names(comm)){
       stop(glue("treatment_col {treatment_col} not in names(comm)"))
     }
+    if(!treatment_col %in% names(comm)){
+      stop(glue("treatment_col {treatment_col} not in names(traits)"))
+    }
     if(!is.factor(comm[[treatment_col]])){
       stop(glue("treatment_col {treatment_col} is not a factor in comm"))
     }
