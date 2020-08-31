@@ -19,7 +19,7 @@
 #' 
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select any_of mutate group_by filter left_join n inner_join across
+#' @importFrom dplyr select any_of all_of mutate group_by filter left_join n inner_join across ungroup
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
@@ -54,11 +54,17 @@ trait_impute <- function(
     if(!treatment_col %in% names(comm)){
       stop(glue("treatment_col {treatment_col} not in names(comm)"))
     }
-    if(!treatment_col %in% names(comm)){
+    if(!treatment_col %in% names(traits)){
       stop(glue("treatment_col {treatment_col} not in names(traits)"))
     }
     if(!is.factor(comm[[treatment_col]])){
       stop(glue("treatment_col {treatment_col} is not a factor in comm"))
+    }
+    if(!is.factor(traits[[treatment_col]])){
+      stop(glue("treatment_col {treatment_col} is not a factor in traits"))
+    }
+    if(!identical(levels(traits[[treatment_col]]), levels(comm[[treatment_col]]))){
+      stop("treatment_col has have different levels in comm and traits")
     }
     #check treatment_level is valid
     if(missing(treatment_level)){
@@ -70,7 +76,7 @@ trait_impute <- function(
   }
   
   
-  #add global to scale_hierachy if necessary
+  #add global to scale_hierarchy if necessary
   if(isTRUE(global)){
     #check not already a "global" column
     if(any(names(traits) == "global")){
@@ -93,7 +99,7 @@ trait_impute <- function(
   
   #calculate plot scale sum of abundances
   comm <- comm %>% 
-    group_by(across(any_of(c(scale_hierarchy, other_col)))) %>%
+    group_by(across(all_of(c(as.character(scale_hierarchy), other_col)))) %>%
     #calculate sum abundance
     mutate(sum_abun = sum(.data[[abundance_col]])) 
   
@@ -121,7 +127,7 @@ trait_impute <- function(
                   by = c(scale_keep, taxon_col), 
                   suffix = c("_comm", "_trait")) %>% 
        group_by(
-         across(any_of(c(trait_col, taxon_col, "sum_abun"))), 
+         across(all_of(c(trait_col, taxon_col, "sum_abun"))), 
          .add = TRUE
        ) 
       #filter if using treatment_col
@@ -150,9 +156,9 @@ trait_impute <- function(
       filter(.data$level == min(.data$level)) 
   }
   
-  out <- out %>%     
-    group_by(across(any_of(c(scale_hierarchy, trait_col, other_col))))
-  
+  out <- out %>% 
+    ungroup() %>% #avoids dplyr problem #5473
+    group_by(across(all_of(c(as.character(scale_hierarchy), trait_col, other_col))))
   
   #set arguments as attributes so next functions have access to them
   attrib <- tibble::lst(scale_hierarchy, taxon_col, trait_col, 
