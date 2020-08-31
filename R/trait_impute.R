@@ -81,7 +81,12 @@ trait_impute <- function(
   }
     
   #remove NA trait values
-  traits <- traits %>% filter(!is.na(!!value_col))
+  traits <- traits %>% filter(!is.na(.data[[value_col]]))
+  
+  ## check for NA in abundance
+  if(any(is.na(comm[[abundance_col]]))){
+    stop(glue("cannot have NA in the {abundance_col} column of the community data"))
+  }
   
   #calculate plot scale sum of abundances
   comm <- comm %>% 
@@ -134,8 +139,7 @@ trait_impute <- function(
          weight = .data[[abundance_col]]/n(),
          level = scale_level
        )
-  }) %>% 
-    filter(!is.na(!!!value_col))#remove NA values
+  })
 
 
   if(!keep_all){#keep only finest scale trait data available
