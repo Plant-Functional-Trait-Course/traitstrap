@@ -144,7 +144,7 @@ trait_impute <- function(
 
   if(!keep_all){#keep only finest scale trait data available
     out <- out %>% 
-      filter(.data$level == max(.data$level)) 
+      filter(.data$level == min(.data$level)) 
   }
   
   out <- out %>%     
