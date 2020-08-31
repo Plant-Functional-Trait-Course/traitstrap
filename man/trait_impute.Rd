@@ -36,7 +36,7 @@ trait_impute(
 
 \item{abundance_col}{character; name of species abundance column in comm}
 
-\item{treatment_col}{optional name of treatment_col in comm. Must refer to a factor where first level is control.}
+\item{treatment_col}{optional name of treatment_col in comm and trait. Must refer to a factor where first level is control.}
 
 \item{treatment_level}{optional name of scale_hierarchy at which treatment should be filtered}
 

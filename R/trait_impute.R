@@ -8,7 +8,7 @@
 #' @param value_col character; name of trait value column in traits
 #' @param abundance_col character; name of species abundance column in comm
 #' @param other_col name of other grouping columns in comm
-#' @param treatment_col optional name of treatment_col in comm. Must refer to a factor where first level is control.
+#' @param treatment_col optional name of treatment_col in comm and trait. Must refer to a factor where first level is control.
 #' @param treatment_level optional name of scale_hierarchy at which treatment should be filtered
 #' @param global logical; calculate traits at global scale. Must not be a column called global in the traits data.
 #' @param keep_all logical; keep trait data at all available levels or just finest scale available
