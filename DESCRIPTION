@@ -24,4 +24,5 @@ Imports:
     ggplot2,
     tibble
 Suggests: 
-    testthat
+    testthat,
+    tidyr

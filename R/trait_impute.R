@@ -141,8 +141,11 @@ trait_impute <- function(
               )
         }
       }
-      result %>%
-       #calculate weights
+      #calculate weights
+      
+      result %>% 
+        ungroup() %>% 
+        group_by(across(all_of(c(as.character(scale_hierarchy), taxon_col, trait_col, other_col)))) %>% 
        mutate(
          weight = .data[[abundance_col]]/n(),
          level = scale_level
