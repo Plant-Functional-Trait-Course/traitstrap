@@ -7,7 +7,8 @@
 #' 
 #' @return a tibble
 #' 
-#' @importFrom stats var 
+#' @importFrom 
+s var 
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
