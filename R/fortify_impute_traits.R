@@ -23,9 +23,12 @@ fortify.imputed_trait <- function(imputed_traits){
   
   imputed_traits_summary <- imputed_traits %>% 
     bind_cols(.id = id) %>% 
-    group_by(.data$.id, .data$level, .data[[attrib$trait_col]], .data[[attrib$taxon_col]], .add = TRUE) %>% 
-    distinct(.data$abundance, .keep_all = TRUE) %>%  
-    summarise(s = sum(.data$abundance)/.data$sum_abun) %>% 
+    group_by(
+      .data$.id, .data$level, 
+      .data[[attrib$trait_col]], .data[[attrib$taxon_col]],
+      .add = TRUE) %>% 
+    distinct(.data[[attrib$abundance_col]], .keep_all = TRUE) %>%  
+    summarise(s = sum(.data[[attrib$abundance_col]])/.data$sum_abun) %>% 
     summarise(s = sum(.data$s))
   
   attr(imputed_traits_summary, "attrib") <- attrib
