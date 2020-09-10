@@ -120,15 +120,14 @@ trait_impute <- function(
       
       traits <- traits %>% select(-any_of(scale_drop))
       result <- comm %>%
-       #group by kept scales
-       group_by(across(any_of(c(scale_keep, other_col)))) %>%
+       ungroup() %>% #avoids dplyr problem #5473
        #join to traits 
        inner_join(traits, 
                   by = c(scale_keep, taxon_col), 
                   suffix = c("_comm", "_trait")) %>% 
+       #group by kept scales
        group_by(
-         across(all_of(c(trait_col, taxon_col, "sum_abun"))), 
-         .add = TRUE
+         across(all_of(c(scale_keep, other_col, trait_col, taxon_col, "sum_abun")))
        ) 
       #filter if using treatment_col
       if(use_treat){
@@ -153,6 +152,8 @@ trait_impute <- function(
 
   if(!keep_all){#keep only finest scale trait data available
     out <- out %>% 
+      ungroup() %>% 
+      group_by(across(all_of(c(as.character(scale_hierarchy), taxon_col, trait_col, other_col)))) %>% 
       filter(.data$level == min(.data$level)) 
   }
   

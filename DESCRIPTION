@@ -23,3 +23,5 @@ Imports:
     glue,
     ggplot2,
     tibble
+Suggests: 
+    testthat
