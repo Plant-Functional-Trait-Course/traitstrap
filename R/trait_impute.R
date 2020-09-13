@@ -3,7 +3,7 @@
 #' @param comm community data in long format
 #' @param traits trait data in long format
 #' @param scale_hierarchy character vector of site/block/plot hierarchy (large to small)
-#' @param taxon_col character; name of taxon column in comm and traits
+#' @param taxon_col character; name of taxon column in comm and traits. Can be a vector, in which case if traits cannot be imputed for the first taxon column, subsequent columns will be used in order.
 #' @param trait_col character; name of trait name column in traits
 #' @param value_col character; name of trait value column in traits
 #' @param abundance_col character; name of species abundance column in comm
@@ -128,6 +128,12 @@ trait_impute <- function(
   ## check for NA in abundance
   if(any(is.na(comm[[abundance_col]]))){
     stop(glue("cannot have NA in the {abundance_col} column of the community data"))
+  }
+  
+  ##### routine if length(taxon_col) > 1
+  if(length(taxon_col) > 1) {
+    result <- trait_impute_multi_level(call = match.call())
+    return(result)
   }
   
   #calculate plot scale sum of abundances

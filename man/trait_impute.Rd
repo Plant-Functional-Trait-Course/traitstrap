@@ -28,7 +28,7 @@ trait_impute(
 
 \item{global}{logical; calculate traits at global scale. Must not be a column called global in the traits data.}
 
-\item{taxon_col}{character; name of taxon column in comm and traits}
+\item{taxon_col}{character; name of taxon column in comm and traits. Can be a vector, in which case if traits cannot be imputed for the first taxon column, subsequent columns will be used in order.}
 
 \item{trait_col}{character; name of trait name column in traits}
 
