@@ -25,6 +25,7 @@
 #' @importFrom glue glue glue_collapse
 #' @importFrom tibble lst
 #' @export
+
  
 trait_impute <- function(
   comm, 
@@ -37,6 +38,7 @@ trait_impute <- function(
   other_col = character(0), 
   keep_all = FALSE){
   
+  #### sanity checks on input (are columns present etc) ####
   #check data have all scales in scale_hierarchy
   if(!all(scale_hierarchy %in% names(comm))){
     bad_scales <- glue_collapse(
@@ -44,6 +46,37 @@ trait_impute <- function(
       sep = ", ", last = ", and ")
     stop(glue("scale_hierarchy levels {bad_scales} not in names(comm)"))
   }
+  
+  #check taxon_col is valid
+  if(!all(taxon_col %in% names(comm))){
+    bad_taxon <- glue_collapse(
+      x = taxon_col[!taxon_col %in% names(comm)], 
+      sep = ", ", last = ", and ")
+    stop(glue("taxon_col levels {taxon_col} not in names(comm)"))
+  }
+  
+  if(!all(taxon_col %in% names(traits))){
+    bad_taxon <- glue_collapse(
+      x = taxon_col[!taxon_col %in% names(traits)], 
+      sep = ", ", last = ", and ")
+    stop(glue("taxon_col levels {taxon_col} not in names(traits)"))
+  }
+  
+  #check trait_col is valid
+  if(!(length(trait_col) == 1 & trait_col %in% names(traits))){
+    stop(glue("trait_col '{trait_col}' not in names(traits)"))
+  }
+  
+  #check value_col is valid
+  if(!(length(value_col) == 1 & value_col %in% names(traits))){
+    stop(glue("value_col '{value_col}' not in names(traits)"))
+  }
+  
+  #check abundance_col is valid
+  if(!(length(abundance_col) == 1 & abundance_col %in% names(comm))){
+    stop(glue("value_col '{abundance_col}' not in names(comm)"))
+  }
+  
   
   #if used, check treatment_col is valid
   
@@ -75,7 +108,7 @@ trait_impute <- function(
     } 
   }
   
-  
+  #### prep ####  
   #add global to scale_hierarchy if necessary
   if(isTRUE(global)){
     #check not already a "global" column
@@ -108,7 +141,8 @@ trait_impute <- function(
                             levels = rev(scale_hierarchy), 
                             ordered = TRUE)
   
-  #iterate over grouping hierarchy
+  
+  ####iterate over grouping hierarchy####
   out <- scale_hierarchy %>%  
     map_df(~{#browser()
       scale_level <- .x 
