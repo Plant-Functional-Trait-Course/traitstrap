@@ -52,14 +52,14 @@ trait_impute <- function(
     bad_taxon <- glue_collapse(
       x = taxon_col[!taxon_col %in% names(comm)], 
       sep = ", ", last = ", and ")
-    stop(glue("taxon_col levels {taxon_col} not in names(comm)"))
+    stop(glue("taxon_col {bad_taxon} not in names(comm)"))
   }
   
   if(!all(taxon_col %in% names(traits))){
     bad_taxon <- glue_collapse(
       x = taxon_col[!taxon_col %in% names(traits)], 
       sep = ", ", last = ", and ")
-    stop(glue("taxon_col levels {taxon_col} not in names(traits)"))
+    stop(glue("taxon_col {bad_taxon} not in names(traits)"))
   }
   
   #check trait_col is valid
