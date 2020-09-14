@@ -1,4 +1,4 @@
-#' @importFrom purrr map_df
+#' @importFrom purrr map_df set_names
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom dplyr filter mutate
@@ -8,7 +8,9 @@ trait_impute_multi_level <- function(call){
   taxon_position <- match("taxon_col", names(call))
   
   #extract taxon_col value
-  taxon_hierarchy <- call[[taxon_position]]
+  taxon_hierarchy <- call[[taxon_position]] 
+  taxon_hierarchy <- eval(taxon_hierarchy) #make results of call into vector 
+  taxon_hierarchy <- set_names(taxon_hierarchy)
 
   #iterate over taxon_col
   result <- map_df(taxon_hierarchy, ~{
