@@ -26,10 +26,14 @@ trait_impute_multi_level <- function(call){
   
   #filter lowest value of taxon hierarchy 
   # need to add species to group
+  current_groups <- groups(result) %>% as.character()
   result <- result %>% 
-  #  group_by(.data[[taxon_hierarchy]], .add = TRUE) %>% 
+    ungroup() %>% 
     mutate(taxon_level = factor(.data$taxon_level, levels = taxon_hierarchy, ordered = TRUE)) %>% 
-    filter(.data$taxon_level == min(.data$taxon_level))
+    group_by(across(all_of(c(current_groups, taxon_hierarchy[1])))) %>% 
+    filter(.data$taxon_level == min(.data$taxon_level))   %>% 
+    ungroup() %>% 
+    group_by(across(all_of(current_groups))) 
   
   # add taxon_hierarchy to attributes
   attr(result, "taxon_hierarchy") <- taxon_hierarchy
