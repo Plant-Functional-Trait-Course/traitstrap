@@ -18,7 +18,11 @@ trait_impute_multi_level <- function(call){
     # change taxon_col in call and eval 
     call[[taxon_position]] <- as.character(.x)
     eval(call)
-  }) %>% 
+  }) 
+  #grab attributes
+  result_attr <- attr(result[[1]], "attrib")
+
+  result <- result  %>% 
     map(select, -matches(paste0(taxon_hierarchy, "_trait"))) %>% 
     map(rename_with, str_remove, matches(paste0(taxon_hierarchy, "_comm")), "_comm") %>% 
     bind_rows(.id = "taxon_level")
@@ -35,9 +39,14 @@ trait_impute_multi_level <- function(call){
     ungroup() %>% 
     group_by(across(all_of(current_groups))) 
   
+  #reinstate attributes
+  attr(result, "attrib") <- result_attr
+  
   # add taxon_hierarchy to attributes
   attr(result, "taxon_hierarchy") <- taxon_hierarchy
   
+  #add class
+  class(result) <- c("imputed_trait", class(result))
   #return
   return(result)
 }
