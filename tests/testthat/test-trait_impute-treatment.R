@@ -9,7 +9,7 @@ test_that("trait_impute with treatment", {
     trait = "trait",
   ) %>% 
     mutate(
-      treatment = recode(plot, `1` = "a", `2` = "b", `3` = "c"), 
+      treatment = dplyr::recode(plot, `1` = "a", `2` = "b", `3` = "c"), 
       treatment = factor(treatment, levels = c("c", "a", "b")), 
       value = 1:12)
   
@@ -19,7 +19,7 @@ test_that("trait_impute with treatment", {
     plot = 1:3, 
     cover = 5
   ) %>%
-    mutate(treatment = recode(plot, `1` = "a", `2` = "b", `3` = "c"), 
+    mutate(treatment = dplyr::recode(plot, `1` = "a", `2` = "b", `3` = "c"), 
            treatment = factor(treatment, levels = c("c", "a", "b")))
   
   #### test set 1 ####

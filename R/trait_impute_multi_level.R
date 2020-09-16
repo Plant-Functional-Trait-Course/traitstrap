@@ -1,7 +1,7 @@
 #' @importFrom purrr set_names map
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
-#' @importFrom dplyr filter mutate rename_with select bind_rows matches
+#' @importFrom dplyr filter mutate rename_with select bind_rows matches groups
 #' @importFrom stringr str_remove
 #'  
 trait_impute_multi_level <- function(call){
