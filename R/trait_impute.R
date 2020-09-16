@@ -177,7 +177,7 @@ trait_impute <- function(
           result <- result %>% 
             filter( # same treatment OR first level (must be control)
               .data[[col_comm]] == .data[[col_trait]] |
-              .data[[col_comm]] == levels(.data[[col_trait]])[1]
+              .data[[col_trait]] == levels(.data[[col_trait]])[1]
               )
         }
       }
