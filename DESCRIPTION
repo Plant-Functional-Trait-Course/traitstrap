@@ -22,7 +22,8 @@ Imports:
     e1071,
     glue,
     ggplot2,
-    tibble
+    tibble,
+    stringr
 Suggests: 
     testthat,
     tidyr

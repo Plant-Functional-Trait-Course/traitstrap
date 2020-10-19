@@ -13,8 +13,8 @@ trait_impute(
   trait_col = "trait",
   value_col = "Value",
   abundance_col = "Cover",
-  treatment_col,
-  treatment_level,
+  treatment_col = NULL,
+  treatment_level = NULL,
   other_col = character(0),
   keep_all = FALSE
 )
@@ -28,7 +28,7 @@ trait_impute(
 
 \item{global}{logical; calculate traits at global scale. Must not be a column called global in the traits data.}
 
-\item{taxon_col}{character; name of taxon column in comm and traits}
+\item{taxon_col}{character; name of taxon column in comm and traits. Can be a vector, in which case if traits cannot be imputed for the first taxon column, subsequent columns will be used in order.}
 
 \item{trait_col}{character; name of trait name column in traits}
 

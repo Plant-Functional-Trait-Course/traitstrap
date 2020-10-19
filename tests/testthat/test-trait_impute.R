@@ -87,8 +87,6 @@ test_that("trait_imputation works", {
     mini_comm[(mini_trait$taxon == "sp1" & mini_trait$site == "A" & mini_trait$plot == 1) , "cover", drop = TRUE]/2
   )
   
-  
-    
 })
 
 
