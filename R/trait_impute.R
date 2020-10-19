@@ -34,7 +34,7 @@ trait_impute <- function(
   global = TRUE,
   taxon_col = "taxon",  trait_col = "trait", 
   value_col = "Value", abundance_col = "Cover", 
-  treatment_col, treatment_level,
+  treatment_col = NULL, treatment_level = NULL,
   other_col = character(0), 
   keep_all = FALSE){
   
@@ -80,7 +80,7 @@ trait_impute <- function(
   
   #if used, check treatment_col is valid
   
-  if(missing(treatment_col)){
+  if(is.null(treatment_col)){
     use_treat <- FALSE
   } else{
     use_treat <- TRUE
@@ -100,7 +100,7 @@ trait_impute <- function(
       stop("treatment_col has have different levels in comm and traits")
     }
     #check treatment_level is valid
-    if(missing(treatment_level)){
+    if(is.null(treatment_level)){
       stop("treatment_level must be specified when treatment_col is used")
     }
     if(!treatment_level %in% scale_hierarchy){
@@ -132,7 +132,20 @@ trait_impute <- function(
   
   ##### routine if length(taxon_col) > 1
   if(length(taxon_col) > 1) {
-    result <- trait_impute_multi_level(call = match.call())
+    result <- trait_impute_multi_level(
+      comm = comm, 
+      traits = traits, 
+      scale_hierarchy = scale_hierarchy,
+      global = global,
+      taxon_col = taxon_col, 
+      trait_col = trait_col, 
+      value_col = value_col, 
+      abundance_col = abundance_col, 
+      treatment_col = treatment_col,
+      treatment_level = treatment_level,
+      other_col = other_col, 
+      keep_all = keep_all
+    )
     return(result)
   }
   

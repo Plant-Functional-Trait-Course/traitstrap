@@ -58,7 +58,45 @@ test_that("trait_impute taxonomic imputation", {
     all(ti_1[cond, "taxon_level", drop = TRUE] == "taxon")
   )
   
+  #### test set 1b ####
+  #exactly the same as test set 1a but with pipes
+  ti_1 <- mini_comm %>% 
+    trait_impute(
+      traits = mini_trait1,
+      scale_hierarchy = c("site", "plot"), 
+      taxon_col = c("taxon", "genus"),
+      trait_col = "trait",
+      value_col = "value",
+      abundance_col = "cover"
+    ) 
   
+  #check expected value of trait imputed (A1 sp1)
+  cond <- with(ti_1, (taxon == "G1 sp1" & site == "A" & plot == 2))
+  expect_equal(
+    ti_1[cond, "value"], 
+    mini_trait[(mini_trait$taxon == "G1 sp1" & mini_trait$site == "A" & mini_trait$plot == 1) , "value"]
+  )
+  
+  #check imputation from correct level (site)
+  expect_equal(
+    as.vector(ti_1[cond, "level", drop = TRUE]), 
+    "site"
+  )
+  #check imputation from correct level (site)
+  expect_equal(
+    ti_1[cond, "weight", drop = TRUE], 
+    mini_comm[(mini_trait$taxon == "G1 sp1" & mini_trait$site == "A" & mini_trait$plot == 1) , "cover", drop = TRUE]
+  )
+  #check all imputations at correct taxon level (taxon)
+  expect_true(
+    all(ti_1[cond, "taxon_level", drop = TRUE] == "taxon")
+  )
+  
+  
+  
+  
+  
+    
   #### test set 2 ####
   # impute site A G1 sp1 - should get value from site A G1 sp2
   mini_trait2 <- mini_trait %>% 

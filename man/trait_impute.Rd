@@ -13,8 +13,8 @@ trait_impute(
   trait_col = "trait",
   value_col = "Value",
   abundance_col = "Cover",
-  treatment_col,
-  treatment_level,
+  treatment_col = NULL,
+  treatment_level = NULL,
   other_col = character(0),
   keep_all = FALSE
 )
