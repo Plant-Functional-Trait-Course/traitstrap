@@ -217,6 +217,13 @@ trait_impute <- function(
     ungroup() %>% #avoids dplyr problem #5473
     group_by(across(all_of(c(as.character(scale_hierarchy), trait_col, other_col))))
   
+  #add treatment group if used
+  if(!is.null(treatment_col)){
+    out <- out %>% 
+      group_by(.data[[paste0(treatment_col, "_comm")]], .add = TRUE)
+  }
+  
+  
   #set arguments as attributes so next functions have access to them
   attrib <- tibble::lst(scale_hierarchy, taxon_col, trait_col, 
                         value_col, abundance_col, other_col)
