@@ -13,12 +13,13 @@
 
 trait_summarise_boot_moments <- function(BootstrapMoments){
   attrib <- attr(BootstrapMoments, "attrib")
-  groups <- c(attrib$scale_hierarchy, 
+  groups <- c(as.character(attrib$scale_hierarchy), 
               attrib$trait_col,
               attrib$other_col)
   
   # calculate means of moments 
   sBootstrapMoments <- BootstrapMoments %>% 
+    ungroup() %>% 
     group_by(across(any_of(groups))) %>% 
     rename(MEAN = .data$mean) %>% #capitalise to simplify code below
     summarise(
