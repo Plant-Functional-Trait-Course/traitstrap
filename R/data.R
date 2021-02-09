@@ -1,6 +1,7 @@
 #' Community data
 #'
-#' A dataset containing plant cover in control plots on Svalbard from PFCT4 TraitTrain course.
+#' A dataset containing plant cover in control plots on Svalbard from PFCT4
+#'  TraitTrain course.
 #'
 #' @format A data frame with 53940 rows and 10 variables:
 #' \describe{
@@ -14,7 +15,8 @@
 
 #' Trait data
 #'
-#' A dataset containing plant traits in control plots on Svalbard from PFCT4 TraitTrain course.
+#' A dataset containing plant traits in control plots on Svalbard from PFCT4
+#' TraitTrain course.
 #'
 #' @format A data frame with 53940 rows and 10 variables:
 #' \describe{

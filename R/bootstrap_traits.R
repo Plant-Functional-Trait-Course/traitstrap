@@ -20,7 +20,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200) {
   value_col <- attrib$value_col
   bootstrap_moments <- map_df(
     1:nrep,
-    ~{
+    ~ {
       slice_sample(imputed_traits, n = sample_size,
                    replace = TRUE, weight_by = weight) %>%
         # get all the happy moments
@@ -37,6 +37,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200) {
   attr(bootstrap_moments, "attrib") <- attrib
 
   # make bootstrap_moments an ordinary tibble
-  class(bootstrap_moments) <- class(bootstrap_moments)[!class(bootstrap_moments) == "imputed_trait"]
+  class(bootstrap_moments) <-
+    class(bootstrap_moments)[!class(bootstrap_moments) == "imputed_trait"]
   return(bootstrap_moments)
 }

@@ -24,11 +24,15 @@ trait_impute(
 
 \item{traits}{trait data in long format}
 
-\item{scale_hierarchy}{character vector of site/block/plot hierarchy (large to small)}
+\item{scale_hierarchy}{character vector of site/block/plot hierarchy
+(large to small)}
 
-\item{global}{logical; calculate traits at global scale. Must not be a column called global in the traits data.}
+\item{global}{logical; calculate traits at global scale.
+Must not be a column called global in the traits data.}
 
-\item{taxon_col}{character; name of taxon column in comm and traits. Can be a vector, in which case if traits cannot be imputed for the first taxon column, subsequent columns will be used in order.}
+\item{taxon_col}{character; name of taxon column in comm and traits.
+Can be a vector, in which case if traits cannot be imputed for the first
+taxon column, subsequent columns will be used in order.}
 
 \item{trait_col}{character; name of trait name column in traits}
 
@@ -36,13 +40,16 @@ trait_impute(
 
 \item{abundance_col}{character; name of species abundance column in comm}
 
-\item{treatment_col}{optional name of treatment_col in comm and trait. Must refer to a factor where first level is control.}
+\item{treatment_col}{optional name of treatment_col in comm and
+trait. Must refer to a factor where first level is control.}
 
-\item{treatment_level}{optional name of scale_hierarchy at which treatment should be filtered}
+\item{treatment_level}{optional name of scale_hierarchy at which
+treatment should be filtered}
 
 \item{other_col}{name of other grouping columns in comm}
 
-\item{keep_all}{logical; keep trait data at all available levels or just finest scale available}
+\item{keep_all}{logical; keep trait data at all available levels
+or just finest scale available}
 }
 \value{
 a tibble with extra class \code{imputed_trait}

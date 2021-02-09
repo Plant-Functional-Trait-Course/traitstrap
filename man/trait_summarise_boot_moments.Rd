@@ -10,7 +10,8 @@ trait_summarise_boot_moments(bootstrap_moments)
 \item{bootstrap_moments}{trait moments from trait_np_bootstrap}
 }
 \value{
-tibble with the grouping variables and the mean of each moment (+/- 1SD)
+tibble with the grouping variables and the mean of each moment
+ (+/- 1SD)
 }
 \description{
 Bootstraptraits

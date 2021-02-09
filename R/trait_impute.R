@@ -2,16 +2,23 @@
 #' @description Impute traits
 #' @param comm community data in long format
 #' @param traits trait data in long format
-#' @param scale_hierarchy character vector of site/block/plot hierarchy (large to small)
-#' @param taxon_col character; name of taxon column in comm and traits. Can be a vector, in which case if traits cannot be imputed for the first taxon column, subsequent columns will be used in order.
+#' @param scale_hierarchy character vector of site/block/plot hierarchy
+#'  (large to small)
+#' @param taxon_col character; name of taxon column in comm and traits.
+#' Can be a vector, in which case if traits cannot be imputed for the first
+#' taxon column, subsequent columns will be used in order.
 #' @param trait_col character; name of trait name column in traits
 #' @param value_col character; name of trait value column in traits
 #' @param abundance_col character; name of species abundance column in comm
 #' @param other_col name of other grouping columns in comm
-#' @param treatment_col optional name of treatment_col in comm and trait. Must refer to a factor where first level is control.
-#' @param treatment_level optional name of scale_hierarchy at which treatment should be filtered
-#' @param global logical; calculate traits at global scale. Must not be a column called global in the traits data.
-#' @param keep_all logical; keep trait data at all available levels or just finest scale available
+#' @param treatment_col optional name of treatment_col in comm and
+#' trait. Must refer to a factor where first level is control.
+#' @param treatment_level optional name of scale_hierarchy at which
+#' treatment should be filtered
+#' @param global logical; calculate traits at global scale.
+#' Must not be a column called global in the traits data.
+#' @param keep_all logical; keep trait data at all available levels
+#' or just finest scale available
 #'
 #' @description
 #'
@@ -19,7 +26,8 @@
 #'
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select any_of all_of mutate group_by filter left_join n inner_join across ungroup
+#' @importFrom dplyr select any_of all_of mutate group_by filter left_join n
+#' @importFrom dplyr inner_join across ungroup
 #' @importFrom purrr map_df
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
@@ -100,7 +108,10 @@ trait_impute <- function(
     if (!is.factor(traits[[treatment_col]])) {
       stop(glue("treatment_col {treatment_col} is not a factor in traits"))
     }
-    if (!identical(levels(traits[[treatment_col]]), levels(comm[[treatment_col]]))) {
+    if (!identical(
+      levels(traits[[treatment_col]]),
+      levels(comm[[treatment_col]]))
+    ) {
       stop("treatment_col has have different levels in comm and traits")
     }
     #check treatment_level is valid
@@ -131,7 +142,8 @@ trait_impute <- function(
 
   ## check for NA in abundance
   if (any(is.na(comm[[abundance_col]]))) {
-    stop(glue("cannot have NA in the {abundance_col} column of the community data"))
+    stop(glue("cannot have NA in the {abundance_col}\\
+              column of the community data"))
   }
 
   ##### routine if length(taxon_col) > 1
@@ -170,9 +182,12 @@ trait_impute <- function(
       scale_level <- .x
 
       #drop scales from the hierarchy
-      scale_drop <- as.character(scale_hierarchy[scale_hierarchy < scale_level])
+      scale_drop <- as.character(
+        scale_hierarchy[scale_hierarchy < scale_level])
+
       #scales to keep
-      scale_keep <- as.character(scale_hierarchy[scale_hierarchy >= scale_level])
+      scale_keep <- as.character(
+        scale_hierarchy[scale_hierarchy >= scale_level])
 
       traits <- traits %>% select(-any_of(scale_drop))
       result <- comm %>%
@@ -183,7 +198,7 @@ trait_impute <- function(
                   suffix = c("_comm", "_trait")) %>%
        #group by kept scales
        group_by(
-         across(all_of(c(scale_keep, other_col, 
+         across(all_of(c(scale_keep, other_col,
                          trait_col, taxon_col, "sum_abun")))
        )
       #filter if using treatment_col
