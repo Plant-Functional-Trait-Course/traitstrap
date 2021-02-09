@@ -1,12 +1,12 @@
 #' Bootstrap traits
-#' @description Bootstrap impute traits 
+#' @description Bootstrap impute traits
 #' @param imputed_traits imputed trait and community data in long format
 #' @param nrep number of bootstrap replicates
 #' @param sample_size number of plants per sample
-#' @description 
-#' 
+#' @description
+#'
 #' @return a tibble
-#' 
+#'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
@@ -14,29 +14,29 @@
 #' @importFrom purrr map_df
 #' @export
 
-trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200){  
+trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200) {
   #  stopifnot(class(traits_com) == "imputed_traits")
   attrib <- attr(imputed_traits, "attrib")
   value_col <- attrib$value_col
-  bootstrapMoments <- map_df(
+  bootstrap_moments <- map_df(
     1:nrep,
-    ~{slice_sample(imputed_traits, n = sample_size,  
-                   replace = TRUE, weight_by = weight) %>% 
+    ~{
+      slice_sample(imputed_traits, n = sample_size,
+                   replace = TRUE, weight_by = weight) %>%
         # get all the happy moments
         summarise(
-          mean = mean(.data[[value_col]]), 
-          variance = var(.data[[value_col]]), 
-          skewness = skewness(.data[[value_col]]), 
+          mean = mean(.data[[value_col]]),
+          variance = var(.data[[value_col]]),
+          skewness = skewness(.data[[value_col]]),
           kurtosis = kurtosis(.data[[value_col]])
         )
       },
     .id = "n"
   )
-  
-  attr(bootstrapMoments, "attrib") <- attrib
-  
-  # make bootstrapMoments an ordinary tibble
-  class(bootstrapMoments) <- class(bootstrapMoments)[!class(bootstrapMoments) == "imputed_trait"] 
-  return(bootstrapMoments)
-}
 
+  attr(bootstrap_moments, "attrib") <- attrib
+
+  # make bootstrap_moments an ordinary tibble
+  class(bootstrap_moments) <- class(bootstrap_moments)[!class(bootstrap_moments) == "imputed_trait"]
+  return(bootstrap_moments)
+}

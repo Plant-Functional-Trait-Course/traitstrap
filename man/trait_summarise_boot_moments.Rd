@@ -4,10 +4,10 @@
 \alias{trait_summarise_boot_moments}
 \title{Summarise Bootstrap traits}
 \usage{
-trait_summarise_boot_moments(BootstrapMoments)
+trait_summarise_boot_moments(bootstrap_moments)
 }
 \arguments{
-\item{BootstrapMoments}{trait moments from trait_np_bootstrap}
+\item{bootstrap_moments}{trait moments from trait_np_bootstrap}
 }
 \value{
 tibble with the grouping variables and the mean of each moment (+/- 1SD)
