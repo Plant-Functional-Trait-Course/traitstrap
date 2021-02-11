@@ -4,14 +4,19 @@
 \alias{trait_summarise_boot_moments}
 \title{Summarise Bootstrap traits}
 \usage{
-trait_summarise_boot_moments(bootstrap_moments)
+trait_summarise_boot_moments(bootstrap_moments, sd_mult = 1, ci)
 }
 \arguments{
 \item{bootstrap_moments}{trait moments from trait_np_bootstrap}
+
+\item{sd_mult}{Number of standard deviations around each moment,
+defaults to one}
+
+\item{ci}{Confidence interval - alternative to setting `sd_mult`}
 }
 \value{
 tibble with the grouping variables and the mean of each moment
- (+/- 1SD)
+ (+/- sd_mult * SD)
 }
 \description{
 Bootstraptraits
