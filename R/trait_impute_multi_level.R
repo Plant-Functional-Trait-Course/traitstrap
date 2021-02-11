@@ -10,25 +10,26 @@ trait_impute_multi_level <- function(
   taxon_col, trait_col,
   value_col, abundance_col,
   treatment_col, treatment_level,
-  other_col, keep_all) {
+  other_col, keep_all, min_n_leaves) {
 
   #iterate over taxon_col
   result <- taxon_col %>%
     set_names() %>%
-    map(~trait_impute(
-    comm = comm,
-    traits = traits,
-    scale_hierarchy = scale_hierarchy,
-    global = FALSE, #global already added if needed
-    taxon_col = .x,
-    trait_col = trait_col,
-    value_col = value_col,
-    abundance_col = abundance_col,
-    treatment_col = treatment_col,
-    treatment_level = treatment_level,
-    other_col = other_col,
-    keep_all = keep_all
-  ))
+    map(~ trait_impute(
+      comm = comm,
+      traits = traits,
+      scale_hierarchy = scale_hierarchy,
+      global = FALSE, #global already added if needed
+      taxon_col = .x,
+      trait_col = trait_col,
+      value_col = value_col,
+      abundance_col = abundance_col,
+      treatment_col = treatment_col,
+      treatment_level = treatment_level,
+      other_col = other_col,
+      keep_all = keep_all,
+      min_n_leaves = min_n_leaves
+    ))
 
   #grab attributes
   result_attr <- attr(result[[1]], "attrib")

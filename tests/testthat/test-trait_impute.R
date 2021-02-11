@@ -29,7 +29,8 @@ test_that("trait_imputation works", {
     taxon_col = "taxon",
     trait_col = "trait",
     value_col = "value",
-    abundance_col = "cover"
+    abundance_col = "cover",
+    min_n_leaves = 1
   )
 
   #check expected value of trait imputed (A1 sp1)
@@ -66,7 +67,8 @@ test_that("trait_imputation works", {
     taxon_col = "taxon",
     trait_col = "trait",
     value_col = "value",
-    abundance_col = "cover"
+    abundance_col = "cover",
+    min_n_leaves = 1
   )
 
   #check 2 entries for each sp1 in each plot in A (leave from each plot in B)
