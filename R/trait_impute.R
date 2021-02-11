@@ -19,6 +19,8 @@
 #' Must not be a column called global in the traits data.
 #' @param keep_all logical; keep trait data at all available levels
 #' or just finest scale available
+#' @param min_n_leaves minimum number of leaves with traits to accept before
+#' searching for leaves higher up the hierarchy.
 #'
 #' @description
 #'
@@ -50,7 +52,8 @@ trait_impute <- function(
   value_col = "Value", abundance_col = "Cover",
   treatment_col = NULL, treatment_level = NULL,
   other_col = character(0),
-  keep_all = FALSE) {
+  keep_all = FALSE,
+  min_n_leaves = 5) {
 
   #### sanity checks on input (are columns present etc) ####
   #check data have all scales in scale_hierarchy
@@ -160,7 +163,8 @@ trait_impute <- function(
       treatment_col = treatment_col,
       treatment_level = treatment_level,
       other_col = other_col,
-      keep_all = keep_all
+      keep_all = keep_all,
+      min_n_leaves = min_n_leaves
     )
     return(result)
   }
@@ -215,22 +219,40 @@ trait_impute <- function(
       }
 
       #calculate weights
-      result %>%
+      result <- result %>%
         ungroup() %>%
         group_by(across(all_of(c(as.character(scale_hierarchy),
                                  taxon_col, trait_col, other_col)))) %>%
        mutate(
-         weight = .data[[abundance_col]] / n(),
+         n_leaves = n(),
+         weight = .data[[abundance_col]] / .data$n_leaves,
          level = scale_level
        )
-  })
 
+      result
+  }) # end of iterate over grouping hierarchy
 
+  #get max number of leaves available
+  out <- out %>%
+    ungroup() %>%
+    group_by(across(all_of(c(as.character(scale_hierarchy),
+                             taxon_col, trait_col, other_col)))) %>%
+    mutate(max_n_leaves = max(.data$n_leaves))
+
+  #### filter out lowest good level of hierarchy for each taxon & trait ####
   if (!keep_all) {#keep only finest scale trait data available
     out <- out %>%
       ungroup() %>%
       group_by(across(all_of(c(as.character(scale_hierarchy),
                                taxon_col, trait_col, other_col)))) %>%
+      filter(
+        #group has more than minimum number of leaves
+        .data$n_leaves >= min_n_leaves |
+          # OR maximum number of leaves when max is lower than required
+       (.data$n_leaves == .data$max_n_leaves &
+          .data$max_n_leaves <= min_n_leaves)
+      ) %>%
+      #filter lowest level available by group
       filter(.data$level == min(.data$level))
   }
 

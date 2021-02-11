@@ -34,7 +34,8 @@ test_that("trait_impute taxonomic imputation", {
     taxon_col = c("taxon", "genus"),
     trait_col = "trait",
     value_col = "value",
-    abundance_col = "cover"
+    abundance_col = "cover",
+    min_n_leaves = 1
   )
 
   #check expected value of trait imputed (A1 sp1)
@@ -72,7 +73,8 @@ test_that("trait_impute taxonomic imputation", {
       taxon_col = c("taxon", "genus"),
       trait_col = "trait",
       value_col = "value",
-      abundance_col = "cover"
+      abundance_col = "cover",
+      min_n_leaves = 1
     )
 
   #check expected value of trait imputed (A1 sp1)
@@ -114,7 +116,8 @@ test_that("trait_impute taxonomic imputation", {
     taxon_col = c("taxon", "genus"),
     trait_col = "trait",
     value_col = "value",
-    abundance_col = "cover"
+    abundance_col = "cover",
+    min_n_leaves = 1
   )
 
   #for site A, should impute from G1 sp2 at site A

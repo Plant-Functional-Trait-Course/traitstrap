@@ -16,7 +16,8 @@ trait_impute(
   treatment_col = NULL,
   treatment_level = NULL,
   other_col = character(0),
-  keep_all = FALSE
+  keep_all = FALSE,
+  min_n_leaves = 5
 )
 }
 \arguments{
@@ -50,6 +51,9 @@ treatment should be filtered}
 
 \item{keep_all}{logical; keep trait data at all available levels
 or just finest scale available}
+
+\item{min_n_leaves}{minimum number of leaves with traits to accept before 
+searching for leaves higher up the hierarchy.}
 }
 \value{
 a tibble with extra class \code{imputed_trait}
