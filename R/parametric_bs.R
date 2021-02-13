@@ -4,6 +4,9 @@
 #' @param distribution_type the type of statistical distribution to use. Character or named list. Currently accepts "normal","lognormal", and "beta".  
 #' @param nrep number of bootstrap replicates
 #' @param samples_per_abundance number trait samples to draw per unit of abundance
+#' @notes To use multiple types of distributions, supply a named list: list( normal = "leaf_area_mm2", 
+#' lognormal = "dry_mass_mg", normal = "SLA_m2_kg", lognormal = "height", normal = "biomass_per_ind")
+#' @notes No, I don't remember why I specified the list this way rather than more intuitively.  Meh.
 #' 
 #' @return 
 #' 
@@ -16,10 +19,10 @@ trait_parametric_bootstrap <- function( imputed_traits,
                                        samples_per_abundance = 1 ){
   
 
-  value_col <- attr(imputed_traits, "value_col")
-  trait_col <- attr(imputed_traits, "trait_col")
-  taxon_col <- attr(imputed_traits, "taxon_col")
-  scale_hierarchy <- attr(imputed_traits, "scale_hierarchy")
+  value_col <- attributes(imputed_traits)$attrib$value_col
+  trait_col <- attributes(imputed_traits)$attrib$trait_col
+  taxon_col <- attributes(imputed_traits)$attrib$taxon_col
+  scale_hierarchy <- attributes(imputed_traits)$attrib$scale_hierarchy
   
   
   #If only a single type of distribution was supplied, apply it to all traits
@@ -37,9 +40,9 @@ trait_parametric_bootstrap <- function( imputed_traits,
   #First, we need to fit distributions
     #For each trait x species x level of the hierarchy (note this only works if hierarchy is only geographic)
   
-  distributions_to_fit <- unique(imputed_traits[c(scale_hierarchy,taxon_col,trait_col)])
+  distributions_to_fit <- unique(imputed_traits[c(as.character(scale_hierarchy),taxon_col,trait_col)])
   
-  distribution_parameters<-as.data.frame(distributions_to_fit)
+  distribution_parameters <- as.data.frame(distributions_to_fit)
 
   
   #Add columns for different distribution parameters as needed
@@ -175,7 +178,7 @@ trait_parametric_bootstrap <- function( imputed_traits,
   
   #Next, we need to use the fitted distributions to estimate moments
   
-  distribution_moments <- as.data.frame(unique(imputed_traits[c(scale_hierarchy,trait_col)]))
+  distribution_moments <- as.data.frame(unique(imputed_traits[c(as.character(scale_hierarchy),trait_col)]))
   
   distribution_moments$mean <- NA
   distribution_moments$variance <- NA
@@ -194,7 +197,9 @@ trait_parametric_bootstrap <- function( imputed_traits,
   #print(i)
   distr_i <- unique(distribution_moments)[i,]  
     
-  abundances_i <- unique(imputed_traits[eval(parse(text = paste("which(",paste(paste("imputed_traits$",scale_hierarchy," == '",distr_i[scale_hierarchy],"'",sep = ""  ),collapse = " & " ),")"))),c(taxon_col,"abundance")])
+  #abundances_i <- unique(imputed_traits[eval(parse(text = paste("which(",paste(paste("imputed_traits$",scale_hierarchy," == '",distr_i[scale_hierarchy],"'",sep = ""  ),collapse = " & " ),")"))),c(taxon_col,"abundance")])
+  
+  abundances_i <- unique(imputed_traits[eval(parse(text = paste("which(",paste(paste("imputed_traits$",as.character(scale_hierarchy)," == '",distr_i[as.character(scale_hierarchy)],"'",sep = ""  ),collapse = " & " ),")"))),c(taxon_col,"abundance")])
   
   out_i <- matrix(nrow = nrep, ncol=sum(floor(abundances_i$abundance*samples_per_abundance)))
   
@@ -206,12 +211,17 @@ trait_parametric_bootstrap <- function( imputed_traits,
   
     
 
-  distr_t  <- distribution_parameters[eval(parse(text = paste("which( ",paste(paste("distribution_parameters$",scale_hierarchy," == '",distr_i[scale_hierarchy],"'",
-                                                                          sep = ""  ),collapse = " & " ),"& distribution_parameters$",taxon_col," == '",
-                                                    abundances_i[t,taxon_col],"' & distribution_parameters$",trait_col, "== '",distr_i[trait_col],"' )",sep = ""))),]  
+  #distr_t  <- distribution_parameters[eval(parse(text = paste("which( ",paste(paste("distribution_parameters$",scale_hierarchy," == '",distr_i[scale_hierarchy],"'",
+  #                                                                        sep = ""  ),collapse = " & " ),"& distribution_parameters$",taxon_col," == '",
+  #                                                  abundances_i[t,taxon_col],"' & distribution_parameters$",trait_col, "== '",distr_i[trait_col],"' )",sep = ""))),]  
+  
+  distr_t  <- distribution_parameters[eval(parse(text = paste("which( ",paste(paste("distribution_parameters$",as.character(scale_hierarchy)," == '",distr_i[as.character(scale_hierarchy)],"'",
+                                                                                    sep = ""  ),collapse = " & " ),"& distribution_parameters$",taxon_col," == '",
+                                                              abundances_i[t,taxon_col],"' & distribution_parameters$",trait_col, "== '",distr_i[trait_col],"' )",sep = ""))),]  
   
   
   
+
   #If the specified trait was not fit (missing data), supply NAs
   if(nrow(distr_t)==0){
     
@@ -348,7 +358,7 @@ trait_parametric_bootstrap <- function( imputed_traits,
   
   #Calculate the moments of each replicate and populate the distribution_moments object accordingly
   
-  distribution_moments[eval(parse(text = paste("which( ",paste(paste("distribution_moments$",scale_hierarchy," == '",distr_i[scale_hierarchy],"'",
+  distribution_moments[eval(parse(text = paste("which( ",paste(paste("distribution_moments$",as.character(scale_hierarchy)," == '",distr_i[as.character(scale_hierarchy)],"'",
                                            sep = ""  ),collapse = " & " )," & distribution_moments$",trait_col, "== '",distr_i[trait_col],"' )",sep = "")) ),
                        c("mean","variance","skewness","kurtosis")] <-
   
@@ -362,7 +372,7 @@ trait_parametric_bootstrap <- function( imputed_traits,
   
   
   #Assign rep n
-  distribution_moments[eval(parse(text = paste("which( ",paste(paste("distribution_moments$",scale_hierarchy," == '",distr_i[scale_hierarchy],"'",
+  distribution_moments[eval(parse(text = paste("which( ",paste(paste("distribution_moments$",as.character(scale_hierarchy)," == '",distr_i[as.character(scale_hierarchy)],"'",
                                                                      sep = ""  ),collapse = " & " )," & distribution_moments$",trait_col, "== '",distr_i[trait_col],"' )",sep = "")) ),"n"] <- 1:nrep
     
     
@@ -373,7 +383,12 @@ trait_parametric_bootstrap <- function( imputed_traits,
   
 
   #Make output comparable to nonparametric output
-  distribution_moments<-distribution_moments[c(scale_hierarchy,trait_col,"n","mean","variance","skewness","kurtosis")]
+  distribution_moments <- distribution_moments[c(as.character(scale_hierarchy),trait_col,"n","mean","variance","skewness","kurtosis")]
+  
+  
+  attributes(distribution_moments)$attrib <- attributes(imputed_traits)$attrib
+  
+  
   
   return(distribution_moments)
   
