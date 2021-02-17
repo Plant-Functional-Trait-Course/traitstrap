@@ -11,7 +11,7 @@
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
-#' @importFrom purrr map_df
+#' @importFrom purrr map_dfr
 #' @examples 
 #' data(community)
 #' data(trait)
@@ -26,7 +26,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200) {
   #  stopifnot(class(traits_com) == "imputed_traits")
   attrib <- attr(imputed_traits, "attrib")
   value_col <- attrib$value_col
-  bootstrap_moments <- map_df(
+  bootstrap_moments <- map_dfr(
     1:nrep,
     ~ {
       slice_sample(imputed_traits, n = sample_size,
