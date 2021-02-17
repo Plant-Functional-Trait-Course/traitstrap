@@ -1,7 +1,7 @@
 Package: traitstrap
 Title: Bootstrap trait values
-Version: 0.0.0.9006
-Date: 2020-08-27
+Version: 0.0.0.9007
+Date: 2021-02-17
 Authors@R: c(
   person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre")), 
   person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut"))
