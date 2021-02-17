@@ -30,7 +30,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select any_of all_of mutate group_by filter left_join n
 #' @importFrom dplyr inner_join across ungroup
-#' @importFrom purrr map_df
+#' @importFrom purrr map_dfr
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
 #' @importFrom tibble lst
@@ -126,6 +126,24 @@ trait_impute <- function(
     }
   }
 
+  #check other_cols are valid 
+  if (!all(other_col %in% names(comm))) {
+    bad_other <- glue_collapse(
+      x = other_col[!other_col %in% names(comm)],
+      sep = ", ", last = ", and ")
+    stop(glue("other_col levels {bad_other} not in names(comm)"))
+  }
+  #check other_cols are not in traits
+  if (any(other_col %in% names(traits))) {
+    bad_other <- glue_collapse(
+      x = other_col[!other_col %in% names(traits)],
+      sep = ", ", last = ", and ")
+    warning(glue("other_col levels {bad_other} are in  names(traits). \\
+                 These columns will be removed from traits"))
+    traits <- traits %>% select(-any_of(other_col))
+  }
+
+  
   #### prep ####
   #add global to scale_hierarchy if necessary
   if (isTRUE(global)) {
@@ -182,7 +200,7 @@ trait_impute <- function(
 
   ####iterate over grouping hierarchy####
   out <- scale_hierarchy %>%
-    map_df(~{
+    map_dfr(~{
       scale_level <- .x
 
       #drop scales from the hierarchy
