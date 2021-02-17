@@ -12,6 +12,14 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
 #' @importFrom purrr map_df
+#' @examples 
+#' data(community)
+#' data(trait)
+#' imputed_traits <-trait_impute(comm = community, traits = trait,
+#'                  scale_hierarchy = c("Site", "PlotID"),
+#'                  taxon_col = "Taxon", value_col = "Value",
+#'                  trait_col = "Trait", abundance_col = "Cover")
+#' boot_traits <- trait_np_bootstrap(imputed_traits)
 #' @export
 
 trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200) {
