@@ -1,9 +1,8 @@
 #' Summarise Bootstrap traits
-#' @description Bootstraptraits
+#' @description Find the mean and confidence interval for each moment 
 #' @param bootstrap_moments trait moments from trait_np_bootstrap
 #' @param sd_mult Number of standard deviations around each moment,
 #' defaults to one
-#' @param ci Confidence interval - alternative to setting `sd_mult`
 
 #' @description
 #'
@@ -13,18 +12,29 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr n group_by any_of summarise across rename
 #' @importFrom rlang .data
-#' @importFrom stats qnorm
+
+#' @examples 
+#' data(community)
+#' data(trait)
+#' imputed_traits <-trait_impute(comm = community, traits = trait,
+#'                  scale_hierarchy = c("Site", "PlotID"),
+#'                  taxon_col = "Taxon", value_col = "Value",
+#'                  trait_col = "Trait", abundance_col = "Cover")
+#' boot_traits <- trait_np_bootstrap(imputed_traits)
+#' trait_summarise_boot_moments(boot_traits)
 #' @export
 
-trait_summarise_boot_moments <- function(bootstrap_moments, sd_mult = 1, ci) {
+trait_summarise_boot_moments <- function(bootstrap_moments, sd_mult = 1) {
   attrib <- attr(bootstrap_moments, "attrib")
   groups <- c(as.character(attrib$scale_hierarchy),
               attrib$trait_col,
               attrib$other_col)
-
-  if (!missing(ci)) {
-    sd_mult <- qnorm(1 - (1 - ci) / 2)
+  
+  #add treatment_col to groups if used
+  if (!is.null(attrib$treatment_col)) {
+    groups <- c(groups, paste0(attrib$treatment_col, "_comm"))
   }
+
 
   # calculate means of moments
   summ_bootstrap_moments <- bootstrap_moments %>%

@@ -269,7 +269,8 @@ trait_impute <- function(
 
   #set arguments as attributes so next functions have access to them
   attrib <- tibble::lst(scale_hierarchy, taxon_col, trait_col,
-                        value_col, abundance_col, other_col)
+                        value_col, abundance_col, other_col, 
+                        treatment_col, treatment_level)
   attr(out, "attrib") <- attrib
 
   class(out) <- c("imputed_trait", class(out))
