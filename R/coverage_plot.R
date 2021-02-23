@@ -20,9 +20,11 @@
 #' autoplot(imputed_traits)
 #' @export
 
-autoplot.imputed_trait <- function(imputed_traits) {
+autoplot.imputed_trait <- function(imputed_traits, other_col_how, ...) {
   #get scale_hierarchy and concatenate to make an ID
   attrib <- attr(imputed_traits, "attrib")
+  
+  if (length(attrib$other_col) > 0)
 
   imputed_traits_summary <- fortify.imputed_trait(imputed_traits)
   ggplot(imputed_traits_summary, aes(x = .data$.id,
