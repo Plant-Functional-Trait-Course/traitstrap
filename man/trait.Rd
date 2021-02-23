@@ -21,6 +21,7 @@ A data frame with 53940 rows and 10 variables:
 trait
 }
 \description{
-A dataset containing plant traits in control plots on Svalbard from PFCT4 TraitTrain course.
+A dataset containing plant traits in control plots on Svalbard from PFCT4
+TraitTrain course.
 }
 \keyword{datasets}

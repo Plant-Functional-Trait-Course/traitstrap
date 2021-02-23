@@ -16,7 +16,8 @@ trait_impute(
   treatment_col = NULL,
   treatment_level = NULL,
   other_col = character(0),
-  keep_all = FALSE
+  keep_all = FALSE,
+  min_n_leaves = 5
 )
 }
 \arguments{
@@ -24,11 +25,15 @@ trait_impute(
 
 \item{traits}{trait data in long format}
 
-\item{scale_hierarchy}{character vector of site/block/plot hierarchy (large to small)}
+\item{scale_hierarchy}{character vector of site/block/plot hierarchy
+(large to small)}
 
-\item{global}{logical; calculate traits at global scale. Must not be a column called global in the traits data.}
+\item{global}{logical; calculate traits at global scale.
+Must not be a column called global in the traits data.}
 
-\item{taxon_col}{character; name of taxon column in comm and traits. Can be a vector, in which case if traits cannot be imputed for the first taxon column, subsequent columns will be used in order.}
+\item{taxon_col}{character; name of taxon column in comm and traits.
+Can be a vector, in which case if traits cannot be imputed for the first
+taxon column, subsequent columns will be used in order.}
 
 \item{trait_col}{character; name of trait name column in traits}
 
@@ -36,13 +41,19 @@ trait_impute(
 
 \item{abundance_col}{character; name of species abundance column in comm}
 
-\item{treatment_col}{optional name of treatment_col in comm and trait. Must refer to a factor where first level is control.}
+\item{treatment_col}{optional name of treatment_col in comm and
+trait. Must refer to a factor where first level is control.}
 
-\item{treatment_level}{optional name of scale_hierarchy at which treatment should be filtered}
+\item{treatment_level}{optional name of scale_hierarchy at which
+treatment should be filtered}
 
 \item{other_col}{name of other grouping columns in comm}
 
-\item{keep_all}{logical; keep trait data at all available levels or just finest scale available}
+\item{keep_all}{logical; keep trait data at all available levels
+or just finest scale available}
+
+\item{min_n_leaves}{minimum number of leaves with traits to accept before
+searching for leaves higher up the hierarchy.}
 }
 \value{
 a tibble with extra class \code{imputed_trait}
@@ -51,4 +62,12 @@ a tibble with extra class \code{imputed_trait}
 Impute traits
 
 
+}
+\examples{
+data(community)
+data(trait)
+imputed_traits <-trait_impute(comm = community, traits = trait,
+                 scale_hierarchy = c("Site", "PlotID"),
+                 taxon_col = "Taxon", value_col = "Value",
+                 trait_col = "Trait", abundance_col = "Cover")
 }
