@@ -4,10 +4,16 @@
 \alias{autoplot.imputed_trait}
 \title{Coverage plot of Imputed Traits}
 \usage{
-\method{autoplot}{imputed_trait}(imputed_traits)
+\method{autoplot}{imputed_trait}(imputed_traits, other_col_how, ...)
 }
 \arguments{
 \item{imputed_traits}{trait moments from trait_np_bootstrap}
+
+\item{other_col_how}{what to do with the other columns in other data.
+ Options are to `filter` by one of the columns, add them to the x-`axis`,
+`facet` by them, or to `ignore`.}
+
+\item{...}{optional filters for use with `other_col_how = "filter"`}
 }
 \value{
 a ggplot
