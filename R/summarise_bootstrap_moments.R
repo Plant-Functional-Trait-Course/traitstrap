@@ -1,8 +1,14 @@
 #' Summarise Bootstrap traits
-#' @description Find the mean and confidence interval for each moment 
+#' @description Find the mean and confidence interval for each moment
 #' @param bootstrap_moments trait moments from trait_np_bootstrap
+#' @param parametric Logical.
+#' Should Confidence Intervals be calculated parametrically
+#'(using the mean and SD) or nonparametrically (using quantiles).
 #' @param sd_mult Number of standard deviations around each moment,
 #' defaults to one
+#' @param ci Desired confidence level for use when parametric is false.
+#' Defaults to 0.95.
+
 
 #' @description
 #'
@@ -13,7 +19,7 @@
 #' @importFrom dplyr n group_by any_of summarise across rename
 #' @importFrom rlang .data
 
-#' @examples 
+#' @examples
 #' data(community)
 #' data(trait)
 #' imputed_traits <-trait_impute(comm = community, traits = trait,
@@ -24,12 +30,15 @@
 #' trait_summarise_boot_moments(boot_traits)
 #' @export
 
-trait_summarise_boot_moments <- function(bootstrap_moments, sd_mult = 1) {
+trait_summarise_boot_moments <- function(bootstrap_moments,
+                                         parametric = TRUE,
+                                         sd_mult = 1, ci = 0.95) {
+
   attrib <- attr(bootstrap_moments, "attrib")
   groups <- c(as.character(attrib$scale_hierarchy),
               attrib$trait_col,
               attrib$other_col)
-  
+
   #add treatment_col to groups if used
   if (!is.null(attrib$treatment_col)) {
     groups <- c(groups, paste0(attrib$treatment_col, "_comm"))
@@ -44,21 +53,31 @@ trait_summarise_boot_moments <- function(bootstrap_moments, sd_mult = 1) {
     summarise(
       n = n(),
       mean = mean(.data$MEAN),
-      ci_low_mean = .data$mean - sd(.data$MEAN) * sd_mult,
-      ci_high_mean = .data$mean + sd(.data$MEAN) * sd_mult,
+      ci_low_mean = get_ci(data = .data$MEAN, sd_mult = sd_mult, ci = ci,
+                           which = "low", parametric =  parametric),
+      ci_high_mean = get_ci(data = .data$MEAN, sd_mult = sd_mult, ci = ci,
+                            which = "high", parametric =  parametric),
 
       var = mean(.data$variance),
-      ci_low_var = .data$var - sd(.data$variance) * sd_mult,
-      ci_high_var = .data$var + sd(.data$variance) * sd_mult,
+      ci_low_var = get_ci(data = .data$variance, sd_mult = sd_mult, ci = ci,
+                          which = "low", parametric =  parametric),
+      ci_high_var = get_ci(data = .data$variance, sd_mult = sd_mult, ci = ci,
+                           which = "high", parametric =  parametric),
 
       skew = mean(.data$skewness),
-      ci_low_skew = .data$skew - sd(.data$skewness) * sd_mult,
-      ci_high_skew = .data$skew + sd(.data$skewness) * sd_mult,
+      ci_low_skew = get_ci(data = .data$skewness, sd_mult = sd_mult, ci = ci,
+                           which = "low", parametric =  parametric),
+      ci_high_skew = get_ci(data = .data$skewness, sd_mult = sd_mult, ci = ci,
+                            which = "high", parametric =  parametric),
 
       kurt = mean(.data$kurtosis),
-      ci_low_kurt = .data$kurt - sd(.data$kurtosis) * sd_mult,
-      ci_high_kurt = .data$kurt + sd(.data$kurtosis) * sd_mult 
+      ci_low_kurt = get_ci(data = .data$kurtosis, sd_mult = sd_mult, ci = ci,
+                           which = "low", parametric =  parametric),
+      ci_high_kurt = get_ci(data = .data$kurtosis, sd_mult = sd_mult, ci = ci,
+                            which = "high", parametric =  parametric)
     )
+
+
 
   return(summ_bootstrap_moments)
 }

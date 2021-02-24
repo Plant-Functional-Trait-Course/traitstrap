@@ -1,0 +1,31 @@
+#' Get confidence intervals
+#' @description Internal helper function for generating CIs.
+#' @param data Numeric vector
+#' @param sd_mult SD multiplier.  defaults to 1
+#' @param ci 0 to 1
+#' @param which "high" or "low"
+#' @param parametric if T, sd used, if F, quantile
+#' @importFrom stats quantile
+#' @keywords internal
+
+get_ci <- function(data, sd_mult = 1, ci = 0.95, which, parametric=T) {
+
+  if (isTRUE(parametric)) {
+
+    if (which == "high") {
+      return(mean(data) + sd(data) * sd_mult)
+      }
+    if (which == "low") {
+      return(mean(data) - sd(data) * sd_mult)
+      }
+
+  }else {
+
+    if (which == "high") {
+      return(quantile(data, probs = ci, type = 1))
+      }
+    if (which == "low") {
+      return(quantile(data, probs = 1 - ci, type = 1))
+      }
+  }
+}
