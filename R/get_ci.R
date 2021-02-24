@@ -4,11 +4,11 @@
 #' @param sd_mult SD multiplier.  defaults to 1
 #' @param ci 0 to 1
 #' @param which "high" or "low"
-#' @param parametric if T, sd used, if F, quantile
+#' @param parametric if TRUE, sd used, if FALSE, quantile
 #' @importFrom stats quantile
 #' @keywords internal
 
-get_ci <- function(data, sd_mult = 1, ci = 0.95, which, parametric=T) {
+get_ci <- function(data, sd_mult = 1, ci = 0.95, which, parametric = TRUE) {
 
   if (isTRUE(parametric)) {
 
