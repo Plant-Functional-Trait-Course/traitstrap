@@ -4,7 +4,7 @@
 \alias{get_ci}
 \title{Get confidence intervals}
 \usage{
-get_ci(data, sd_mult = 1, ci = 0.95, which, parametric = T)
+get_ci(data, sd_mult = 1, ci = 0.95, which, parametric = TRUE)
 }
 \arguments{
 \item{data}{Numeric vector}
@@ -15,7 +15,7 @@ get_ci(data, sd_mult = 1, ci = 0.95, which, parametric = T)
 
 \item{which}{"high" or "low"}
 
-\item{parametric}{if T, sd used, if F, quantile}
+\item{parametric}{if TRUE, sd used, if FALSE, quantile}
 }
 \description{
 Internal helper function for generating CIs.
