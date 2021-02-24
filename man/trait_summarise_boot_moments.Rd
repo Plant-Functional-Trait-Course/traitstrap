@@ -4,13 +4,25 @@
 \alias{trait_summarise_boot_moments}
 \title{Summarise Bootstrap traits}
 \usage{
-trait_summarise_boot_moments(bootstrap_moments, sd_mult = 1)
+trait_summarise_boot_moments(
+  bootstrap_moments,
+  parametric = TRUE,
+  sd_mult = 1,
+  ci = 0.95
+)
 }
 \arguments{
 \item{bootstrap_moments}{trait moments from trait_np_bootstrap}
 
+\item{parametric}{Logical.
+Should Confidence Intervals be calculated parametrically
+(using the mean and SD) or nonparametrically (using quantiles).}
+
 \item{sd_mult}{Number of standard deviations around each moment,
 defaults to one}
+
+\item{ci}{Desired confidence level for use when parametric is false.
+Defaults to 0.95.}
 }
 \value{
 tibble with the grouping variables and the mean of each moment
