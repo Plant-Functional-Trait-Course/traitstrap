@@ -22,10 +22,10 @@ get_ci <- function(data, sd_mult = 1, ci = 0.95, which, parametric = TRUE) {
   }else {
 
     if (which == "high") {
-      return(quantile(data, probs = ci, type = 1))
+      return(quantile(data, probs = (1 + ci)/2, type = 1))
       }
     if (which == "low") {
-      return(quantile(data, probs = 1 - ci, type = 1))
+      return(quantile(data, probs = (1 - ci)/2, type = 1))
       }
   }
 }
