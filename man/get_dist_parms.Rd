@@ -9,10 +9,12 @@ get_dist_parms(data, distribution_type)
 \arguments{
 \item{data}{Numeric vector}
 
-\item{distribution_type}{Character.  One of either "normal", "lognormal", or "beta"}
+\item{distribution_type}{Character.
+One of either "normal", "lognormal", or "beta"}
 }
 \description{
-Internal helper function for calculating parametric distribution parameters.
+Internal helper function for
+calculating parametric distribution parameters.
 }
 \note{
 This function will first try fitting using mme, then mle

@@ -28,10 +28,11 @@ imputed_traits <-trait_impute(comm = community, traits = trait,
                  scale_hierarchy = c("Site", "PlotID"),
                  taxon_col = "Taxon", value_col = "Value",
                  trait_col = "Trait", abundance_col = "Cover")
-fitted_distributions <- fit_trait_distributions(imputed_traits = imputed_traits,
-distribution_type = "normal")
-parametric_dists <- trait_parametric_bootstrap(fitted_distributions = fitted_distributions,
-nrep = 10, sample_size = 100)
-moment_summary <- 
-trait_summarise_boot_moments(bootstrap_moments = parametric_dists, parametric = FALSE)
+fitted_distributions <- fit_trait_distributions(imputed_traits =
+imputed_traits, distribution_type = "normal")
+parametric_dists <- trait_parametric_bootstrap(fitted_distributions =
+fitted_distributions, nrep = 10, sample_size = 100)
+moment_summary <-
+trait_summarise_boot_moments(bootstrap_moments = parametric_dists,
+parametric = FALSE)
 }

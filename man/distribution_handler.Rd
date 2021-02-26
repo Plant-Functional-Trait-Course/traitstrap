@@ -13,7 +13,8 @@ distribution_handler(parm1, parm2, n = 1, type)
 
 \item{n}{Number of draws.  Defaults to 1}
 
-\item{type}{Distribution type to fit.  One of "normal", "lognormal", or "beta"}
+\item{type}{Distribution type to fit.
+One of "normal", "lognormal", or "beta"}
 }
 \description{
 Internal helper function for drawing traits

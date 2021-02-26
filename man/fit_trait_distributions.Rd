@@ -33,7 +33,8 @@ imputed_traits <-trait_impute(comm = community, traits = trait,
                  scale_hierarchy = c("Site", "PlotID"),
                  taxon_col = "Taxon", value_col = "Value",
                  trait_col = "Trait", abundance_col = "Cover")
-fitted_distributions <- fit_trait_distributions(imputed_traits = imputed_traits,
+fitted_distributions <- fit_trait_distributions(
+imputed_traits = imputed_traits,
 distribution_type = "normal")
 
 }
