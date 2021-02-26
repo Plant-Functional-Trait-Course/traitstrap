@@ -23,7 +23,9 @@ Imports:
     glue,
     ggplot2,
     tibble,
-    stringr
+    stringr,
+    fitdistrplus,
+    data.table
 Suggests: 
     testthat,
     tidyr

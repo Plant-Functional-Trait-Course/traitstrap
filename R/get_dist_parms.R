@@ -8,6 +8,11 @@
 
 get_dist_parms <- function(data, distribution_type){
   
+  if(length(distribution_type)>1){
+    stop("This function only handles on distribution type at a time.")
+    
+  }
+  
   
   if(distribution_type=="normal"){
     try( fit <- fitdist(data = data,distr = "norm",keepdata = F,method="mme"))
