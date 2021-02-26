@@ -74,7 +74,8 @@ fit_trait_distributions <- function(imputed_traits,
 
     if (any(beta_counts$n < 2)) {
     stop("Fitting a beta distrbution requires 2+ points per distribution.
-         We suggest re-imputing traits with a minimum of (at least) 2 leaves.")
+         We suggest re-imputing traits with
+         a minimum sample size of (at least) 2 traits.")
       }
 
     #check that values are between 0 and 1

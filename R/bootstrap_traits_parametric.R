@@ -12,6 +12,7 @@
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise rowwise
+#' @importFrom tidyr unnest
 #' @importFrom purrr map_dfr
 #' @examples
 #' data(community)
@@ -36,27 +37,37 @@ trait_parametric_bootstrap <- function(fitted_distributions,
   #Pull useful information from imputed traits object
   trait_col <- attributes(fitted_distributions)$attrib$trait_col
   abundance_col <- attributes(fitted_distributions)$attrib$abundance_col
+  taxon_col <- attributes(fitted_distributions)$attrib$taxon_col
   scale_hierarchy <- attributes(fitted_distributions)$attrib$scale_hierarchy
   attrib <- attr(fitted_distributions, "attrib")
 
   bootstrap_moments <- map_dfr(
     1:nrep,
     ~ {
+
       fitted_distributions %>%
+        group_by_at(c(as.character(scale_hierarchy), trait_col)) %>%
         slice_sample(n = sample_size,
                      replace = T,
                      weight_by = .data[[abundance_col]]) %>%
+        group_by_at(c(as.character(scale_hierarchy),
+                      trait_col, taxon_col,
+                      "parm1", "parm2", "distribution_type")) %>%
+        summarise(n_drawn = n(), .groups = "keep") %>%
         rowwise() %>%
         mutate(draw_value =
-                 distribution_handler(parm1 = parm1,
+                 list(distribution_handler(parm1 = parm1,
                                       parm2 = parm2,
-                                      n = 1, type = distribution_type)) %>%
+                                      n = n_drawn,
+                                      type = distribution_type))) %>%
         group_by_at(c(as.character(scale_hierarchy), trait_col)) %>%
+        unnest(draw_value) %>%
         summarise(mean = mean(draw_value),
                   variance = var(draw_value),
                   skewness = skewness(draw_value),
                   kurtosis = kurtosis(draw_value),
                   .groups = "keep")
+
     },
     .id = "n"
   )
