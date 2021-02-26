@@ -32,7 +32,17 @@
 trait_parametric_bootstrap <- function(fitted_distributions,
                                        nrep = 100,
                                        sample_size = 200) {
-
+  
+  #Check that inputs makes sense
+  if (!"parametric_distributions" %in% class(fitted_distributions)) {
+    stop("Fitted distributions not properly formatted.
+         Please use fit_trait_distributions()")
+  }
+  
+  if(!all(is.numeric(nrep) & is.numeric(sample_size))) {
+    stop("nrep and sample_size should be numbers")
+  }
+  
 
   #Pull useful information from imputed traits object
   trait_col <- attributes(fitted_distributions)$attrib$trait_col

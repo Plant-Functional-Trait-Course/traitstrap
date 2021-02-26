@@ -35,6 +35,13 @@
 #' @export
 fit_trait_distributions <- function(imputed_traits,
                                     distribution_type = "normal") {
+  
+  #Check imputed traits
+  if (! "imputed_trait" %in% class(imputed_traits)) {
+    stop("Imputed traits are not appropriately formatted.
+    Please use trait_impute() ")
+  }
+  
 
   #Pull useful information from imputed traits object
   value_col <- attributes(imputed_traits)$attrib$value_col
@@ -67,7 +74,7 @@ fit_trait_distributions <- function(imputed_traits,
 
     #make sure every species x hierarchy combination has at least 2 data points
     beta_counts <- imputed_traits %>%
-      filter(.data[[trait_col]] ==
+      filter(.data[[trait_col]] %in%
                names(distribution_type)[distribution_type == "beta"]) %>%
       group_by_at(c(as.character(scale_hierarchy), trait_col, taxon_col)) %>%
       summarise(n = n(), .groups = "keep")
@@ -81,7 +88,7 @@ fit_trait_distributions <- function(imputed_traits,
     #check that values are between 0 and 1
     beta_vals <- imputed_traits %>%
       ungroup() %>%
-      filter(.data[[trait_col]] ==
+      filter(.data[[trait_col]] %in%
                names(distribution_type)[distribution_type == "beta"]) %>%
       select(all_of(value_col))
 
@@ -123,7 +130,7 @@ fit_trait_distributions <- function(imputed_traits,
   #set arguments as attributes so next functions have access to them
   attr(distribution_parms, "attrib") <- attributes(imputed_traits)$attrib
 
-  class(distribution_parms) <- c("parametric_distrbutions",
+  class(distribution_parms) <- c("parametric_distributions",
                                  class(distribution_parms))
 
   return(distribution_parms)
