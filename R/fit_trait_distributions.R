@@ -35,13 +35,13 @@
 #' @export
 fit_trait_distributions <- function(imputed_traits,
                                     distribution_type = "normal") {
-  
+
   #Check imputed traits
   if (! "imputed_trait" %in% class(imputed_traits)) {
     stop("Imputed traits are not appropriately formatted.
     Please use trait_impute() ")
   }
-  
+
 
   #Pull useful information from imputed traits object
   value_col <- attributes(imputed_traits)$attrib$value_col
