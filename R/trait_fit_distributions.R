@@ -115,11 +115,9 @@ trait_fit_distributions <- function(imputed_traits,
   # Main body
 
   distribution_parms <- imputed_traits %>%
-    group_by(.data[[c(taxon_col)]],.data[[c(abundance_col)]], .add = TRUE) %>%
-    mutate(distribution_type = unlist(distribution_type[.data[[trait_col]]]),
-           fit_sample_size = n()) %>%
-    summarize(fit_sample_size = n(),
-              get_dist_parms(data = .data[[value_col]],
+    group_by(.data[[c(taxon_col)]], .data[[c(abundance_col)]],n_leaves, .add = TRUE) %>%
+    mutate(distribution_type = unlist(distribution_type[.data[[trait_col]]])) %>%
+    summarize(get_dist_parms(data = .data[[value_col]],
                              distribution_type = unique(distribution_type)),
               .groups = "keep")
 

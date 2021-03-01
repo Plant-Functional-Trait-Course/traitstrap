@@ -11,7 +11,7 @@
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
-#' @importFrom dplyr slice_sample group_by summarise rowwise
+#' @importFrom dplyr slice_sample group_by summarise
 #' @importFrom tidyr unnest
 #' @importFrom purrr map_dfr
 #' @examples
@@ -34,13 +34,14 @@ trait_parametric_bootstrap <- function(fitted_distributions,
                                        sample_size = 200) {
 
   #Check that inputs makes sense
-  if (!"parametric_distributions" %in% class(fitted_distributions)) {
+
+  if (!inherits(fitted_distributions, "parametric_distributions")) {
     stop("Fitted distributions not properly formatted.
          Please use fit_trait_distributions()")
   }
 
-  if (!all(is.numeric(nrep) & is.numeric(sample_size))) {
-    stop("nrep and sample_size should be numbers")
+  if (!all(nrep %% 1 == 0 & sample_size %%1 == 0)) {
+    stop("nrep and sample_size should be integers")
   }
 
 
@@ -64,7 +65,6 @@ trait_parametric_bootstrap <- function(fitted_distributions,
                       trait_col, taxon_col,
                       "parm1", "parm2", "distribution_type")) %>%
         summarise(n_drawn = n(), .groups = "keep") %>%
-        rowwise() %>%
         mutate(draw_value =
                  list(distribution_handler(parm1 = parm1,
                                       parm2 = parm2,

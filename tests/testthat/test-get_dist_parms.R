@@ -19,10 +19,10 @@ test_that("returns dataframes", {
 
 })
 
-test_that("nonsuported distributions return NULL", {
+test_that("nonsuported distributions return Error", {
 
   test_vector <- rnorm(n = 100)
-  expect_null(object = get_dist_parms(
+  expect_error(object = get_dist_parms(
     data = test_vector, distribution_type = "OptimusPrime"))
 
 

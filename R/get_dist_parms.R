@@ -14,68 +14,57 @@ get_dist_parms <- function(data, distribution_type) {
     stop("This function only handles one distribution type at a time.")
 
   }
+  
+  # Check that distribution type is supported
+  if(!distribution_type %in% c("normal","beta","lognormal")) {
+    stop("Unsupported distribution type")
+  }
 
-
+  #Set distr for fitdist
   if (distribution_type == "normal") {
-    try(fit <- fitdist(data = data, distr = "norm",
-                        keepdata = FALSE, method = "mme"))
-    if (!exists("fit")) {
-      fit <- fitdist(data = data, distr = "norm",
-                     keepdata = FALSE, method = "mle")
-      }
-
-    gof <- gofstat(fit)
-    return(data.frame(distribution_type = "normal",
-                      parm1 = fit$estimate[[1]],
-                      parm2 = fit$estimate[[2]],
-                      ks = gof$ks,
-                      cvm = gof$cvm,
-                      ad = gof$ad)
-    )
-
-
+    distr <- "norm"
   }
 
-
-  if (distribution_type == "lognormal") {
-    try(fit <- fitdist(data = data,
-                        distr = "lnorm", keepdata = FALSE, method = "mme"))
-    if (!exists("fit")) {
-      fit <- fitdist(data = data,
-                     distr = "lnorm", keepdata = FALSE, method = "mle")
-      }
-
-    gof <- gofstat(fit)
-    return(data.frame(distribution_type = "lognormal",
-                      parm1 = fit$estimate[[1]],
-                      parm2 = fit$estimate[[2]],
-                      ks = gof$ks,
-                      cvm = gof$cvm,
-                      ad = gof$ad)
-    )
-
-
+  if (distribution_type == c("lognormal")) {
+    distr <- "lnorm"
   }
-
 
   if (distribution_type == "beta") {
-    try(fit <- fitdist(data = data,
-                       distr = "beta", keepdata = FALSE, method = "mme"))
-    if (!exists("fit")) {
-      fit <- fitdist(data = data,
-                     distr = "beta", keepdata = FALSE, method = "mle")
-    }
-    gof <- gofstat(fit)
-    return(data.frame(distribution_type = "beta",
-                      parm1 = fit$estimate[[1]],
-                      parm2 = fit$estimate[[2]],
-                      ks = gof$ks,
-                      cvm = gof$cvm,
-                      ad = gof$ad)
-    )
-
-
+    distr <- "beta"
   }
+
+
+  #Fit model
+  fit <- tryCatch( {
+    fitdist(data = data,
+            distr = distr,
+            keepdata = FALSE, method = "mle")
+  }, error = function(e){
+    return(fitdist(data = data, distr = distr,
+                          keepdata = FALSE, method = "mme"))  
+
+    }
+           )
+  
+  #Goodness of fit test
+  gof <- gofstat(fit)
+
+  #Ensure NULL values for sd don't break anything
+  if(is.null(fit$sd)) {
+    fit$sd <- c(NA,NA)
+  }
+  
+  
+  #Return results
+  return(data.frame(distribution_type = distribution_type,
+                    parm1 = fit$estimate[[1]],
+                    parm2 = fit$estimate[[2]],
+                    sd1 = fit$sd[[1]],
+                    sd2 = fit$sd[[2]],
+                    ks = gof$ks,
+                    cvm = gof$cvm,
+                    ad = gof$ad)
+         )
 
 
 }
