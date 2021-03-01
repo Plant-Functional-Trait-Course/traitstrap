@@ -2,7 +2,7 @@
 
 S3method(autoplot,imputed_trait)
 S3method(fortify,imputed_trait)
-export(fit_trait_distributions)
+export(trait_fit_distributions)
 export(trait_impute)
 export(trait_missing)
 export(trait_np_bootstrap)

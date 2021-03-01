@@ -14,7 +14,7 @@ test_that("output is properly formatted", {
                                  trait_col = "Trait",
                                  min_n_leaves = 3)
 
-  fitted_distributions <- fit_trait_distributions(
+  fitted_distributions <- trait_fit_distributions(
     imputed_traits = imputed_traits, distribution_type = "lognormal")
 
   pbs_out <- trait_parametric_bootstrap(
@@ -58,7 +58,7 @@ test_that("Bad inputs return errors", {
                                  trait_col = "Trait",
                                  min_n_leaves = 3)
 
-  fitted_distributions <- fit_trait_distributions(
+  fitted_distributions <- trait_fit_distributions(
     imputed_traits = imputed_traits, distribution_type = "lognormal")
 
   expect_error(object = trait_parametric_bootstrap(

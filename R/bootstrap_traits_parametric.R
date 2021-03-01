@@ -1,7 +1,7 @@
 #' Bootstrap traits parametrically
 #' @description Bootstrap fitted distributions
 #' @param fitted_distributions
-#' Fitted distribution object returned by fit_trait_distributions
+#' Fitted distribution object returned by trait_fit_distributions
 #' @param nrep number of bootstrap replicates
 #' @param sample_size number of plants per sample
 #' @description
@@ -21,7 +21,7 @@
 #'                  scale_hierarchy = c("Site", "PlotID"),
 #'                  taxon_col = "Taxon", value_col = "Value",
 #'                  trait_col = "Trait", abundance_col = "Cover")
-#' fitted_distributions <- fit_trait_distributions(imputed_traits =
+#' fitted_distributions <- trait_fit_distributions(imputed_traits =
 #' imputed_traits, distribution_type = "normal")
 #' parametric_dists <- trait_parametric_bootstrap(fitted_distributions =
 #' fitted_distributions, nrep = 10, sample_size = 100)

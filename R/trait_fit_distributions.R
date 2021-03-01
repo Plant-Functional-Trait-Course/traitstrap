@@ -28,12 +28,12 @@
 #'                  scale_hierarchy = c("Site", "PlotID"),
 #'                  taxon_col = "Taxon", value_col = "Value",
 #'                  trait_col = "Trait", abundance_col = "Cover")
-#' fitted_distributions <- fit_trait_distributions(
+#' fitted_distributions <- trait_fit_distributions(
 #' imputed_traits = imputed_traits,
 #' distribution_type = "normal")
 #'
 #' @export
-fit_trait_distributions <- function(imputed_traits,
+trait_fit_distributions <- function(imputed_traits,
                                     distribution_type = "normal") {
 
   #Check imputed traits

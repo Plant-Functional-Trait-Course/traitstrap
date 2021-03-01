@@ -1,4 +1,4 @@
-context("fit_trait_distributions")
+context("trait_fit_distributions")
 
 test_that("returns parametric distribution tibbles of proper size", {
 
@@ -14,20 +14,20 @@ test_that("returns parametric distribution tibbles of proper size", {
                                  min_n_leaves = 3)
 
   expect_true(all(c("parametric_distributions", "tbl") %in%
-                    class(fit_trait_distributions(
+                    class(trait_fit_distributions(
                       imputed_traits = imputed_traits,
                       distribution_type = "lognormal"))))
 
   imputed_traits$Value <- log10(imputed_traits$Value)
   expect_true(all(c("parametric_distributions", "tbl") %in%
-                    class(fit_trait_distributions(
+                    class(trait_fit_distributions(
                       imputed_traits = imputed_traits,
                       distribution_type = "normal"))))
 
   imputed_traits$Value <- rbeta(n = nrow(imputed_traits),
                                 shape1 = .5, shape2 = .5)
   expect_true(all(c("parametric_distributions", "tbl") %in%
-                    class(fit_trait_distributions(
+                    class(trait_fit_distributions(
                       imputed_traits = imputed_traits,
                       distribution_type = "beta"))))
 
@@ -37,7 +37,7 @@ test_that("returns parametric distribution tibbles of proper size", {
   trait_col <- attr(imputed_traits, "attr")$trait_col
 
 
-  expect_equal(object = nrow(fit_trait_distributions(imputed_traits =
+  expect_equal(object = nrow(trait_fit_distributions(imputed_traits =
                                               imputed_traits,
                                             distribution_type = "beta")),
                expected = imputed_traits %>%
@@ -61,10 +61,10 @@ test_that("bad inputs return errors", {
                                  trait_col = "Trait",
                                  min_n_leaves = 3)
 
-  expect_error(object = fit_trait_distributions(
+  expect_error(object = trait_fit_distributions(
     imputed_traits = "a", distribution_type = "Megatron"))
 
-  expect_error(object = fit_trait_distributions(
+  expect_error(object = trait_fit_distributions(
     imputed_traits = imputed_traits, distribution_type = "Soundwave"))
 
 

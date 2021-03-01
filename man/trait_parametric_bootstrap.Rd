@@ -7,7 +7,7 @@
 trait_parametric_bootstrap(fitted_distributions, nrep = 100, sample_size = 200)
 }
 \arguments{
-\item{fitted_distributions}{Fitted distribution object returned by fit_trait_distributions}
+\item{fitted_distributions}{Fitted distribution object returned by trait_fit_distributions}
 
 \item{nrep}{number of bootstrap replicates}
 
@@ -28,7 +28,7 @@ imputed_traits <-trait_impute(comm = community, traits = trait,
                  scale_hierarchy = c("Site", "PlotID"),
                  taxon_col = "Taxon", value_col = "Value",
                  trait_col = "Trait", abundance_col = "Cover")
-fitted_distributions <- fit_trait_distributions(imputed_traits =
+fitted_distributions <- trait_fit_distributions(imputed_traits =
 imputed_traits, distribution_type = "normal")
 parametric_dists <- trait_parametric_bootstrap(fitted_distributions =
 fitted_distributions, nrep = 10, sample_size = 100)
