@@ -58,7 +58,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
       fitted_distributions %>%
         group_by_at(c(as.character(scale_hierarchy), trait_col)) %>%
         slice_sample(n = sample_size,
-                     replace = T,
+                     replace = TRUE,
                      weight_by = .data[[abundance_col]]) %>%
         group_by_at(c(as.character(scale_hierarchy),
                       trait_col, taxon_col,

@@ -18,9 +18,10 @@ get_dist_parms <- function(data, distribution_type) {
 
   if (distribution_type == "normal") {
     try(fit <- fitdist(data = data, distr = "norm",
-                        keepdata = F, method = "mme"))
+                        keepdata = FALSE, method = "mme"))
     if (!exists("fit")) {
-      fit <- fitdist(data = data, distr = "norm", keepdata = F, method = "mle")
+      fit <- fitdist(data = data, distr = "norm",
+                     keepdata = FALSE, method = "mle")
       }
 
     gof <- gofstat(fit)
@@ -38,10 +39,10 @@ get_dist_parms <- function(data, distribution_type) {
 
   if (distribution_type == "lognormal") {
     try(fit <- fitdist(data = data,
-                        distr = "lnorm", keepdata = F, method = "mme"))
+                        distr = "lnorm", keepdata = FALSE, method = "mme"))
     if (!exists("fit")) {
       fit <- fitdist(data = data,
-                     distr = "lnorm", keepdata = F, method = "mle")
+                     distr = "lnorm", keepdata = FALSE, method = "mle")
       }
 
     gof <- gofstat(fit)
@@ -59,10 +60,10 @@ get_dist_parms <- function(data, distribution_type) {
 
   if (distribution_type == "beta") {
     try(fit <- fitdist(data = data,
-                       distr = "beta", keepdata = F, method = "mme"))
+                       distr = "beta", keepdata = FALSE, method = "mme"))
     if (!exists("fit")) {
       fit <- fitdist(data = data,
-                     distr = "beta", keepdata = F, method = "mle")
+                     distr = "beta", keepdata = FALSE, method = "mle")
     }
     gof <- gofstat(fit)
     return(data.frame(distribution_type = "beta",

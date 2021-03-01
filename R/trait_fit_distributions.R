@@ -18,7 +18,6 @@
 #' summarize select group_by_at
 #' @importFrom purrr map_dfr
 #' @importFrom stats var
-#' @importFrom data.table :=
 #' @importFrom fitdistrplus fitdist
 
 #' @examples
@@ -75,11 +74,9 @@ trait_fit_distributions <- function(imputed_traits,
     #make sure every species x hierarchy combination has at least 2 data points
     beta_counts <- imputed_traits %>%
       filter(.data[[trait_col]] %in%
-               names(distribution_type)[distribution_type == "beta"]) %>%
-      group_by_at(c(as.character(scale_hierarchy), trait_col, taxon_col)) %>%
-      summarise(n = n(), .groups = "keep")
+               names(distribution_type)[distribution_type == "beta"])
 
-    if (any(beta_counts$n < 2)) {
+    if (any(beta_counts$n_leaves < 2)) {
     stop("Fitting a beta distrbution requires 2+ points per distribution.
          We suggest re-imputing traits with
          a minimum sample size of (at least) 2 traits.")
@@ -107,7 +104,7 @@ trait_fit_distributions <- function(imputed_traits,
       ungroup() %>%
       filter(.data[[trait_col]] ==
                names(distribution_type)[distribution_type == "lognormal"]) %>%
-      dplyr::select(all_of(value_col))
+      select(all_of(value_col))
 
     if (any(ln_vals <= 0)) {
       stop("For a lognormal distribution values must be positive.")
@@ -118,14 +115,14 @@ trait_fit_distributions <- function(imputed_traits,
   # Main body
 
   distribution_parms <- imputed_traits %>%
-    group_by(.data[[taxon_col]], .add = TRUE) %>%
+    group_by(.data[[c(taxon_col)]],.data[[c(abundance_col)]], .add = TRUE) %>%
     mutate(distribution_type = unlist(distribution_type[.data[[trait_col]]]),
            fit_sample_size = n()) %>%
-    summarize(!! abundance_col := unique(.data[[abundance_col]]),
-              fit_sample_size = n(),
+    summarize(fit_sample_size = n(),
               get_dist_parms(data = .data[[value_col]],
                              distribution_type = unique(distribution_type)),
               .groups = "keep")
+
 
   #set arguments as attributes so next functions have access to them
   attr(distribution_parms, "attrib") <- attributes(imputed_traits)$attrib
