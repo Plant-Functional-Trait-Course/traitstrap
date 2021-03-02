@@ -27,5 +27,4 @@ Imports:
     fitdistrplus,
     tidyr
 Suggests: 
-    testthat,
-    data.table
+    testthat
