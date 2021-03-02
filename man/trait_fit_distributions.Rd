@@ -29,12 +29,12 @@ or a named list (e.g. list(height="normal",mass="lognormal"))
 \examples{
 data(community)
 data(trait)
-imputed_traits <-trait_impute(comm = community, traits = trait,
-                 scale_hierarchy = c("Site", "PlotID"),
-                 taxon_col = "Taxon", value_col = "Value",
-                 trait_col = "Trait", abundance_col = "Cover")
+imputed_traits <- trait_impute(comm = community, traits = trait,
+                  scale_hierarchy = c("Site", "PlotID"),
+                  taxon_col = "Taxon", value_col = "Value",
+                  trait_col = "Trait", abundance_col = "Cover")
 fitted_distributions <- trait_fit_distributions(
-imputed_traits = imputed_traits,
-distribution_type = "normal")
+                        imputed_traits = imputed_traits,
+                        distribution_type = "normal")
 
 }
