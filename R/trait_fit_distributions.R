@@ -36,7 +36,7 @@ trait_fit_distributions <- function(imputed_traits,
                                     distribution_type = "normal") {
 
   #Check imputed traits
-  if (! "imputed_trait" %in% class(imputed_traits)) {
+  if (! inherits(imputed_traits, "imputed_trait")) {
     stop("Imputed traits are not appropriately formatted.
     Please use trait_impute() ")
   }
