@@ -4,7 +4,12 @@ Version: 0.0.0.901
 Date: 2021-02-17
 Authors@R: c(
   person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre")), 
-  person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut"))
+  person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut")),
+   person(given = "Brian S.",
+           family = "Maitner",
+           role = c("aut"),
+           email = "bmaitner@gmail.com",
+           comment = c(ORCID = "https://orcid.org/0000-0002-2118-9880"))
   )
 Description: Calculate trait moments from trait and community data.
 URL: https://github.com/richardjtelford/traitstrap/
