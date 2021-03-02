@@ -17,6 +17,6 @@ Internal helper function for
 calculating parametric distribution parameters.
 }
 \note{
-This function will first try fitting using mle, then mme
+This function will first try fitting using mme, then mle
 }
 \keyword{internal}

@@ -4,7 +4,7 @@
 #' @param data Numeric vector
 #' @param distribution_type Character.
 #' One of either "normal", "lognormal", or "beta"
-#' @note This function will first try fitting using mle, then mme
+#' @note This function will first try fitting using mme, then mle
 #' @importFrom fitdistrplus fitdist gofstat
 #' @keywords internal
 
@@ -43,10 +43,10 @@ get_dist_parms <- function(data, distribution_type) {
   fit <- tryCatch({
     fitdist(data = data,
             distr = distr,
-            keepdata = FALSE, method = "mle")
+            keepdata = FALSE, method = "mme")
   }, error = function(e) {
     return(fitdist(data = data, distr = distr,
-                          keepdata = FALSE, method = "mme"))
+                          keepdata = FALSE, method = "mle"))
 
     }
            )
