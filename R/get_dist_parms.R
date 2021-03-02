@@ -4,7 +4,7 @@
 #' @param data Numeric vector
 #' @param distribution_type Character.
 #' One of either "normal", "lognormal", or "beta"
-#' @note This function will first try fitting using mme, then mle
+#' @note This function will first try fitting using mle, then mme
 #' @importFrom fitdistrplus fitdist gofstat
 #' @keywords internal
 
