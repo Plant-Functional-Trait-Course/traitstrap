@@ -5,8 +5,8 @@
 #' @param x Code to be executed quietly
 #' @keywords internal
 
-quiet <- function(x) { 
-  sink(tempfile()) 
-  on.exit(sink()) 
+quiet <- function(x) {
+  sink(tempfile())
+  on.exit(sink())
   invisible(force(x))
-} 
+}

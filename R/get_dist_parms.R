@@ -14,9 +14,9 @@ get_dist_parms <- function(data, distribution_type) {
     stop("This function only handles one distribution type at a time.")
 
   }
-  
+
   # Check that distribution type is supported
-  if(!distribution_type %in% c("normal","beta","lognormal")) {
+  if (!distribution_type %in% c("normal", "beta", "lognormal")) {
     stop("Unsupported distribution type")
   }
 
@@ -35,26 +35,25 @@ get_dist_parms <- function(data, distribution_type) {
 
 
   #Fit model
-  fit <- tryCatch( {
+  fit <- tryCatch({
     fitdist(data = data,
             distr = distr,
             keepdata = FALSE, method = "mle")
-  }, error = function(e){
+  }, error = function(e) {
     return(fitdist(data = data, distr = distr,
-                          keepdata = FALSE, method = "mme"))  
+                          keepdata = FALSE, method = "mme"))
 
     }
            )
-  
+
   #Goodness of fit test
   gof <- gofstat(fit)
 
   #Ensure NULL values for sd don't break anything
-  if(is.null(fit$sd)) {
-    fit$sd <- c(NA,NA)
+  if (is.null(fit$sd)) {
+    fit$sd <- c(NA, NA)
   }
-  
-  
+
   #Return results
   return(data.frame(distribution_type = distribution_type,
                     parm1 = fit$estimate[[1]],

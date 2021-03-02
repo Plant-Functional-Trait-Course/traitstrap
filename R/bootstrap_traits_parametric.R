@@ -40,7 +40,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
          Please use trait_fit_distributions()")
   }
 
-  if (!all(nrep %% 1 == 0 & sample_size %%1 == 0)) {
+  if (!all(nrep %% 1 == 0 & sample_size %% 1 == 0)) {
     stop("nrep and sample_size should be integers")
   }
 

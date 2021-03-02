@@ -40,7 +40,7 @@ trait_fit_distributions <- function(imputed_traits,
     stop("Imputed traits are not appropriately formatted.
     Please use trait_impute() ")
   }
-  
+
 
   #Pull useful information from imputed traits object
   value_col <- attributes(imputed_traits)$attrib$value_col
@@ -115,8 +115,10 @@ trait_fit_distributions <- function(imputed_traits,
   # Main body
 
   distribution_parms <- imputed_traits %>%
-    group_by(.data[[c(taxon_col)]], .data[[c(abundance_col)]],.data$n_leaves, .add = TRUE) %>%
-    mutate(distribution_type = unlist(distribution_type[.data[[trait_col]]])) %>%
+    group_by(.data[[c(taxon_col)]],
+             .data[[c(abundance_col)]], .data$n_leaves, .add = TRUE) %>%
+    mutate(distribution_type = unlist(
+      distribution_type[.data[[trait_col]]])) %>%
     summarize(quiet(get_dist_parms(data = .data[[value_col]],
                              distribution_type = unique(distribution_type))),
               .groups = "keep")
