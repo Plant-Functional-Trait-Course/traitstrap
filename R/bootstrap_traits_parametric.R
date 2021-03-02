@@ -37,7 +37,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
 
   if (!inherits(fitted_distributions, "parametric_distributions")) {
     stop("Fitted distributions not properly formatted.
-         Please use fit_trait_distributions()")
+         Please use trait_fit_distributions()")
   }
 
   if (!all(nrep %% 1 == 0 & sample_size %%1 == 0)) {
