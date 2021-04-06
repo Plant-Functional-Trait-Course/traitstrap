@@ -37,7 +37,7 @@ test_that("trait_impute with treatment", {
     abundance_col = "cover",
     treatment_col = "treatment",
     treatment_level = "site",
-    min_n_leaves = 1
+    min_n_in_sample = 1
   )
 
   #check expected value of trait imputed (A1 sp1)

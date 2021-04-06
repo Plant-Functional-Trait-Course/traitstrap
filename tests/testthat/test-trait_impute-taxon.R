@@ -35,7 +35,7 @@ test_that("trait_impute taxonomic imputation", {
     trait_col = "trait",
     value_col = "value",
     abundance_col = "cover",
-    min_n_leaves = 1
+    min_n_in_sample = 1
   )
 
   #check expected value of trait imputed (A1 sp1)
@@ -66,15 +66,15 @@ test_that("trait_impute taxonomic imputation", {
 
   #### test set 1b ####
   #exactly the same as test set 1a but with pipes
-  ti_1 <- mini_comm %>%
-    trait_impute(
+  ti_1 <- trait_impute(
+      comm = mini_comm,
       traits = mini_trait1,
       scale_hierarchy = c("site", "plot"),
       taxon_col = c("taxon", "genus"),
       trait_col = "trait",
       value_col = "value",
       abundance_col = "cover",
-      min_n_leaves = 1
+      min_n_in_sample = 1
     )
 
   #check expected value of trait imputed (A1 sp1)
@@ -117,7 +117,7 @@ test_that("trait_impute taxonomic imputation", {
     trait_col = "trait",
     value_col = "value",
     abundance_col = "cover",
-    min_n_leaves = 1
+    min_n_in_sample = 1
   )
 
   #for site A, should impute from G1 sp2 at site A

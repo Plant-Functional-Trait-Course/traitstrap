@@ -12,7 +12,7 @@ test_that("output is properly formatted", {
                                  global = TRUE,
                                  taxon_col = "Taxon",
                                  trait_col = "Trait",
-                                 min_n_leaves = 3)
+                                 min_n_in_sample = 3)
 
   fitted_distributions <- trait_fit_distributions(
     imputed_traits = imputed_traits, distribution_type = "lognormal")
@@ -56,7 +56,7 @@ test_that("Bad inputs return errors", {
                                  global = TRUE,
                                  taxon_col = "Taxon",
                                  trait_col = "Trait",
-                                 min_n_leaves = 3)
+                                 min_n_in_sample = 3)
 
   fitted_distributions <- trait_fit_distributions(
     imputed_traits = imputed_traits, distribution_type = "lognormal")
