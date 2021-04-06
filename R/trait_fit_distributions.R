@@ -76,7 +76,7 @@ trait_fit_distributions <- function(imputed_traits,
       filter(.data[[trait_col]] %in%
                names(distribution_type)[distribution_type == "beta"])
 
-    if (any(beta_counts$n_leaves < 2)) {
+    if (any(beta_counts$n_sample < 2)) {
     stop("Fitting a beta distrbution requires 2+ points per distribution.
          We suggest re-imputing traits with
          a minimum sample size of (at least) 2 traits.")
@@ -116,7 +116,7 @@ trait_fit_distributions <- function(imputed_traits,
 
   distribution_parms <- imputed_traits %>%
     group_by(.data[[c(taxon_col)]],
-             .data[[c(abundance_col)]], .data$n_leaves, .add = TRUE) %>%
+             .data[[c(abundance_col)]], .data$n_sample, .add = TRUE) %>%
     mutate(distribution_type = unlist(
       distribution_type[.data[[trait_col]]])) %>%
     summarize(quiet(get_dist_parms(data = .data[[value_col]],

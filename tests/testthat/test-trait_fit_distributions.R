@@ -11,7 +11,7 @@ test_that("returns parametric distribution tibbles of proper size", {
                                  global = TRUE,
                                  taxon_col = "Taxon",
                                  trait_col = "Trait",
-                                 min_n_leaves = 3)
+                                 min_n_in_sample = 3)
 
   expect_true(all(c("parametric_distributions", "tbl") %in%
                     class(trait_fit_distributions(
@@ -59,7 +59,7 @@ test_that("bad inputs return errors", {
                                  global = TRUE,
                                  taxon_col = "Taxon",
                                  trait_col = "Trait",
-                                 min_n_leaves = 3)
+                                 min_n_in_sample = 3)
 
   expect_error(object = trait_fit_distributions(
     imputed_traits = "a", distribution_type = "Megatron"))

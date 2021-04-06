@@ -10,7 +10,7 @@ trait_impute_multi_level <- function(
   taxon_col, trait_col,
   value_col, abundance_col,
   treatment_col, treatment_level,
-  other_col, keep_all, min_n_leaves) {
+  other_col, keep_all, min_n_in_sample) {
 
   #iterate over taxon_col
   result <- taxon_col %>%
@@ -28,7 +28,7 @@ trait_impute_multi_level <- function(
       treatment_level = treatment_level,
       other_col = other_col,
       keep_all = keep_all,
-      min_n_leaves = min_n_leaves
+      min_n_in_sample = min_n_in_sample
     ))
 
   #grab attributes
