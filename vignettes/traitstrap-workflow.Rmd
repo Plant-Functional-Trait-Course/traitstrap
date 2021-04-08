@@ -250,14 +250,16 @@ autoplot(trait_imputation)
 
 
 Another important information is to know of which taxa traits are missing.
-This can be useful if the data sampling is not finished and you want to know which species and/or sites should be sampled.
+This can be useful if the data sampling is not finished and you want to know which species should be sampled.
+The function also tells you the maximal abundance of each missing species, and gives you useful information if the missing species are abundant or rare.
+
 Traitstrap has a function **trait_missing** which gives you a table with all missing values.
 
 
 ```{r missing-traits, echo=TRUE, eval=TRUE}
 
 # list missing traits
-trait_missing(trait_impute = trait_imputation, 
+trait_missing(imputed_trait = trait_imputation,
               comm = community)
 
 ```
