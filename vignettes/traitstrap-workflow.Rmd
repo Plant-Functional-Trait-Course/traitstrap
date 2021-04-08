@@ -1,0 +1,264 @@
+---
+title: "traitstrap-workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{traitstrap-worklfow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(traitstrap)
+library(tidyverse)
+```
+
+
+## The aim of traitstrap
+Traitstrap is an R package that estimates the moments of community trait distributions using a bootstrapping approach.
+The package has three main functions: (i) a trait imputation function which uses a hierarchical sampling design to impute missing or incomplete trait data and can take into account experimental sampling designs.
+(ii) a resample method using bootstrapping (parametric or non-parametric method)  to calculate community weighted trait values and the statistical moments (mean, variance, skewness and kurtosis).
+(iii) a summary function that summarizes the trait moments and calculates confidence intervals.
+
+
+## Organize your data
+
+To use traitstrap you need to have two datasets: 
+* one dataset with information on the abundance/biomass/size of your community, which is used to weight species traits by dominance.
+* one dataset with the traits for each species (or as many species and individuals you have data for) in your community.
+
+The datasets need to be organized in a **tidy** and **long** format.
+It needs to contain certain columns, but the naming of the columns are up to the user.
+
+Let us have a look the two datasets in this example.
+
+The **community data** should have information about the species and their abundance or size in the community.
+This dataset will be used to weigh the traits by species dominance.
+
+In this example the data has a column with the species names (e.g. **Taxon**), a column with the cover of each species per plot (e.g. **Cover**) and two columns with information about the **hierarchy** (i.e. **Site** and **PlotID**).
+
+
+```{r comm-data, echo=FALSE, eval=TRUE}
+community
+```
+
+The **trait data** contains information about the traits and the trait values for each species (and individual) in the commuinty.
+The data should be organized in the same way as the community data should have corresponding columns.
+In this example the trait data has the following columns: **Taxon**, **Site** and **PlotID** as well as columns with information about the traits and their values **Trait**, **Value**.
+
+```{r trait-data, echo=FALSE, eval=TRUE}
+trait
+```
+
+
+## Trait imputation
+
+The **trait_impute function** uses a hierarchical sampling design, which allows it to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases) and/or experimental designs. 
+
+The first two mandatory arguments in the function are the two datasets:
+**comm** and **traits**
+
+Next you need to define four columns in your datasets:
+* **abundance** which is a measure of dominance of your species in your community dataset. This can be abundance, cover, biomass, size, etc.
+* **taxon_col** is the column in your community and trait data that define the species names.
+* **trait_col** is the column in your trait data that defines the traits
+* **value_col** is the column in your trait data that defines the trait values
+
+All the other arguments in traitstrap are not mandatory.
+
+With **scale_hierarchy** you can define the levels at which the traits have been collected and their order starting with the highest level (e.g. global database, region, site, block, plot).
+In the example below we have **Site** and **PlotID**.
+
+The trait_impute function will choose if available a trait value from the lowest level, i.e. species X from plot A and if no trait is available from that level, it will move up the hierarchy and choose a trait from species X from plot B at the same site.
+If there is no trait available from species X in the same site, it will choose a trait value from another site.
+
+The argument **min_n_in_samples** allows users to define the minimum number in sample at each level for the trait imputation.
+If the minimum number is not reached, trait values from the next level will also be imputed, to avoid sampling the same individual several times, which will result in unrealistic variances.
+The default value is 5
+
+In the **other_col** arumgent you can define columns in the trait dataset that are not important for the trait imputation but that you want to keep.
+
+
+```{r trait-impute, echo=TRUE, eval=TRUE}
+
+trait_imputation <- trait_impute(
+    # input data
+    comm = community,
+    traits = trait,
+    
+    # specifies mandatory columns in your data
+    abundance_col = "Cover",
+    taxon_col = "Taxon",
+    trait_col = "Trait",
+    value_col = "Value",
+    
+    # specifies hierarchy
+    scale_hierarchy = c("Site", "PlotID"),
+    
+    # min number of samples
+    min_n_in_sample = 3
+  )
+
+trait_imputation
+```
+
+
+Traitstrap also allows to include taxonomy and experimental design in the trait imputation step.
+
+With **taxon_col** you can define a hierarchy for the taxonomy.
+If traits for a specific species are not available, traits from the same genus will be imputed.
+For this a list of the taxonomic hierarchy has to be defined (e.g. "Taxon", "Genus", "Family" etc.).
+
+The argument **treatment_col** allows to incorporate an experimental design where traits are imputed from the same experimental treatment or the first factor level, which is assumed to be the control.
+Therefore, it is important to order the levels of a treatment in the right order, i.e. the first level has to be the control.
+The imputation step can be defined at certain level using the **treatment_level** argument.
+Depending on the experimental design it might make sense to impute traits at a certain level, e.g. block or site.
+
+Here is an example how to include taxonomy and experimental desing in the trait imputation function.
+
+```{r trait-impute2, echo=TRUE, eval=FALSE}
+
+trait_imputation2 <- trait_impute(
+    comm = community,
+    traits = trait,
+    
+    abundance_col = "Cover",
+    
+    # defining taxonomic hierarchy
+    taxon_col = c("Taxon", "Genus"),
+    
+    trait_col = "Trait",
+    value_col = "Value",
+    
+    scale_hierarchy = c("Site", "PlotID"),
+    min_n_in_sample = 3
+    
+    # specifying experimental design
+    treatment_col = "Treatment",
+    treatment_level = "Site",
+
+  )
+```
+
+
+
+
+## Non-parametric bootstrapping
+
+The output of the trait imputation function can be used to do a **non-parametric bootstrapping** using the **trait_np_bootstrap** function.
+This is a resampling method to calculate community weighted trait values.
+The observed traits are re-sampled in proportion to their weights (e.g. by the abundance of the species).
+Values across all individuals in a community are resampled n times (**sample_size**; the default is 200) to incorporate the full spectrum of trait variation, generating n number (**nrep**; the default is 100) of trait distributions. 
+From these distributions the statistical moments are estimated: **mean**, **variance**, **skewness** and **kurtosis**.
+
+
+```{r non-parap-boot, echo=TRUE, eval=TRUE}
+
+# run non-parametric bootstrapping
+np_bootstrapped_moments <- trait_np_bootstrap(
+  trait_imputation, 
+  nrep = 200
+  )
+
+np_bootstrapped_moments
+```
+
+
+Finally, the statistical moments can be summarized and the confidence intervalls calcualted using the **trait_summarise_boot_moments** function.
+The input variable is the output from the non-parametric boostrapping function.
+
+<!-- This needs checking and maybe some more details on how to get 99% CI etc. -->
+The **sd_mult** and **ci** argument can be used to define the desired confidence intervall.
+The default is `sd_mult = 1` which gives the 95% confidence interval.
+
+```{r summarize, echo=TRUE, eval=TRUE}
+
+# summarizes bootstrapping output
+sum_boot_moment <- trait_summarise_boot_moments(
+  np_bootstrapped_moments
+  )
+
+sum_boot_moment
+```
+
+
+## Parametric bootstrapping
+
+Traitstrap also has the option to run a **parametric bootstrapping**.
+
+The **trait_fit_distributions** function fits parametric distributions for each species-by-trait combination at the finest scale of the user-supplied hierarchy. 
+This function takes as input:
+1) an object of class imputed traits (as produced by the function trait_impute), and 
+2) the type of distribution to be fitted.
+Either a single distribution type can be used for all traits, or traits can be assigned specific distributions types by supplying the function with a named list of traits.
+Currently supported distribution types are normal, log-normal, and beta.
+The function returns a dataframe containing fitted distribution parameters.
+
+```{r fit-dist, echo=TRUE, eval=TRUE}
+
+# fit distributions
+fitted_distributions <- trait_fit_distributions(
+  imputed_traits = trait_imputation,
+  distribution_type = "lognormal"
+  )
+
+fitted_distributions
+```
+
+
+The **trait_parametric_bootstrap** function is a parametric analog of the trait_np_bootstrap function.
+It takes in fitted trait distributions produced by **trait_fit_distributions** and randomly samples from among the fitted distributions proportionally to species abundances.
+As with trait_np_bootstrap, the number of samples per replicated draw are specified with the parameter sample_size, and the number of replicated draws is specified by the parameter **nrep**.
+The output of trait_parametric_bootstrap can be summarized using **trait_summarize_boot_moments** (see above).
+
+```{r para-boot, echo=TRUE, eval=TRUE}
+
+# run paramteric bootstrapping
+p_bootstrapped_moments <- trait_parametric_bootstrap(
+    fitted_distributions = fitted_distributions, 
+    nrep = 200
+    )
+
+p_bootstrapped_moments
+```
+
+
+<!-- Could also show code how to plot the raw distributions -->
+
+
+## Check your data
+
+Traitstrap has a couple of functions to check your data.
+
+The **coverage_plot** function shows the trait coverage of the community for each level.
+Basically, this function summarizes from which level the traits are imputed, and how much coverage of the community is reached.
+<!-- Add an explanation about why this plot is important! -->
+This can be important plot to show, because we know that the coverage should be at least X% (ref to the paper!)
+
+```{r coverage-plot, echo=TRUE, eval=TRUE}
+
+# show coverage plot
+autoplot(trait_imputation)
+
+```
+
+
+Another important information is to know of which taxa traits are missing.
+This can be useful if the data sampling is not finished and you want to know which species and/or sites should be sampled.
+Traitstrap has a function **trait_missing** which gives you a table with all missing values.
+
+
+```{r missing-traits, echo=TRUE, eval=TRUE}
+
+# list missing traits
+trait_missing(trait_impute = trait_imputation, 
+              comm = community)
+
+```
+

@@ -32,4 +32,7 @@ Imports:
     fitdistrplus,
     tidyr
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
