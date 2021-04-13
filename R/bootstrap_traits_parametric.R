@@ -37,6 +37,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
                                        sample_size = 200,
                                        raw = FALSE) {
 
+  if (raw) {nrep <- 1}
   #Check that inputs makes sense
 
   if (!inherits(fitted_distributions, "parametric_distributions")) {
