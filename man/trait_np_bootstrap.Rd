@@ -4,7 +4,7 @@
 \alias{trait_np_bootstrap}
 \title{Bootstrap traits}
 \usage{
-trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200)
+trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE)
 }
 \arguments{
 \item{imputed_traits}{imputed trait and community data in long format}
@@ -12,6 +12,8 @@ trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200)
 \item{nrep}{number of bootstrap replicates}
 
 \item{sample_size}{number of plants per sample}
+
+\item{raw}{logical argument to get the raw data of the distributions}
 }
 \value{
 a tibble

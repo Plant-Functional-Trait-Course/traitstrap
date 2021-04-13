@@ -3,6 +3,7 @@
 #' @param imputed_traits imputed trait and community data in long format
 #' @param nrep number of bootstrap replicates
 #' @param sample_size number of plants per sample
+#' @param raw logical argument to get the raw data of the distributions
 #' @description
 #'
 #' @return a tibble
@@ -22,22 +23,30 @@
 #' boot_traits <- trait_np_bootstrap(imputed_traits)
 #' @export
 
-trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200) {
+trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE) {
   #  stopifnot(class(traits_com) == "imputed_traits")
   attrib <- attr(imputed_traits, "attrib")
   value_col <- attrib$value_col
   bootstrap_moments <- map_dfr(
     1:nrep,
     ~ {
-      slice_sample(imputed_traits, n = sample_size,
-                   replace = TRUE, weight_by = weight) %>%
+      raw_dist <- slice_sample(imputed_traits, n = sample_size,
+                               replace = TRUE, weight_by = weight)
+      if (raw){
+        return(raw_dist)
+      }
+      
+      else {
         # get all the happy moments
-        summarise(
-          mean = mean(.data[[value_col]]),
-          variance = var(.data[[value_col]]),
-          skewness = skewness(.data[[value_col]]),
-          kurtosis = kurtosis(.data[[value_col]])
+        raw_dist %>% 
+          summarise(
+            mean = mean(.data[[value_col]]),
+            variance = var(.data[[value_col]]),
+            skewness = skewness(.data[[value_col]]),
+            kurtosis = kurtosis(.data[[value_col]])
         )
+      }
+
       },
     .id = "n"
   )
