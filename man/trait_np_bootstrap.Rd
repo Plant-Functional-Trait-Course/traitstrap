@@ -13,7 +13,7 @@ trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE)
 
 \item{sample_size}{bootstrap size}
 
-\item{raw}{logical argument to get the raw data of the distributions}
+\item{raw}{logical argument to extract the raw data of the distributions. raw = FALSE is the default. If raw = TRUE, nrep is restricted to 1 to avoid memory issues.}
 }
 \value{
 a tibble

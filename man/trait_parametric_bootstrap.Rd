@@ -18,7 +18,7 @@ trait_parametric_bootstrap(
 
 \item{sample_size}{bootstrap size}
 
-\item{raw}{logical argument to get the raw data of the distributions}
+\item{raw}{logical argument to extract the raw data of the distributions. raw = FALSE is the default. If raw = TRUE, nrep is restricted to 1 to avoid memory issues.}
 }
 \value{
 a tibble
