@@ -2,7 +2,7 @@
 #' @description Bootstrap impute traits
 #' @param imputed_traits imputed trait and community data in long format
 #' @param nrep number of bootstrap replicates
-#' @param sample_size number of plants per sample
+#' @param sample_size bootstrap size 
 #' @param raw logical argument to get the raw data of the distributions
 #' @description
 #'

@@ -11,7 +11,7 @@ trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE)
 
 \item{nrep}{number of bootstrap replicates}
 
-\item{sample_size}{number of plants per sample}
+\item{sample_size}{bootstrap size}
 
 \item{raw}{logical argument to get the raw data of the distributions}
 }

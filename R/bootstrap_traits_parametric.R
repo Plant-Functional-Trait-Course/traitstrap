@@ -3,7 +3,7 @@
 #' @param fitted_distributions
 #' Fitted distribution object returned by trait_fit_distributions
 #' @param nrep number of bootstrap replicates
-#' @param sample_size number of plants per sample
+#' @param sample_size bootstrap size 
 #' @param raw logical argument to get the raw data of the distributions
 #' @description
 #'
