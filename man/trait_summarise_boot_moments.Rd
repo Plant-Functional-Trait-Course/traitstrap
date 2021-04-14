@@ -12,9 +12,10 @@ trait_summarise_boot_moments(
 )
 }
 \arguments{
-\item{bootstrap_moments}{trait moments from trait_np_bootstrap}
+\item{bootstrap_moments}{trait moments from trait_np_bootstrap or
+trait_parametric_bootstrap}
 
-\item{parametric}{Logical.
+\item{parametric}{logical; default is TRUE. 
 Should Confidence Intervals be calculated parametrically
 (using the mean and SD) or nonparametrically (using quantiles).}
 
@@ -29,7 +30,7 @@ tibble with the grouping variables and the mean of each moment
  (+/- sd_mult * SD)
 }
 \description{
-Find the mean and confidence interval for each moment
+Summarizes the mean and confidence interval for each trait moment.
 
 
 }

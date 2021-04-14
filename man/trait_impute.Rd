@@ -21,19 +21,19 @@ trait_impute(
 )
 }
 \arguments{
-\item{comm}{community data in long format}
+\item{comm}{a datafram in long format with community data}
 
-\item{traits}{trait data in long format}
+\item{traits}{a dataframe in long format with trait data}
 
-\item{scale_hierarchy}{character vector of site/block/plot hierarchy
-(large to small)}
+\item{scale_hierarchy}{character vector of the sampling hierarchy from large 
+to small (e.g. site/block/plot)}
 
 \item{global}{logical; calculate traits at global scale.
 Must not be a column called global in the traits data.}
 
 \item{taxon_col}{character; name of taxon column in comm and traits.
-Can be a vector, in which case if traits cannot be imputed for the first
-taxon column, subsequent columns will be used in order.}
+Can be a vector (e.g. "species", "genus"), in which case if traits cannot be 
+imputed for the first taxon column, subsequent columns will be used in order.}
 
 \item{trait_col}{character; name of trait name column in traits}
 
@@ -41,10 +41,10 @@ taxon column, subsequent columns will be used in order.}
 
 \item{abundance_col}{character; name of species abundance column in comm}
 
-\item{treatment_col}{optional name of treatment_col in comm and
-trait. Must refer to a factor where first level is control.}
+\item{treatment_col}{character; optional name of treatment_col in comm and
+traits. Must refer to a factor where first level is control.}
 
-\item{treatment_level}{optional name of scale_hierarchy at which
+\item{treatment_level}{character; optional name of scale_hierarchy at which
 treatment should be filtered}
 
 \item{other_col}{name of other grouping columns in comm}
@@ -52,16 +52,58 @@ treatment should be filtered}
 \item{keep_all}{logical; keep trait data at all available levels
 or just finest scale available}
 
-\item{min_n_in_sample}{minimum number in sample with traits to accept before
-searching for traits higher up the hierarchy.}
+\item{min_n_in_sample}{numeric; minimum number in sample with traits to accept before
+searching for traits higher up the hierarchy. The default is 5.}
 }
 \value{
 a tibble with extra class \code{imputed_trait}
 }
 \description{
-Impute traits
+A function for trait imputation using a hierarchical sampling design, 
+which allows to account for incomplete trait collections, traits from different 
+spatial or temporal levels (i.e. local traits vs. databases) and experimental designs.
 
 
+}
+\details{
+The function uses a hierarchical sampling design, which allows it to 
+account for incomplete trait collections, traits from different spatial or temporal
+levels (i.e. local traits vs. databases) and/or experimental designs. 
+
+With scale_hierarchy you can define the levels at which the traits have been 
+collected and their order starting with the highest level (e.g. global database, 
+region, site, block, plot).
+
+The trait_impute function will choose if available a trait value from the lowest 
+level, i.e. species X from plot A and if no trait is available from that level, 
+it will move up the hierarchy and choose a trait from species X from plot B at 
+the same site. If there is no trait available from species X in the same site, it 
+will choose a trait value from another site.
+
+The argument min_n_in_samples allows users to define the minimum number in sample
+at each level for the trait imputation. If the minimum number is not reached, trait
+values from the next level will also be imputed, to avoid sampling the same 
+individual several times, which will result in unrealistic variances. The default 
+value is 5
+
+In the other_col arumgent other grouping variable in the community dataset can be 
+defined and will be kept after the trait imputation step.
+
+Traitstrap also allows to include taxonomy and experimental design in the 
+trait imputation step.
+
+With taxon_col a hierarchy for the taxonomy can be defined. If traits for a specific
+species are not available, traits from next level, e.g. the genus will be imputed.
+For this a list of the taxonomic hierarchy has to be defined (e.g. "taxon", 
+"genus", "family").
+
+The argument treatment_col allows to incorporate an experimental design where 
+traits are imputed from the same experimental treatment or the first factor 
+level, which is assumed to be the control. Therefore, it is important to order 
+the levels of a treatment in the right order, i.e. the first level has to be 
+the control. The imputation step can be defined at certain level using the
+treatment_level argument. Depending on the experimental design trait imputation
+should occur a certain level, e.g. block or site.
 }
 \examples{
 data(community)
