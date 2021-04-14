@@ -3,7 +3,8 @@
 #' @param fitted_distributions
 #' Fitted distribution object returned by trait_fit_distributions
 #' @param nrep number of bootstrap replicates
-#' @param sample_size number of plants per sample
+#' @param sample_size bootstrap size 
+#' @param raw logical argument to extract the raw data of the distributions. raw = FALSE is the default. If raw = TRUE, nrep is restricted to 1 to avoid memory issues.
 #' @description
 #'
 #' @return a tibble
@@ -33,8 +34,10 @@
 #' @export
 trait_parametric_bootstrap <- function(fitted_distributions,
                                        nrep = 100,
-                                       sample_size = 200) {
+                                       sample_size = 200,
+                                       raw = FALSE) {
 
+  if (raw) {nrep <- 1}
   #Check that inputs makes sense
 
   if (!inherits(fitted_distributions, "parametric_distributions")) {
@@ -58,7 +61,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
     1:nrep,
     ~ {
 
-      fitted_distributions %>%
+      raw_dist <- fitted_distributions %>%
         group_by_at(c(as.character(scale_hierarchy), trait_col)) %>%
         slice_sample(n = sample_size,
                      replace = TRUE,
@@ -73,12 +76,18 @@ trait_parametric_bootstrap <- function(fitted_distributions,
                                       n = n_drawn,
                                       type = distribution_type))) %>%
         group_by_at(c(as.character(scale_hierarchy), trait_col)) %>%
-        unnest(draw_value) %>%
-        summarise(mean = mean(draw_value),
-                  variance = var(draw_value),
-                  skewness = skewness(draw_value),
-                  kurtosis = kurtosis(draw_value),
-                  .groups = "keep")
+        unnest(draw_value)
+      
+      if (raw){
+        return(raw_dist)
+      } else {
+        raw_dist %>% 
+          summarise(mean = mean(draw_value),
+                    variance = var(draw_value),
+                    skewness = skewness(draw_value),
+                    kurtosis = kurtosis(draw_value),
+                    .groups = "keep")
+      }
 
     },
     .id = "n"

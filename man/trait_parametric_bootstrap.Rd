@@ -4,14 +4,21 @@
 \alias{trait_parametric_bootstrap}
 \title{Bootstrap traits parametrically}
 \usage{
-trait_parametric_bootstrap(fitted_distributions, nrep = 100, sample_size = 200)
+trait_parametric_bootstrap(
+  fitted_distributions,
+  nrep = 100,
+  sample_size = 200,
+  raw = FALSE
+)
 }
 \arguments{
 \item{fitted_distributions}{Fitted distribution object returned by trait_fit_distributions}
 
 \item{nrep}{number of bootstrap replicates}
 
-\item{sample_size}{number of plants per sample}
+\item{sample_size}{bootstrap size}
+
+\item{raw}{logical argument to extract the raw data of the distributions. raw = FALSE is the default. If raw = TRUE, nrep is restricted to 1 to avoid memory issues.}
 }
 \value{
 a tibble
