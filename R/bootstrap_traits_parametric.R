@@ -80,9 +80,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
       
       if (raw){
         return(raw_dist)
-      }
-      
-      else {
+      } else {
         raw_dist %>% 
           summarise(mean = mean(draw_value),
                     variance = var(draw_value),

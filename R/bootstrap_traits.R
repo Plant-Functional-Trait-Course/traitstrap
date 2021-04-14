@@ -35,9 +35,7 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200, ra
                                replace = TRUE, weight_by = weight)
       if (raw){
         return(raw_dist)
-      }
-      
-      else {
+      } else {
         # get all the happy moments
         raw_dist %>% 
           summarise(
