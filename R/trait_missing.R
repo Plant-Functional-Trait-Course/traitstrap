@@ -1,5 +1,6 @@
 #' Which taxa lack traits
-#' @param imputed_trait output of trait_impute
+#' @description Function gives overview of which taxa are missing traits.
+#' @param imputed_trait output of trait_impute function.
 #' @param comm community data
 #' @importFrom dplyr left_join ungroup group_by across all_of summarise distinct
 #' @importFrom rlang .data

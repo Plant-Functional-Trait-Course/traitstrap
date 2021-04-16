@@ -1,5 +1,8 @@
 #' Coverage plot of Imputed Traits
-#' @param imputed_traits trait moments from trait_np_bootstrap
+#' @description Function calculates the trait coverage of the community 
+#' for each level of the sampling hierarchy and makes a barplot.
+#' @param imputed_traits output from trait_np_bootstrap or trait_parametric_bootstrap
+#' funtion.
 #' @param other_col_how what to do with the other columns in other data.
 #'  Options are to `filter` by one of the columns, add them to the x-`axis`,
 #' `facet` by them, or to `ignore`.

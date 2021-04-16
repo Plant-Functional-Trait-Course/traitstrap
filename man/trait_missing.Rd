@@ -7,10 +7,10 @@
 trait_missing(imputed_trait, comm)
 }
 \arguments{
-\item{imputed_trait}{output of trait_impute}
+\item{imputed_trait}{output of trait_impute function.}
 
 \item{comm}{community data}
 }
 \description{
-Which taxa lack traits
+Function gives overview of which taxa are missing traits.
 }

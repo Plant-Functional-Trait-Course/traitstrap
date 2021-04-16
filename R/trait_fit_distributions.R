@@ -1,13 +1,18 @@
 #' Fit trait distributions
-#' @description Fits distributions to imputed traits and
+#' @description Function to fit parametric distributions for each species-by-trait
+#' combination at the finest scale of the user-supplied hierarchy. This function 
 #' returns a tibble containing the fitted parameters.
-#' @param imputed_traits imputed trait and community data
-#' in long format
+#' @param imputed_traits output from the trait_impute function.
 #' @param distribution_type the type of statistical distribution to use.
 #' Character or named list. Currently accepts "normal","lognormal", and "beta".
-#' @note Distribution type should be a single character (e.g. "normal")
-#' or a named list (e.g. list(height="normal",mass="lognormal"))
 #' @description
+#' 
+#' @details The distributions can either be a single distribution type which is
+#' used for all traits, or traits can be assigned specific distributions types by
+#' supplying the function with a named list of traits, e.g. list(height="normal", 
+#' mass="lognormal")).
+#'  
+#' The function returns a dataframe containing fitted distribution parameters.
 #'
 #' @return a tibble
 #'

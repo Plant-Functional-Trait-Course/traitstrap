@@ -7,7 +7,8 @@
 \method{autoplot}{imputed_trait}(imputed_traits, other_col_how, ...)
 }
 \arguments{
-\item{imputed_traits}{trait moments from trait_np_bootstrap}
+\item{imputed_traits}{output from trait_np_bootstrap or trait_parametric_bootstrap
+funtion.}
 
 \item{other_col_how}{what to do with the other columns in other data.
  Options are to `filter` by one of the columns, add them to the x-`axis`,
@@ -19,6 +20,9 @@
 a ggplot
 }
 \description{
+Function calculates the trait coverage of the community 
+for each level of the sampling hierarchy and makes a barplot.
+
 Shows at which level the data are coming from in each plot.
 }
 \examples{

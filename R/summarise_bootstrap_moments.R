@@ -1,7 +1,8 @@
 #' Summarise Bootstrap traits
-#' @description Find the mean and confidence interval for each moment
-#' @param bootstrap_moments trait moments from trait_np_bootstrap
-#' @param parametric Logical.
+#' @description Summarizes the mean and confidence interval for each trait moment.
+#' @param bootstrap_moments trait moments from trait_np_bootstrap or
+#' trait_parametric_bootstrap
+#' @param parametric logical; default is TRUE. 
 #' Should Confidence Intervals be calculated parametrically
 #'(using the mean and SD) or nonparametrically (using quantiles).
 #' @param sd_mult Number of standard deviations around each moment,

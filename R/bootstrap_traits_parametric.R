@@ -1,12 +1,25 @@
 #' Bootstrap traits parametrically
-#' @description Bootstrap fitted distributions
+#' @description Function for parametric bootstrap resampling to calculate
+#' community weighted trait mean and higher moments.
 #' @param fitted_distributions
 #' Fitted distribution object returned by trait_fit_distributions
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size 
-#' @param raw logical argument to extract the raw data of the distributions. raw = FALSE is the default. If raw = TRUE, nrep is restricted to 1 to avoid memory issues.
+#' @param raw logical; argument to extract the raw data of the trait distributions.
+#' The default is raw = FALSE. If raw = TRUE, nrep is restricted to 1 to avoid 
+#' memory issues.
 #' @description
 #'
+#'@details The trait_parametric_bootstrap function is a parametric analog of the
+#' trait_np_bootstrap function. It randomly samples from among the fitted distributions
+#' proportionally to species abundance. The number of samples per replicated are drawn 
+#' specified with the parameter sample_size, and the number of replicated is specified 
+#' by the parameter nrep. From these distributions the function estimates the mean 
+#' and the higher moments including variance, skewness and kurtosis.
+#' 
+#' The output of trait_parametric_bootstrap can be summarized using
+#' trait_summarize_boot_moments.
+
 #' @return a tibble
 #'
 #' @importFrom stats var
