@@ -30,7 +30,8 @@ Imports:
     tibble,
     stringr,
     fitdistrplus,
-    tidyr
+    tidyr,
+    viridis
 Suggests: 
     testthat,
     knitr,
