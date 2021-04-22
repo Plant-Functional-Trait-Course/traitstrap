@@ -212,7 +212,7 @@ np_bootstrapped_moments
 ```
 
 One advantage of using a bootstrapping approach, is that we get much more than a mean trait value.
-We can in fact estimate the variance and other parameters of these trait distributions.
+We can also estimate the variance and other moments of these trait distributions.
 In traitstrap happy moments can be summarized and the confidence intervals calculated using the `trait_summarise_boot_moments` function.
 The input variable for this function is the output from the nonparametric bootstrapping function (or the parametric bootstrapping function, see below).
 
