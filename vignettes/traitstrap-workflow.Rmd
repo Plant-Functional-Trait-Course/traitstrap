@@ -2,7 +2,7 @@
 title: "traitstrap-workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{traitstrap-worklfow}
+  %\VignetteIndexEntry{traitstrap-workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,6 @@ knitr::opts_chunk$set(
 
 library(traitstrap)
 library(ggplot2)
-library(viridis)
 
 theme_set(theme_minimal(base_size = 12))
 ```
@@ -48,7 +47,7 @@ This approach allows to account for intraspecific variation and uses the hierarc
 
 The package has three **main functions**:
 
-* **trait imputation** function which allows to account for intraspecific trait variation and hierarchical sawmpling desing.
+* **trait imputation** function which allows to account for intraspecific trait variation and hierarchical sampling design.
 * a resample method using **bootstrapping** (parametric or nonparametric method) to calculate community weighted mean and happy moments (variance, skewness and kurtosis).
 * a **summary function** that summarizes the trait moments and calculates confidence intervals.
 
@@ -89,12 +88,13 @@ trait
 
 ## Trait imputation
 
-The `trait_impute` function** uses a hierarchical sampling design, which allows to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases), different taxonomic resolution and/or experimental design. 
+The `trait_impute` function uses a hierarchical sampling design, which allows to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases), different taxonomic resolution and/or experimental design. 
 
 The first two mandatory arguments in the function are the two datasets:
 `comm` and `traits`
 
 The next four arguments are also mandatory and refer to specific columns in the trait or community dataset:
+
 * `abundance` which is the abundance of your species in your community dataset. This can be abundance, cover, biomass, or size, etc.
 * `taxon_col` is the column in your community and trait data that define the species.
 * `trait_col` is the column in your trait data that defines the traits.
@@ -105,7 +105,7 @@ All the other arguments are not mandatory.
 With `scale_hierarchy` you can define the levels at which the traits have been collected and the order of trait imputation starting with the highest level (e.g. global database, regional, site, plot).
 In the example below we have the levels **Site** and **PlotID**, starting with the highest level.
 
-The trait_impute function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
+The `trait_impute` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
 If no trait value is available from that level, it will try the next group in the same level and choose a trait value from species X from plot B at site 1.
 If there is no trait available, it will move up the hierarchy to the next level and choose a trait value from species X from site 2.
 
@@ -146,7 +146,7 @@ Traitstrap also allows to include taxonomy and experimental design in the trait 
 With the argument `taxon_col` the taxonomic hierarchy for sampling can be defined.
 This means if traits for a specific species are not available, trait values from the same genus will be imputed.
 For this a list of the taxonomic hierarchy has to be defined (e.g. "Taxon", "Genus").
-Note that traits from species of the same genus can have very different traits and it might not be meanigful to impute these traits.
+Note that traits from species of the same genus can have very different traits and it might not be meaningful to impute these traits.
 Therefore, you should always check the trait distributions for the same genus before using taxonomic trait imputation.
 
 The argument `treatment_col` allows to incorporate an experimental design where traits are imputed from the same experimental treatment or the first factor level, which is assumed to be the control.
@@ -154,7 +154,7 @@ Therefore, it is important to order the levels of a treatment in the right order
 The imputation step can be defined at certain level using the `treatment_level` argument.
 Depending on the experimental design it might make sense to impute traits at a certain level, e.g. block or site.
 
-Here is an example how to include taxonomy and experimental desing in the trait imputation function (code not run).
+Here is an example how to include taxonomy and experimental design in the trait imputation function (code not run).
 
 ```{r trait-impute2, echo=TRUE, eval=FALSE}
 
@@ -196,7 +196,7 @@ From these trait distributions the happy moments are estimated: **mean**, **vari
 
 This function also allows to extract raw distributions by setting the argument `raw = TRUE`.
 The raw data can be useful for visualizing the trait distributions.
-If the raw data is extracted, nrep is forced to 1 to avoid memory issues, but if the user has a large amount of traits and individuals the raw data might need to be extracted from a subset of the whole dataset. 
+If the raw data is extracted, `nrep` is forced to 1 to avoid memory issues. 
 
 
 
@@ -211,12 +211,12 @@ np_bootstrapped_moments <- trait_np_bootstrap(
 np_bootstrapped_moments
 ```
 
-One advantage of using a boostrapping approach, is that we get much more than a mean trait value.
-We can in fact estimate the variance and other paramters of these trait distributions.
-In traitstrap happy moments can be summarized and the confidence intervalls calcualted using the `trait_summarise_boot_moments` function.
-The input variable for this function is the output from the nonparametric boostrapping function (or the parametric bootstrapping function, see below).
+One advantage of using a bootstrapping approach, is that we get much more than a mean trait value.
+We can in fact estimate the variance and other parameters of these trait distributions.
+In traitstrap happy moments can be summarized and the confidence intervals calculated using the `trait_summarise_boot_moments` function.
+The input variable for this function is the output from the nonparametric bootstrapping function (or the parametric bootstrapping function, see below).
 
-The confidence intervall can be calculated parametrically, using the mean and standard deviation, or nonparametrically using quantiles.
+The confidence interval can be calculated parametrically, using the mean and standard deviation, or nonparametrically using quantiles.
 The default is using the mean and standard deviation (`parametric = TRUE`) with one standard deviation around each trait moment (`sd_mult = 1`).
 For the nonparametric approach the default is a 0.95 confidence level.
 
@@ -239,10 +239,10 @@ Traitstrap also offers the option to run a **parametric bootstrapping**.
 The `trait_fit_distributions` function fits parametric distributions for each species-by-trait combination at the finest scale of the user-supplied hierarchy. 
 This function takes as input:
 
-* an object of class imputed traits (as produced by the function trait_impute), and 
+* an object of class imputed traits (as produced by the function `trait_impute`), and 
 * the type of distribution to be fitted.
 
-Either a single distribution type can be used for all traits, or traits can be assigned specific distributions types by supplying the function with a named list of traits (e.g. list(height = "normal", mass = "lognormal")).
+Either a single distribution type can be used for all traits, or traits can be assigned specific distributions types by supplying the function with a named list of traits (e.g. `list(height = "normal", mass = "lognormal")`).
 
 Currently the function supports normal, log-normal, and beta (values between 0 and 1) distributions.
 
@@ -272,16 +272,16 @@ fitted_distributions
 ```
 
 
-The `trait_parametric_bootstrap` function is a parametric analog of the trait_np_bootstrap function.
+The `trait_parametric_bootstrap` function is a parametric analogue of the `trait_np_bootstrap` function.
 It takes in fitted trait distributions produced by `trait_fit_distributions` and randomly samples from among the fitted distributions proportionally to species abundances in the community.
 
-As with trait_np_bootstrap, the number of samples per replicated draw are specified with the parameter `sample_size`, and the number of replicated draws is specified by the parameter `nrep.`
+As with `trait_np_bootstrap`, the number of samples per replicated draw are specified with the parameter `sample_size`, and the number of replicated draws is specified by the parameter `nrep.`
 The argument `raw` allows to extract raw distributions (see above).
 
 
 ```{r para-boot, echo=TRUE, eval=TRUE}
 
-# run paramteric bootstrapping
+# run parametric bootstrapping
 p_bootstrapped_moments <- trait_parametric_bootstrap(
     fitted_distributions = fitted_distributions, 
     nrep = 200
@@ -295,7 +295,7 @@ The output of trait_parametric_bootstrap can be summarized using `trait_summariz
 
 ## Extracting raw distributions
 
-In traitstrap both the parametric and nonparametric boostrapping funcitons allow returing raw trait distributions.
+In traitstrap both the parametric and nonparametric bootstrapping functions allow returing raw trait distributions.
 
 
 ```{r raw-dist-np, echo=TRUE, eval=TRUE}
@@ -313,7 +313,7 @@ The raw data can be useful for visualizing the trait distributions.
 
 Use colour and facets to separate between the different traits, hierarchies and treatments.
 
-```{r plot-raw-dist-np, echo=TRUE, eval=TRUE}
+```{r plot-raw-dist-np, echo=TRUE, eval=TRUE, fig.width = 6}
 
 ggplot(raw_dist_np, aes(x = log(Value), fill = Site)) +
   geom_density(alpha = 0.4) +
@@ -330,12 +330,13 @@ Traitstrap has a couple of functions to check the data.
 The `coverage_plot` function shows the trait coverage of the community for each level.
 Basically, this function summarizes from which level the traits are imputed, and how much coverage of the community is reached.
 
-Based on simulations, we recommend to collect traits for at least 80% of the communitiy cover (Maitner et al. in prep).
+Based on simulations, we recommend to collect traits for at least 80% of the community cover (Maitner et al. in prep).
 
-```{r coverage-plot, echo=TRUE, eval=TRUE}
+```{r coverage-plot, echo=TRUE, eval=TRUE, fig.width = 6}
 
 # show coverage plot
-autoplot(trait_imputation)
+autoplot(trait_imputation) + 
+  theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 0.5))
 
 ```
 
