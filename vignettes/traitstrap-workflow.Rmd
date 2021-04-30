@@ -145,8 +145,8 @@ With `scale_hierarchy` you can define the levels at which the traits have been c
 In the example below we have the levels **Site** and **PlotID**, starting with the highest level.
 
 The `trait_impute` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
-If no trait value is available from that level, it will try the next group in the same level and choose a trait value from species X from plot B at site 1.
-If there is no trait available, it will move up the hierarchy to the next level and choose a trait value from species X from site 2.
+If no trait value is available from that level (plot A, site 1), it will other groups in the same level and choose a trait value from species X from plot B or C at site 1.
+If there is no trait available, it will move up the hierarchy to the next level and choose a trait values from species X from other sites (site 2, 3, etc.).
 
 The argument `min_n_in_samples` allows users to define the minimum number in samples that are chosen at each level.
 If the minimum number is not reached (i.e. there are only 3 trait values at a specific level), trait values from the next higher level will be imputed, to avoid sampling the same individual several times, which could result in unrealistic variances.
