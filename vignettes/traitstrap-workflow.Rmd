@@ -116,7 +116,7 @@ community
 ```
 
 
-The **trait data** should contain information about traits and trait values for as many species and individual in the community data as possible.
+The **trait data** should contain information about traits and trait values for as many species and individuals in the community data as possible.
 The data should be organized in the same way as the community data and should have corresponding columns.
 In this example the trait data contains **Taxon**, **Site** and **PlotID** as well as **Trait** and **Value**.
 
@@ -146,14 +146,13 @@ In the example below we have the levels **Site** and **PlotID**, starting with t
 
 The `trait_impute` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
 If no trait value is available from that level (plot A, site 1), it will other groups in the same level and choose a trait value from species X from plot B or C at site 1.
-If there is no trait available, it will move up the hierarchy to the next level and choose a trait values from species X from other sites (site 2, 3, etc.).
+If there is no trait available, it will move up the hierarchy to the next level and choose trait values from species X from other sites (site 2, 3, etc.).
 
 The argument `min_n_in_samples` allows users to define the minimum number in samples that are chosen at each level.
 If the minimum number is not reached (i.e. there are only 3 trait values at a specific level), trait values from the next higher level will be imputed, to avoid sampling the same individual several times, which could result in unrealistic variances.
 The default minimum number of samples is 5.
 
-In the `other_col` argument other grouping variable in the community dataset can be 
-defined and will be kept after the trait imputation.
+In the `other_col` argument other grouping variables in the community dataset can be defined and will be kept after the trait imputation.
 
 
 ```{r trait-impute, echo=TRUE, eval=TRUE}
@@ -334,7 +333,7 @@ The output of trait_parametric_bootstrap can be summarized using `trait_summariz
 
 ## Extracting raw distributions
 
-In traitstrap both the parametric and nonparametric bootstrapping functions allow returing raw trait distributions.
+In traitstrap both the parametric and nonparametric bootstrapping functions allow returning raw trait distributions.
 
 
 ```{r raw-dist-np, echo=TRUE, eval=TRUE}
