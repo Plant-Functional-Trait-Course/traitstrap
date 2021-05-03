@@ -14,36 +14,46 @@ knitr::opts_chunk$set(
 )
 
 library(traitstrap)
+library(dplyr)
 library(ggplot2)
 
 theme_set(theme_minimal(base_size = 12))
 ```
 
-
-```{r hex, echo=FALSE, out.width='20%', fig.align = 'right'}
+<!-- fig.align = 'right',  -->
+```{r hex, echo=FALSE, out.width='15%', out.extra='style="float:right; padding:8px"'}
 knitr::include_graphics("Traitstrap_hex.png")
 ```
+
+This vignette explains how to use the traitstrap package (Telford et al).
+For more details on the methods see Maitner et al.
+
+First of all, relax and turn on some music. We have prepared the [traitstrap playlist](https://tinyurl.com/traitstrap) for you!
+
 
 ## The aim of traitstrap
 
 Trait distributions can be used to infer the importance of community assembly processes and the role of climate drivers in shaping species and community responses to climate change.
-Specifically, the **mean** and the **higher moments** (variance, skewness, and kurtosis) of trait distributions can reveal information about the various processes shaping species diversity.
-Thus, while community ecology has typically focused on mean, the whole distribution contains useful information about community assembly, functioning, and dynamics.
+Community ecology has typically focused on the **mean**, however the **higher moments** (variance, skewness, and kurtosis) of trait distributions can reveal information about the various processes shaping species diversity.
 
-```{r true-dist, echo=FALSE, out.width='80%'}
+```{r true-dist, echo=FALSE, out.width='90%'}
 knitr::include_graphics("true-dist.png")
 ```
 
+Measuring trait distributions is often difficult and time-consuming as it requires information on measuring trait values of all individuals present.
+Sampling protocols often limit sampling to a non-representative subset of the community, or rely upon species-level average traits values calculated in other locations or across many locations.
+
 Traditionally the moments of trait distributions have been estimated using weighting approaches that rely on the average traits of species weighted by some measure of abundance within the community.
-Such community-weighted trait moments methods assume that a species’ trait expression can be adequately represented by the mean, ignoring intraspecific trait variation.
+Such **community-weighted** trait moments methods assume that a species’ trait expression can be adequately represented by the mean, ignoring intraspecific trait variation.
+
 To more accurately estimate local trait distributions, trait sampling should thus occur both across multiple individuals within each species, and across multiple locations or experimental treatments across the extent of the study in order to capture both inter- and intra-specific variability.
 
-```{r comm-boot, echo=FALSE, out.width='80%'}
+```{r comm-boot, echo=FALSE, out.width='90%'}
 knitr::include_graphics("comm-boot.png")
 ```
 
-Traitstrap is an **R package** that estimates the moments of community trait distributions using a bootstrapping approach.
-This approach allows to account for intraspecific variation and uses the hierarchical nature of trait variation across space, experimental treatments, and taxonomic resolution (i.e. species, genus) to select the most appropriate traits available.
+**Traitstrap** is an **R package** to estimate the moments of community trait distributions using a **bootstrapping approach**.
+Further, this package uses a hierarchical sampling design, which allows accounting for incomplete trait collections, traits from different spatial or temporal levels (e.g. local traits vs. databases), taxonomic hierarchies (e.g., species vs genus)  and experimental designs (e.g., multiple sites, or treated vs. control sampling units).
 
 The package has three **main functions**:
 
@@ -52,6 +62,37 @@ The package has three **main functions**:
 * a **summary function** that summarizes the trait moments and calculates confidence intervals.
 
 Note that for this tutorial we are calling the mean and the higher moments the happy moments :-)
+
+
+## The data
+
+For this vignette we will use part of a vascular plant dataset from two sites near Longyearbyen on Svalbard. 
+The data was collected during the Plant Functional Trait Course in 2018 and contains data on the plant community composition and functional traits.
+For more details see this [GitHub repo](https://github.com/Plant-Functional-Trait-Course/PFTC_4_Svalbard)
+
+Note that some of the species names have been adapted. 
+
+```{r data-prank, echo=FALSE, eval=TRUE}
+community <- community %>% 
+  mutate(Taxon = case_when(Taxon == "equisetum scirpoides" ~ "enquistetum scirpoides",
+                           Taxon == "micranthes hieracifolia" ~ "maitneranthes hieracifolia",
+                           Taxon == "bistorta vivipara" ~ "bistorta vigdis",
+                           Taxon == "stellaria humifusa" ~ "stelfordaria humifusa",
+                           Taxon == "oxyria digyna" ~ "oxyria tanyna",
+                           Taxon == "silene acaulis" ~ "silene acaudis",
+                           TRUE ~ Taxon
+                           ))
+
+trait <- trait %>% 
+  mutate(Taxon = case_when(Taxon == "equisetum scirpoides" ~ "enquistetum scirpoides",
+                           Taxon == "micranthes hieracifolia" ~ "maitneranthes hieracifolia",
+                           Taxon == "bistorta vivipara" ~ "bistorta vigdis",
+                           Taxon == "stellaria humifusa" ~ "stelfordaria humifusa",
+                           Taxon == "oxyria digyna" ~ "oxyria tanyna",
+                           Taxon == "silene acaulis" ~ "silene acaudis",
+                           TRUE ~ Taxon
+                           ))
+```
 
 
 ## Organize your data
@@ -77,7 +118,7 @@ community
 ```
 
 
-The **trait data** should contain information about traits and trait values for as many species and individual in the community data as possible.
+The **trait data** should contain information about traits and trait values for as many species and individuals in the community data as possible.
 The data should be organized in the same way as the community data and should have corresponding columns.
 In this example the trait data contains **Taxon**, **Site** and **PlotID** as well as **Trait** and **Value**.
 
@@ -106,15 +147,14 @@ With `scale_hierarchy` you can define the levels at which the traits have been c
 In the example below we have the levels **Site** and **PlotID**, starting with the highest level.
 
 The `trait_impute` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
-If no trait value is available from that level, it will try the next group in the same level and choose a trait value from species X from plot B at site 1.
-If there is no trait available, it will move up the hierarchy to the next level and choose a trait value from species X from site 2.
+If no trait value is available from that level (plot A, site 1), it will other groups in the same level and choose a trait value from species X from plot B or C at site 1.
+If there is no trait available, it will move up the hierarchy to the next level and choose trait values from species X from other sites (site 2, 3, etc.).
 
 The argument `min_n_in_samples` allows users to define the minimum number in samples that are chosen at each level.
 If the minimum number is not reached (i.e. there are only 3 trait values at a specific level), trait values from the next higher level will be imputed, to avoid sampling the same individual several times, which could result in unrealistic variances.
 The default minimum number of samples is 5.
 
-In the `other_col` argument other grouping variable in the community dataset can be 
-defined and will be kept after the trait imputation.
+In the `other_col` argument other grouping variables in the community dataset can be defined and will be kept after the trait imputation.
 
 
 ```{r trait-impute, echo=TRUE, eval=TRUE}
@@ -295,7 +335,7 @@ The output of trait_parametric_bootstrap can be summarized using `trait_summariz
 
 ## Extracting raw distributions
 
-In traitstrap both the parametric and nonparametric bootstrapping functions allow returing raw trait distributions.
+In traitstrap both the parametric and nonparametric bootstrapping functions allow returning raw trait distributions.
 
 
 ```{r raw-dist-np, echo=TRUE, eval=TRUE}
