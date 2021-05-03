@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# traitstrap
+# traitstrap <img src="vignettes/Traitstrap_hex.png" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/richardjtelford/traitstrap/workflows/R-CMD-check/badge.svg)](https://github.com/richardjtelford/traitstrap/actions)
