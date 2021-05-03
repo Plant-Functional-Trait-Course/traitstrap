@@ -3,8 +3,10 @@ Title: Bootstrap Trait Values
 Version: 0.0.0.901
 Date: 2021-02-17
 Authors@R: c(
-  person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre")), 
-  person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut")),
+  person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre"), 
+        comment = c(ORCID = "https://orcid.org/0000-0001-9826-3076")), 
+  person("Aud", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut"),
+        comment = c(ORCID = "https://orcid.org/0000-0003-2597-6328")),
    person(given = "Brian S.",
            family = "Maitner",
            role = c("aut"),
