@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 
 library(traitstrap)
-library(tidyverse)
+library(dplyr)
 library(ggplot2)
 
 theme_set(theme_minimal(base_size = 12))
@@ -69,6 +69,8 @@ Note that for this tutorial we are calling the mean and the higher moments the h
 For this vignette we will use part of a vascular plant dataset from two sites near Longyearbyen on Svalbard. 
 The data was collected during the Plant Functional Trait Course in 2018 and contains data on the plant community composition and functional traits.
 For more details see this [GitHub repo](https://github.com/Plant-Functional-Trait-Course/PFTC_4_Svalbard)
+
+Note that some of the species names have been adapted. 
 
 ```{r data-prank, echo=FALSE, eval=TRUE}
 community <- community %>% 
