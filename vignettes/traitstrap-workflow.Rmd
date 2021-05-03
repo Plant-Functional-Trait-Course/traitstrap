@@ -22,7 +22,7 @@ theme_set(theme_minimal(base_size = 12))
 
 <!-- fig.align = 'right',  -->
 ```{r hex, echo=FALSE, out.width='15%', out.extra='style="float:right; padding:8px"'}
-knitr::include_graphics("Traitstrap_hex.png")
+knitr::include_graphics("../man/figures/Traitstrap_hex.png")
 ```
 
 This vignette explains how to use the traitstrap package (Telford et al).
