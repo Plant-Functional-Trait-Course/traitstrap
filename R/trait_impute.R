@@ -292,6 +292,11 @@ trait_impute <- function(
       result
   }) # end of iterate over grouping hierarchy
 
+  #check some output
+  if (nrow(out) == 0) {
+    stop("No output. Check taxon names and plot/site names in the community and trait data frames match.")
+  }
+  
   #get max number available
   out <- out %>%
     ungroup() %>%
