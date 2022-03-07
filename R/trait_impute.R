@@ -61,7 +61,11 @@
 #' traits are imputed from the same experimental treatment or the first factor 
 #' level, which is assumed to be the control. Therefore, it is important to order 
 #' the levels of a treatment in the right order, i.e. the first level has to be 
-#' the control. The imputation step can be defined at certain level using the
+#' the control. 
+#' If you have two or more treatments and you want imputation to be done only 
+#' within a treatment, and not from a treatment and the control, then
+#' make the first level of the factor a level that is not in the data.
+#' The imputation step can be defined at certain level using the
 #' treatment_level argument. Depending on the experimental design trait imputation
 #' should occur a certain level, e.g. block or site.
 
