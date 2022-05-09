@@ -5,7 +5,7 @@
 \alias{community}
 \title{Community data}
 \format{
-A data frame with 53940 rows and 10 variables:
+A data frame with 110 rows and 4 variables:
 \describe{
   \item{Taxon}{species name}
   \item{Cover}{cover, in percent}

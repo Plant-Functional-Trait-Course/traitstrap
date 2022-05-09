@@ -39,3 +39,5 @@ inst/doc
 /doc/
 /Meta/
 
+# raw data files
+/data-raw/*.Rdata

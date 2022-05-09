@@ -37,7 +37,7 @@
 #' @export
 
 trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE) {
-  if (raw) {nrep <- 1}
+  if (isTRUE(raw)) {nrep <- 1}
   #  stopifnot(class(traits_com) == "imputed_traits")
   attrib <- attr(imputed_traits, "attrib")
   value_col <- attrib$value_col

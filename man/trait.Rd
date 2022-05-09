@@ -5,11 +5,12 @@
 \alias{trait}
 \title{Trait data}
 \format{
-A data frame with 53940 rows and 10 variables:
+A data frame with 705 rows and 6 variables:
 \describe{
-  \item{Taxon}{species name}
   \item{Site}{site name}
   \item{PlotID}{plot name}
+  \item{Taxon}{species name}
+  \item{ID}{Unique leaf ID}
   \item{Trait}{trait name with unit}
   \item{Value}{trait value}
 }

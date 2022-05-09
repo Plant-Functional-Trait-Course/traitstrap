@@ -3,7 +3,7 @@
 #' A dataset containing plant cover in control plots on Svalbard from PFCT4
 #'  TraitTrain course.
 #'
-#' @format A data frame with 53940 rows and 10 variables:
+#' @format A data frame with 110 rows and 4 variables:
 #' \describe{
 #'   \item{Taxon}{species name}
 #'   \item{Cover}{cover, in percent}
@@ -18,11 +18,12 @@
 #' A dataset containing plant traits in control plots on Svalbard from PFCT4
 #' TraitTrain course.
 #'
-#' @format A data frame with 53940 rows and 10 variables:
+#' @format A data frame with 705 rows and 6 variables:
 #' \describe{
-#'   \item{Taxon}{species name}
 #'   \item{Site}{site name}
 #'   \item{PlotID}{plot name}
+#'   \item{Taxon}{species name}
+#'   \item{ID}{Unique leaf ID}
 #'   \item{Trait}{trait name with unit}
 #'   \item{Value}{trait value}
 #' }
