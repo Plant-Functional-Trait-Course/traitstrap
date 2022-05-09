@@ -27,16 +27,32 @@
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise n_distinct
-#' @importFrom tidyr pivot_wider nest
+#' @importFrom tidyr pivot_wider nest unnest
 #' @importFrom purrr map_dfr
 #' @examples 
+#' require(dplyr)
+#' require(tidyr)
+#' require(ggplot2)
+#' require(purrr)
 #' data(community)
 #' data(trait)
-#' imputed_traits <-trait_impute(comm = community, traits = trait,
-#'                  scale_hierarchy = c("Site", "PlotID"),
-#'                  taxon_col = "Taxon", value_col = "Value",
-#'                  trait_col = "Trait", abundance_col = "Cover")
+#' imputed_traits <- trait_impute(comm = community, traits = trait,
+#'                   scale_hierarchy = c("Site", "PlotID"),
+#'                   taxon_col = "Taxon", value_col = "Value",
+#'                   trait_col = "Trait", abundance_col = "Cover")
 #' boot_traits <- trait_multivariate_bootstrap(imputed_traits, fun = cor)
+#' boot_traits_long <- boot_traits |> 
+#'   mutate(correlations = map(result, ~cor_to_df(.x))) |> 
+#'   select(-result) |> 
+#'   unnest(correlations)
+#'
+#'    boot_traits_long |>
+#'      ggplot(aes(x= paste(row, "v",  col), y = value)) +
+#'      geom_violin() +
+#'      facet_grid(Site ~ PlotID) +
+#'      coord_flip() +
+#'      labs(y = "Correlation", x = "")
+
 #' @export
 
 trait_multivariate_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE, id = "ID", fun) {
@@ -58,6 +74,8 @@ trait_multivariate_bootstrap <- function(imputed_traits, nrep = 100, sample_size
     select(-.data[[attrib$taxon_col]], -.data[[attrib$abundance_col]], 
            -.data$n_sample, -.data$max_n_in_sample, 
            -.data$level, -.data$sum_abun) %>%
+    # cludge - need single weight for bootstrap, not one per trait
+    mutate(weight = mean(.data$weight)) |> 
     #pivot
     pivot_wider(names_from = .data[[attrib$trait_col]],
                 values_from = .data[[value_col]]) %>% 

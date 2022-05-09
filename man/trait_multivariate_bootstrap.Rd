@@ -38,7 +38,7 @@ weighted trait correlations, other bivariate or multivariate statistics
 
 }
 \details{
-The observed traits are re-sampled in proportion to their weights, 
+The observed and imputed leaves  are re-sampled in proportion to their weights, 
 e.g. the abundance of a species or the biomass. Values across all individuals 
 in a community are resampled n times (nrep) to incorporate the full 
 spectrum of trait variation, generating n number (sample_size) of trait distributions. 
@@ -49,11 +49,26 @@ including variance, skewness and kurtosis.
 trait_summarize_boot_moments.
 }
 \examples{
+require(dplyr)
+require(tidyr)
+require(ggplot2)
+require(purrr)
 data(community)
 data(trait)
-imputed_traits <-trait_impute(comm = community, traits = trait,
-                 scale_hierarchy = c("Site", "PlotID"),
-                 taxon_col = "Taxon", value_col = "Value",
-                 trait_col = "Trait", abundance_col = "Cover")
+imputed_traits <- trait_impute(comm = community, traits = trait,
+                  scale_hierarchy = c("Site", "PlotID"),
+                  taxon_col = "Taxon", value_col = "Value",
+                  trait_col = "Trait", abundance_col = "Cover")
 boot_traits <- trait_multivariate_bootstrap(imputed_traits, fun = cor)
+boot_traits_long <- boot_traits |> 
+  mutate(correlations = map(result, ~cor_to_df(.x))) |> 
+  select(-result) |> 
+  unnest(correlations)
+
+   boot_traits_long |>
+     ggplot(aes(x= paste(row, "v",  col), y = value)) +
+     geom_violin() +
+     facet_grid(Site ~ PlotID) +
+     coord_flip() +
+     labs(y = "Correlation", x = "")
 }
