@@ -11,7 +11,7 @@
 #' @param fun bivariate or multivate function to apply
 #' @description
 #' 
-#' @details The observed traits are re-sampled in proportion to their weights, 
+#' @details The observed and imputed leaves  are re-sampled in proportion to their weights, 
 #' e.g. the abundance of a species or the biomass. Values across all individuals 
 #' in a community are resampled n times (nrep) to incorporate the full 
 #' spectrum of trait variation, generating n number (sample_size) of trait distributions. 
