@@ -4,7 +4,7 @@
 #' @importFrom dplyr filter mutate rename_with select bind_rows matches groups
 #' @importFrom stringr str_remove
 
-trait_impute_multi_level <- function(
+trait_select_multi_level <- function(
   comm, traits,
   scale_hierarchy, global,
   taxon_col, trait_col,
@@ -15,7 +15,7 @@ trait_impute_multi_level <- function(
   #iterate over taxon_col
   result <- taxon_col %>%
     set_names() %>%
-    map(~ trait_impute(
+    map(~ trait_select(
       comm = comm,
       traits = traits,
       scale_hierarchy = scale_hierarchy,
@@ -59,7 +59,7 @@ trait_impute_multi_level <- function(
   attr(result, "taxon_hierarchy") <- taxon_col
 
   #add class
-  class(result) <- c("imputed_trait", class(result))
+  class(result) <- c("selected_trait", class(result))
   #return
   return(result)
 }

@@ -31,12 +31,12 @@
 #' @examples
 #' data(community)
 #' data(trait)
-#' imputed_traits <-trait_impute(comm = community, traits = trait,
+#' selected_traits <-trait_select(comm = community, traits = trait,
 #'                  scale_hierarchy = c("Site", "PlotID"),
 #'                  taxon_col = "Taxon", value_col = "Value",
 #'                  trait_col = "Trait", abundance_col = "Cover")
 #' fitted_distributions <- trait_fit_distributions(
-#'                         imputed_traits = imputed_traits,
+#'                         selected_traits = selected_traits,
 #'                         distribution_type = "normal")
 #' parametric_distributions <- trait_parametric_bootstrap(
 #'                             fitted_distributions = fitted_distributions,
@@ -63,7 +63,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
   }
 
 
-  #Pull useful information from imputed traits object
+  #Pull useful information from selected traits object
   trait_col <- attributes(fitted_distributions)$attrib$trait_col
   abundance_col <- attributes(fitted_distributions)$attrib$abundance_col
   taxon_col <- attributes(fitted_distributions)$attrib$taxon_col

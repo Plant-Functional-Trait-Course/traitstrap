@@ -1,7 +1,7 @@
 #' Bootstrap traits
 #' @description Function for nonparametric bootstrap resampling to calculate community 
 #' weighted trait correlations, other bivariate or multivariate statistics
-#' @param imputed_traits output from the trait_impute function.
+#' @param selected_traits output from the trait_select function.
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size 
 #' @param raw logical; argument to extract the raw data of the trait distributions.
@@ -11,7 +11,7 @@
 #' @param fun bivariate or multivate function to apply
 #' @description
 #' 
-#' @details The observed and imputed leaves  are re-sampled in proportion to their weights, 
+#' @details The observed and selected leaves  are re-sampled in proportion to their weights, 
 #' e.g. the abundance of a species or the biomass. Values across all individuals 
 #' in a community are resampled n times (nrep) to incorporate the full 
 #' spectrum of trait variation, generating n number (sample_size) of trait distributions. 
@@ -36,11 +36,11 @@
 #' require(purrr)
 #' data(community)
 #' data(trait)
-#' imputed_traits <- trait_impute(comm = community, traits = trait,
+#' selected_traits <- trait_select(comm = community, traits = trait,
 #'                   scale_hierarchy = c("Site", "PlotID"),
 #'                   taxon_col = "Taxon", value_col = "Value",
 #'                   trait_col = "Trait", abundance_col = "Cover")
-#' boot_traits <- trait_multivariate_bootstrap(imputed_traits, fun = cor)
+#' boot_traits <- trait_multivariate_bootstrap(selected_traits, fun = cor)
 #' boot_traits_long <- boot_traits |> 
 #'   mutate(correlations = map(result, ~cor_to_df(.x))) |> 
 #'   select(-result) |> 
@@ -55,17 +55,17 @@
 
 #' @export
 
-trait_multivariate_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE, id = "ID", fun) {
+trait_multivariate_bootstrap <- function(selected_traits, nrep = 100, sample_size = 200, raw = FALSE, id = "ID", fun) {
   if (raw) {nrep <- 1}
-  #  stopifnot(class(traits_com) == "imputed_traits")
-  attrib <- attr(imputed_traits, "attrib")
+  #  stopifnot(class(traits_com) == "selected_traits")
+  attrib <- attr(selected_traits, "attrib")
   value_col <- attrib$value_col
   
-  n_traits <- n_distinct(imputed_traits[[attrib$trait_col]])
-  trait_names <- unique(imputed_traits[[attrib$trait_col]])
+  n_traits <- n_distinct(selected_traits[[attrib$trait_col]])
+  trait_names <- unique(selected_traits[[attrib$trait_col]])
   
   # pivot wider
-  imputed_traits_wide <- imputed_traits %>%
+  selected_traits_wide <- selected_traits %>%
     # remove leaves with incomplete data
     ungroup(.data[[attrib$trait_col]]) %>% 
     group_by(.data[[id]], .add = TRUE) %>% 
@@ -85,7 +85,7 @@ trait_multivariate_bootstrap <- function(imputed_traits, nrep = 100, sample_size
   bootstrap_moments <- map_dfr(
     1:nrep,
     ~ {
-      raw_dist <- slice_sample(imputed_traits_wide, n = sample_size,
+      raw_dist <- slice_sample(selected_traits_wide, n = sample_size,
                                replace = TRUE, weight_by = weight) %>% 
         select(-.data$weight) %>% 
         nest(data = all_of(trait_names))
@@ -107,6 +107,6 @@ trait_multivariate_bootstrap <- function(imputed_traits, nrep = 100, sample_size
   
   # make bootstrap_moments an ordinary tibble
   class(bootstrap_moments) <-
-    class(bootstrap_moments)[!class(bootstrap_moments) == "imputed_trait"]
+    class(bootstrap_moments)[!class(bootstrap_moments) == "selected_trait"]
   return(bootstrap_moments)
 }

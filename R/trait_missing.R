@@ -1,17 +1,17 @@
 #' Which taxa lack traits
 #' @description Function gives overview of which taxa are missing traits.
-#' @param imputed_trait output of trait_impute function.
+#' @param selected_trait output of trait_select function.
 #' @param comm community data
 #' @importFrom dplyr left_join ungroup group_by across all_of summarise distinct
 #' @importFrom rlang .data
 #' @importFrom magrittr %>%
 #'
 #' @export
-trait_missing <- function(imputed_trait, comm) {
-  attrib <- attr(imputed_trait, "attrib")
+trait_missing <- function(selected_trait, comm) {
+  attrib <- attr(selected_trait, "attrib")
 
   comm %>%
-    left_join(imputed_trait,
+    left_join(selected_trait,
               by = attrib$taxon_col,
               suffix = c("", "_trait")) %>%
     ungroup() %>%

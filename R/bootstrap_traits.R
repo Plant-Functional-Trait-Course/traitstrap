@@ -1,7 +1,7 @@
 #' Bootstrap traits
 #' @description Function for nonparametric bootstrap resampling to calculate community 
 #' weighted trait mean and higher moments.
-#' @param imputed_traits output from the trait_impute function.
+#' @param selected_traits output from the trait_select function.
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size 
 #' @param raw logical; argument to extract the raw data of the trait distributions.
@@ -29,22 +29,22 @@
 #' @examples 
 #' data(community)
 #' data(trait)
-#' imputed_traits <-trait_impute(comm = community, traits = trait,
+#' selected_traits <-trait_select(comm = community, traits = trait,
 #'                  scale_hierarchy = c("Site", "PlotID"),
 #'                  taxon_col = "Taxon", value_col = "Value",
 #'                  trait_col = "Trait", abundance_col = "Cover")
-#' boot_traits <- trait_np_bootstrap(imputed_traits)
+#' boot_traits <- trait_np_bootstrap(selected_traits)
 #' @export
 
-trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE) {
+trait_np_bootstrap <- function(selected_traits, nrep = 100, sample_size = 200, raw = FALSE) {
   if (isTRUE(raw)) {nrep <- 1}
-  #  stopifnot(class(traits_com) == "imputed_traits")
-  attrib <- attr(imputed_traits, "attrib")
+  #  stopifnot(class(traits_com) == "selected_traits")
+  attrib <- attr(selected_traits, "attrib")
   value_col <- attrib$value_col
   bootstrap_moments <- map_dfr(
     1:nrep,
     ~ {
-      raw_dist <- slice_sample(imputed_traits, n = sample_size,
+      raw_dist <- slice_sample(selected_traits, n = sample_size,
                                replace = TRUE, weight_by = weight)
       if (raw){
         return(raw_dist)
@@ -67,6 +67,6 @@ trait_np_bootstrap <- function(imputed_traits, nrep = 100, sample_size = 200, ra
 
   # make bootstrap_moments an ordinary tibble
   class(bootstrap_moments) <-
-    class(bootstrap_moments)[!class(bootstrap_moments) == "imputed_trait"]
+    class(bootstrap_moments)[!class(bootstrap_moments) == "selected_trait"]
   return(bootstrap_moments)
 }

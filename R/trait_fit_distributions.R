@@ -2,7 +2,7 @@
 #' @description Function to fit parametric distributions for each species-by-trait
 #' combination at the finest scale of the user-supplied hierarchy. This function 
 #' returns a tibble containing the fitted parameters.
-#' @param imputed_traits output from the trait_impute function.
+#' @param selected_traits output from the trait_select function.
 #' @param distribution_type the type of statistical distribution to use.
 #' Character or named list. Currently accepts "normal","lognormal", and "beta".
 #' @description
@@ -28,35 +28,35 @@
 #' @examples
 #' data(community)
 #' data(trait)
-#' imputed_traits <- trait_impute(comm = community, traits = trait,
+#' selected_traits <- trait_select(comm = community, traits = trait,
 #'                   scale_hierarchy = c("Site", "PlotID"),
 #'                   taxon_col = "Taxon", value_col = "Value",
 #'                   trait_col = "Trait", abundance_col = "Cover")
 #' fitted_distributions <- trait_fit_distributions(
-#'                         imputed_traits = imputed_traits,
+#'                         selected_traits = selected_traits,
 #'                         distribution_type = "normal")
 #'
 #' @export
-trait_fit_distributions <- function(imputed_traits,
+trait_fit_distributions <- function(selected_traits,
                                     distribution_type = "normal") {
 
-  #Check imputed traits
-  if (! inherits(imputed_traits, "imputed_trait")) {
-    stop("Imputed traits are not appropriately formatted.
-    Please use trait_impute() ")
+  #Check selected traits
+  if (! inherits(selected_traits, "selected_trait")) {
+    stop("selected traits are not appropriately formatted.
+    Please use trait_select() ")
   }
 
 
-  #Pull useful information from imputed traits object
-  value_col <- attributes(imputed_traits)$attrib$value_col
-  trait_col <- attributes(imputed_traits)$attrib$trait_col
-  taxon_col <- attributes(imputed_traits)$attrib$taxon_col
-  abundance_col <- attributes(imputed_traits)$attrib$abundance_col
-  scale_hierarchy <- attributes(imputed_traits)$attrib$scale_hierarchy
+  #Pull useful information from selected traits object
+  value_col <- attributes(selected_traits)$attrib$value_col
+  trait_col <- attributes(selected_traits)$attrib$trait_col
+  taxon_col <- attributes(selected_traits)$attrib$taxon_col
+  abundance_col <- attributes(selected_traits)$attrib$abundance_col
+  scale_hierarchy <- attributes(selected_traits)$attrib$scale_hierarchy
 
   #If only a single type of distribution was supplied, apply it to all traits
   if (length(distribution_type) == 1) {
-    distributions <- unique(as.data.frame(imputed_traits)[, trait_col])
+    distributions <- unique(as.data.frame(selected_traits)[, trait_col])
     dist_list <- replicate(n = length(distributions), expr = distribution_type)
     names(dist_list) <- distributions
     distribution_type <- as.list(dist_list)
@@ -77,7 +77,7 @@ trait_fit_distributions <- function(imputed_traits,
   if ("beta" %in% distribution_type) {
 
     #make sure every species x hierarchy combination has at least 2 data points
-    beta_counts <- imputed_traits %>%
+    beta_counts <- selected_traits %>%
       filter(.data[[trait_col]] %in%
                names(distribution_type)[distribution_type == "beta"])
 
@@ -88,7 +88,7 @@ trait_fit_distributions <- function(imputed_traits,
       }
 
     #check that values are between 0 and 1
-    beta_vals <- imputed_traits %>%
+    beta_vals <- selected_traits %>%
       ungroup() %>%
       filter(.data[[trait_col]] %in%
                names(distribution_type)[distribution_type == "beta"]) %>%
@@ -105,7 +105,7 @@ trait_fit_distributions <- function(imputed_traits,
   #lognormal checks
   if ("lognormal" %in% distribution_type) {
 
-    ln_vals <- imputed_traits %>%
+    ln_vals <- selected_traits %>%
       ungroup() %>%
       filter(.data[[trait_col]] ==
                names(distribution_type)[distribution_type == "lognormal"]) %>%
@@ -119,7 +119,7 @@ trait_fit_distributions <- function(imputed_traits,
 
   # Main body
 
-  distribution_parms <- imputed_traits %>%
+  distribution_parms <- selected_traits %>%
     group_by(.data[[c(taxon_col)]],
              .data[[c(abundance_col)]], .data$n_sample, .add = TRUE) %>%
     mutate(distribution_type = unlist(
@@ -130,7 +130,7 @@ trait_fit_distributions <- function(imputed_traits,
 
 
   #set arguments as attributes so next functions have access to them
-  attr(distribution_parms, "attrib") <- attributes(imputed_traits)$attrib
+  attr(distribution_parms, "attrib") <- attributes(selected_traits)$attrib
 
   class(distribution_parms) <- c("parametric_distributions",
                                  class(distribution_parms))
