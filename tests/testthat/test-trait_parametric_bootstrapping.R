@@ -6,7 +6,7 @@ test_that("output is properly formatted", {
   data(community)
   data(trait)
   nrep_pbs <- 10
-  imputed_traits <- trait_impute(comm = community,
+  selected_traits <- trait_select(comm = community,
                                  traits = trait,
                                  scale_hierarchy = c("Site", "PlotID"),
                                  global = TRUE,
@@ -15,7 +15,7 @@ test_that("output is properly formatted", {
                                  min_n_in_sample = 3)
 
   fitted_distributions <- trait_fit_distributions(
-    imputed_traits = imputed_traits, distribution_type = "lognormal")
+    selected_traits = selected_traits, distribution_type = "lognormal")
 
   pbs_out <- trait_parametric_bootstrap(
     fitted_distributions = fitted_distributions, nrep = nrep_pbs)
@@ -35,7 +35,7 @@ test_that("output is properly formatted", {
 
 
   expect_equal(object = nrow(pbs_out),
-               expected = imputed_traits %>%
+               expected = selected_traits %>%
                  group_by_at(c(as.character(scale_hierarchy),
                                trait_col)) %>%
                  dplyr::n_groups() * nrep_pbs)
@@ -50,7 +50,7 @@ test_that("Bad inputs return errors", {
   data(community)
   data(trait)
   nrep_pbs <- 10
-  imputed_traits <- trait_impute(comm = community,
+  selected_traits <- trait_select(comm = community,
                                  traits = trait,
                                  scale_hierarchy = c("Site", "PlotID"),
                                  global = TRUE,
@@ -59,7 +59,7 @@ test_that("Bad inputs return errors", {
                                  min_n_in_sample = 3)
 
   fitted_distributions <- trait_fit_distributions(
-    imputed_traits = imputed_traits, distribution_type = "lognormal")
+    selected_traits = selected_traits, distribution_type = "lognormal")
 
   expect_error(object = trait_parametric_bootstrap(
     fitted_distributions = "Wreck-Gar", nrep = 10))

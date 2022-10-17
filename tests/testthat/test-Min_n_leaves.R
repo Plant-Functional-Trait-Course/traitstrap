@@ -1,6 +1,6 @@
-context("trait_impute minimum number in sample")
+context("trait_select minimum number in sample")
 
-test_that("trait_impute minimum number in sample", {
+test_that("trait_select minimum number in sample", {
   #### set-up ####
   mini_trait <- tidyr::crossing(
     genus = c("G1", "G2"),
@@ -24,12 +24,12 @@ test_that("trait_impute minimum number in sample", {
 
   #### test set 1 ####
   # site A plot 2 G1 sp1 has only 2 samples
-  # impute should include samples from plot 2
+  # select should include samples from plot 2
 
   mini_trait1 <- mini_trait %>%
     filter(!(taxon == "G1 sp1" & site == "A" & plot == 2 & n_sample > 2))
 
-  ti_1 <- trait_impute(
+  ti_1 <- trait_select(
     comm = mini_comm,
     traits = mini_trait1,
     scale_hierarchy = c("site", "plot"),
@@ -47,7 +47,7 @@ test_that("trait_impute minimum number in sample", {
     5 + 2
   )
 
-  #check imputation from correct level (site)
+  #check selection from correct level (site)
   expect_equal(
     as.character(unique(ti_1[cond, "level", drop = TRUE])),
     "site"
@@ -55,12 +55,12 @@ test_that("trait_impute minimum number in sample", {
 
   #### test set 2 ####
   # site A G1 sp1 has only 2 samples in each plot = 4 overall
-  # impute should be at global level
+  # select should be at global level
 
   mini_trait2 <- mini_trait %>%
     filter(!(taxon == "G1 sp1" & site == "A" & n_sample > 2))
 
-  ti_2 <- trait_impute(
+  ti_2 <- trait_select(
     comm = mini_comm,
     traits = mini_trait2,
     scale_hierarchy = c("site", "plot"),
@@ -78,7 +78,7 @@ test_that("trait_impute minimum number in sample", {
     (5 + 2) * 2
   )
 
-  #check imputation from correct level (global)
+  #check selection from correct level (global)
   expect_equal(
     as.character(unique(ti_2[cond, "level", drop = TRUE])),
     "global"
@@ -86,12 +86,12 @@ test_that("trait_impute minimum number in sample", {
 
   #### test set 3 ####
   # G1 sp1 has only 1 sample in each plot = 4 overall !< min_n_in_sample
-  # impute should be at global level
+  # select should be at global level
 
   mini_trait3 <- mini_trait %>%
     filter(!(taxon == "G1 sp1" & n_sample > 1))
 
-  ti_3 <- trait_impute(
+  ti_3 <- trait_select(
     comm = mini_comm,
     traits = mini_trait3,
     scale_hierarchy = c("site", "plot"),
@@ -109,7 +109,7 @@ test_that("trait_impute minimum number in sample", {
     1 * 4
   )
 
-  #check imputation from correct level (global)
+  #check selection from correct level (global)
   expect_equal(
     as.character(unique(ti_3[cond, "level", drop = TRUE])),
     "global"

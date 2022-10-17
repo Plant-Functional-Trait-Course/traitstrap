@@ -1,6 +1,6 @@
-context("trait_impute taxonomic imputation")
+context("trait_select taxonomic selection")
 
-test_that("trait_impute taxonomic imputation", {
+test_that("trait_select taxonomic selection", {
   #### set-up ####
   mini_trait <- tidyr::crossing(
     genus = c("G1", "G2"),
@@ -22,12 +22,12 @@ test_that("trait_impute taxonomic imputation", {
     mutate(cover = 5)
 
   #### test set 1 ####
-  # impute site A plot 2 - should get value from A1.
-  # Should be no genus level imputations
+  # select site A plot 2 - should get value from A1.
+  # Should be no genus level selections
   mini_trait1 <- mini_trait %>%
     filter(!(taxon == "G1 sp1" & site == "A" & plot == 2))
 
-  ti_1 <- trait_impute(
+  ti_1 <- trait_select(
     comm = mini_comm,
     traits = mini_trait1,
     scale_hierarchy = c("site", "plot"),
@@ -38,7 +38,7 @@ test_that("trait_impute taxonomic imputation", {
     min_n_in_sample = 1
   )
 
-  #check expected value of trait imputed (A1 sp1)
+  #check expected value of trait selected (A1 sp1)
   cond <- with(ti_1, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     ti_1[cond, "value"],
@@ -47,26 +47,26 @@ test_that("trait_impute taxonomic imputation", {
                   mini_trait$plot == 1), "value"]
   )
 
-  #check imputation from correct level (site)
+  #check selection from correct level (site)
   expect_equal(
     as.vector(ti_1[cond, "level", drop = TRUE]),
     "site"
   )
-  #check imputation from correct level (site)
+  #check selection from correct level (site)
   expect_equal(
     ti_1[cond, "weight", drop = TRUE],
     mini_comm[(mini_trait$taxon == "G1 sp1" &
                  mini_trait$site == "A" &
                  mini_trait$plot == 1), "cover", drop = TRUE]
   )
-  #check all imputations at correct taxon level (taxon)
+  #check all selections at correct taxon level (taxon)
   expect_true(
     all(ti_1[cond, "taxon_level", drop = TRUE] == "taxon")
   )
 
   #### test set 1b ####
   #exactly the same as test set 1a but with pipes
-  ti_1 <- trait_impute(
+  ti_1 <- trait_select(
       comm = mini_comm,
       traits = mini_trait1,
       scale_hierarchy = c("site", "plot"),
@@ -77,7 +77,7 @@ test_that("trait_impute taxonomic imputation", {
       min_n_in_sample = 1
     )
 
-  #check expected value of trait imputed (A1 sp1)
+  #check expected value of trait selected (A1 sp1)
   cond <- with(ti_1, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     ti_1[cond, "value"],
@@ -86,30 +86,30 @@ test_that("trait_impute taxonomic imputation", {
                   mini_trait$plot == 1), "value"]
   )
 
-  #check imputation from correct level (site)
+  #check selection from correct level (site)
   expect_equal(
     as.vector(ti_1[cond, "level", drop = TRUE]),
     "site"
   )
-  #check imputation from correct level (site)
+  #check selection from correct level (site)
   expect_equal(
     ti_1[cond, "weight", drop = TRUE],
     mini_comm[(mini_trait$taxon == "G1 sp1" &
                  mini_trait$site == "A" &
                  mini_trait$plot == 1), "cover", drop = TRUE]
   )
-  #check all imputations at correct taxon level (taxon)
+  #check all selections at correct taxon level (taxon)
   expect_true(
     all(ti_1[cond, "taxon_level", drop = TRUE] == "taxon")
   )
 
 
   #### test set 2 ####
-  # impute site A G1 sp1 - should get value from site A G1 sp2
+  # select site A G1 sp1 - should get value from site A G1 sp2
   mini_trait2 <- mini_trait %>%
     filter(taxon != "G1 sp1")
 
-  ti_2 <- trait_impute(
+  ti_2 <- trait_select(
     comm = mini_comm,
     traits = mini_trait2,
     scale_hierarchy = c("site", "plot"),
@@ -120,7 +120,7 @@ test_that("trait_impute taxonomic imputation", {
     min_n_in_sample = 1
   )
 
-  #for site A, should impute from G1 sp2 at site A
+  #for site A, should select from G1 sp2 at site A
   got <- ti_2 %>% filter(site == "A", taxon == "G1 sp1")
   target <- mini_trait %>% filter(site == "A", taxon == "G1 sp2")
   expect_equal(
