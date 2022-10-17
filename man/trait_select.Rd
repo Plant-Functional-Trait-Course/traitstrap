@@ -17,7 +17,9 @@ trait_select(
   treatment_level = NULL,
   other_col = character(0),
   keep_all = FALSE,
-  min_n_in_sample = 5
+  min_n_in_sample = 5,
+  complete_only = FALSE,
+  leaf_id
 )
 }
 \arguments{
@@ -54,6 +56,10 @@ or just finest scale available}
 
 \item{min_n_in_sample}{numeric; minimum number in sample with traits to accept before
 searching for traits higher up the hierarchy. The default is 5.}
+
+\item{complete_only}{logical; use only leaves with a full set of traits. Set to TRUE when imputing for \code{trait_multivariate_bootstrap}}
+
+\item{leaf_id}{character; unique leaf identifiers. Only needed when \code{complete_only} is TRUE.}
 }
 \value{
 a tibble with extra class \code{selected_trait}
