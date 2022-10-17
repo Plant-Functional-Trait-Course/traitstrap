@@ -23,6 +23,8 @@
 #' or just finest scale available
 #' @param min_n_in_sample numeric; minimum number in sample with traits to accept before
 #' searching for traits higher up the hierarchy. The default is 5.
+#' @param complete_only logical; use only leaves with a full set of traits. Set to TRUE when imputing for \code{trait_multivariate_bootstrap}
+#' @param leaf_id character; unique leaf identifiers. Only needed when \code{complete_only} is TRUE.
 #'
 #' @description
 #' 
@@ -99,7 +101,9 @@ trait_select <- function(
   treatment_col = NULL, treatment_level = NULL,
   other_col = character(0),
   keep_all = FALSE,
-  min_n_in_sample = 5) {
+  min_n_in_sample = 5,
+  complete_only = FALSE,
+  leaf_id) {
 
   #### sanity checks on input (are columns present etc) ####
   #check data have all scales in scale_hierarchy
@@ -206,6 +210,23 @@ trait_select <- function(
 
   #remove NA trait values
   traits <- traits %>% filter(!is.na(.data[[value_col]]))
+  
+  ## remove leaves with incomplete set of traits if complete_only
+  if(isTRUE(complete_only)){
+    n_traits <- n_distinct(traits[[trait_col]])
+    if (missing(leaf_id) || !leaf_id %in% names(traits)) {
+      stop("leaf_id is missing or not in the traits data")
+    }
+    traits <- traits |> 
+      group_by(.data[[leaf_id]]) |> 
+      mutate(.n = n())
+    if (any(traits$.n > n_traits)) {
+      stop("Leaves can only have one measurement per trait. Check leaf ID are unique.")
+    }
+    traits <- traits |> 
+      filter(.data$.n == n_traits) |> 
+      select(-.data$.n)
+  }
 
   ## check for NA in abundance
   if (any(is.na(comm[[abundance_col]]))) {

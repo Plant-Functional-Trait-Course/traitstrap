@@ -64,18 +64,24 @@ trait_multivariate_bootstrap <- function(selected_traits, nrep = 100, sample_siz
   n_traits <- n_distinct(selected_traits[[attrib$trait_col]])
   trait_names <- unique(selected_traits[[attrib$trait_col]])
   
-  # pivot wider
-  selected_traits_wide <- selected_traits %>%
+  # check complete traits
+  check_n_traits <- selected_traits %>%
     # remove leaves with incomplete data
     ungroup(.data[[attrib$trait_col]]) %>% 
-    group_by(.data[[id]], .add = TRUE) %>% 
-    filter(n() == n_traits) %>% 
+    group_by(.data[[id]], .add = TRUE) |> 
+    mutate(.n = n())
+
+  if (any(check_n_traits$.n != n_traits)) {
+    stop("Some leaves with incomplete set of traits. 
+         Please run trait_impute() with complete_only set to TRUE.")
+  }
+  
+  # pivot_wider
+  imputed_traits_wide <- imputed_traits %>%
     #remove unneeded columns
     select(-.data[[attrib$taxon_col]], -.data[[attrib$abundance_col]], 
            -.data$n_sample, -.data$max_n_in_sample, 
            -.data$level, -.data$sum_abun) %>%
-    # cludge - need single weight for bootstrap, not one per trait
-    mutate(weight = mean(.data$weight)) |> 
     #pivot
     pivot_wider(names_from = .data[[attrib$trait_col]],
                 values_from = .data[[value_col]]) %>% 
