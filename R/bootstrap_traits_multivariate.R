@@ -39,7 +39,8 @@
 #' selected_traits <- trait_select(comm = community, traits = trait,
 #'                   scale_hierarchy = c("Site", "PlotID"),
 #'                   taxon_col = "Taxon", value_col = "Value",
-#'                   trait_col = "Trait", abundance_col = "Cover")
+#'                   trait_col = "Trait", abundance_col = "Cover",
+#'                   complete_only = TRUE, leaf_id =  "ID")
 #' boot_traits <- trait_multivariate_bootstrap(selected_traits, fun = cor)
 #' boot_traits_long <- boot_traits |> 
 #'   mutate(correlations = map(result, ~cor_to_df(.x))) |> 
@@ -73,11 +74,11 @@ trait_multivariate_bootstrap <- function(selected_traits, nrep = 100, sample_siz
 
   if (any(check_n_traits$.n != n_traits)) {
     stop("Some leaves with incomplete set of traits. 
-         Please run trait_impute() with complete_only set to TRUE.")
+         Please run trait_select() with complete_only set to TRUE.")
   }
   
   # pivot_wider
-  imputed_traits_wide <- imputed_traits %>%
+  selected_traits_wide <- selected_traits %>%
     #remove unneeded columns
     select(-.data[[attrib$taxon_col]], -.data[[attrib$abundance_col]], 
            -.data$n_sample, -.data$max_n_in_sample, 

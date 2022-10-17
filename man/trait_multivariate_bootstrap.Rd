@@ -58,7 +58,8 @@ data(trait)
 selected_traits <- trait_select(comm = community, traits = trait,
                   scale_hierarchy = c("Site", "PlotID"),
                   taxon_col = "Taxon", value_col = "Value",
-                  trait_col = "Trait", abundance_col = "Cover")
+                  trait_col = "Trait", abundance_col = "Cover",
+                  complete_only = TRUE, leaf_id =  "ID")
 boot_traits <- trait_multivariate_bootstrap(selected_traits, fun = cor)
 boot_traits_long <- boot_traits |> 
   mutate(correlations = map(result, ~cor_to_df(.x))) |> 
