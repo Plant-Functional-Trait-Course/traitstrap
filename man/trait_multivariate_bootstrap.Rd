@@ -5,7 +5,7 @@
 \title{Bootstrap traits}
 \usage{
 trait_multivariate_bootstrap(
-  imputed_traits,
+  selected_traits,
   nrep = 100,
   sample_size = 200,
   raw = FALSE,
@@ -14,7 +14,7 @@ trait_multivariate_bootstrap(
 )
 }
 \arguments{
-\item{imputed_traits}{output from the trait_impute function.}
+\item{selected_traits}{output from the trait_select function.}
 
 \item{nrep}{number of bootstrap replicates}
 
@@ -38,7 +38,7 @@ weighted trait correlations, other bivariate or multivariate statistics
 
 }
 \details{
-The observed and imputed leaves  are re-sampled in proportion to their weights, 
+The observed and selected leaves  are re-sampled in proportion to their weights, 
 e.g. the abundance of a species or the biomass. Values across all individuals 
 in a community are resampled n times (nrep) to incorporate the full 
 spectrum of trait variation, generating n number (sample_size) of trait distributions. 
@@ -55,11 +55,11 @@ require(ggplot2)
 require(purrr)
 data(community)
 data(trait)
-imputed_traits <- trait_impute(comm = community, traits = trait,
+selected_traits <- trait_select(comm = community, traits = trait,
                   scale_hierarchy = c("Site", "PlotID"),
                   taxon_col = "Taxon", value_col = "Value",
                   trait_col = "Trait", abundance_col = "Cover")
-boot_traits <- trait_multivariate_bootstrap(imputed_traits, fun = cor)
+boot_traits <- trait_multivariate_bootstrap(selected_traits, fun = cor)
 boot_traits_long <- boot_traits |> 
   mutate(correlations = map(result, ~cor_to_df(.x))) |> 
   select(-result) |> 

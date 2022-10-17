@@ -45,12 +45,12 @@ trait_summarize_boot_moments.
 \examples{
 data(community)
 data(trait)
-imputed_traits <-trait_impute(comm = community, traits = trait,
+selected_traits <-trait_select(comm = community, traits = trait,
                  scale_hierarchy = c("Site", "PlotID"),
                  taxon_col = "Taxon", value_col = "Value",
                  trait_col = "Trait", abundance_col = "Cover")
 fitted_distributions <- trait_fit_distributions(
-                        imputed_traits = imputed_traits,
+                        selected_traits = selected_traits,
                         distribution_type = "normal")
 parametric_distributions <- trait_parametric_bootstrap(
                             fitted_distributions = fitted_distributions,

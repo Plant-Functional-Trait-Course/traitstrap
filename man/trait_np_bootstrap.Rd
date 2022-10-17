@@ -4,10 +4,10 @@
 \alias{trait_np_bootstrap}
 \title{Bootstrap traits}
 \usage{
-trait_np_bootstrap(imputed_traits, nrep = 100, sample_size = 200, raw = FALSE)
+trait_np_bootstrap(selected_traits, nrep = 100, sample_size = 200, raw = FALSE)
 }
 \arguments{
-\item{imputed_traits}{output from the trait_impute function.}
+\item{selected_traits}{output from the trait_select function.}
 
 \item{nrep}{number of bootstrap replicates}
 
@@ -40,9 +40,9 @@ trait_summarize_boot_moments.
 \examples{
 data(community)
 data(trait)
-imputed_traits <-trait_impute(comm = community, traits = trait,
+selected_traits <-trait_select(comm = community, traits = trait,
                  scale_hierarchy = c("Site", "PlotID"),
                  taxon_col = "Taxon", value_col = "Value",
                  trait_col = "Trait", abundance_col = "Cover")
-boot_traits <- trait_np_bootstrap(imputed_traits)
+boot_traits <- trait_np_bootstrap(selected_traits)
 }

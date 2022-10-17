@@ -4,10 +4,10 @@
 \alias{trait_fit_distributions}
 \title{Fit trait distributions}
 \usage{
-trait_fit_distributions(imputed_traits, distribution_type = "normal")
+trait_fit_distributions(selected_traits, distribution_type = "normal")
 }
 \arguments{
-\item{imputed_traits}{output from the trait_impute function.}
+\item{selected_traits}{output from the trait_select function.}
 
 \item{distribution_type}{the type of statistical distribution to use.
 Character or named list. Currently accepts "normal","lognormal", and "beta".}
@@ -33,12 +33,12 @@ The function returns a dataframe containing fitted distribution parameters.
 \examples{
 data(community)
 data(trait)
-imputed_traits <- trait_impute(comm = community, traits = trait,
+selected_traits <- trait_select(comm = community, traits = trait,
                   scale_hierarchy = c("Site", "PlotID"),
                   taxon_col = "Taxon", value_col = "Value",
                   trait_col = "Trait", abundance_col = "Cover")
 fitted_distributions <- trait_fit_distributions(
-                        imputed_traits = imputed_traits,
+                        selected_traits = selected_traits,
                         distribution_type = "normal")
 
 }

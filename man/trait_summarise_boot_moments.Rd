@@ -37,10 +37,10 @@ Summarizes the mean and confidence interval for each trait moment.
 \examples{
 data(community)
 data(trait)
-imputed_traits <-trait_impute(comm = community, traits = trait,
+selected_traits <-trait_select(comm = community, traits = trait,
                  scale_hierarchy = c("Site", "PlotID"),
                  taxon_col = "Taxon", value_col = "Value",
                  trait_col = "Trait", abundance_col = "Cover")
-boot_traits <- trait_np_bootstrap(imputed_traits)
+boot_traits <- trait_np_bootstrap(selected_traits)
 trait_summarise_boot_moments(boot_traits)
 }
