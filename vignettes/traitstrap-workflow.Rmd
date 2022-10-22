@@ -211,7 +211,7 @@ trait_selection2 <- trait_select(
     value_col = "Value",
     
     scale_hierarchy = c("Site", "PlotID"),
-    min_n_in_sample = 3
+    min_n_in_sample = 3,
     
     # specifying experimental design
     treatment_col = "Treatment",
@@ -363,6 +363,60 @@ ggplot(raw_dist_np, aes(x = log(Value), fill = Site)) +
 
 ```
 
+# Multivariate analyses
+
+While the core functionality of traitstrap was designed with univariate distributions in mind, it can also be used for multivariate questions as well using the function `trait_multivariate_bootstrap`. This function allows users to supply any appropriate function for analyses of multivariate data, including those included in popular packages for functional diversity calculations. Here, we demonstrate how to combine `trait_multivariate_bootstrap` with the function dbFD from the FD package.
+
+```{r multivariate, warning=FALSE, fig.width = 6}
+
+library(FD)
+
+
+multivariate_traits <- trait_select(comm = community %>%
+                                      #to make the example faster, we'll only use a subset of plots
+                                      filter(Site == "1",
+                                             PlotID %in% c("A","B","C")),
+                                    traits = trait,
+                                    scale_hierarchy = c("Site", "PlotID"),
+                                    taxon_col = "Taxon",
+                                    value_col = "Value",
+                                    trait_col = "Trait",
+                                    abundance_col = "Cover",
+                                    complete_only = TRUE,
+                                    leaf_id =  "ID")
+
+
+boot_multi <- trait_multivariate_bootstrap(multivariate_traits,
+                                            id = "ID",
+                                            nrep = 20, #Note that the number of reps is set low for demo purposes
+                                            sample_size = 200,
+                                            fun = function(x){dbFD(x = x,
+                                                            calc.FRic = FALSE,
+                                                            calc.FDiv = FALSE,
+                                                            calc.CWM = FALSE,
+                                                            stand.x = FALSE,
+                                                            scale.RaoQ = FALSE)}
+                                            )
+
+# Because dbFD returns output as a list, we need to do a bit of work to wrangle it into a more useful format
+# We'll extract Rao's Quadratic Entropy, since that performs well with bootstrapping.
+
+boot_multi %>%
+  rowwise()%>%
+          mutate(RaoQ = .data$result$RaoQ) %>%
+          dplyr::select(-result)-> raoq_est
+  
+raoq_est %>%
+  ggplot(mapping = aes(x=RaoQ,
+                       fill=PlotID))+
+  geom_density(alpha=0.5)+
+  xlim(c(0,6))
+
+
+
+
+```
+
 ## Check your data
 
 Traitstrap has a couple of functions to check the data.
@@ -395,4 +449,5 @@ trait_missing(selected_trait = trait_selection,
               comm = community)
 
 ```
+
 
