@@ -38,5 +38,6 @@ Suggests:
     knitr,
     rmarkdown,
     viridis,
-    FD
+    FD,
+    TPD
 VignetteBuilder: knitr

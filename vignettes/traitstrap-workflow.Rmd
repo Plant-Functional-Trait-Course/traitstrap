@@ -417,6 +417,44 @@ raoq_est %>%
 
 ```
 
+Next, we'll show how we can use a similar method to combine `trait_multivariate_bootstrap` with the functions TPDs and REND from the TPD package.
+```{r multivariate tpd, echo=TRUE, warning=FALSE, message=FALSE, fig.width = 6}
+
+library(TPD)
+
+
+# for each replicated site, convert the distribution into a trait probability distribution and then derive functional diversity metrics
+
+  boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
+                                           id = "ID",
+                                           nrep = 20, #Note that the number of reps is set low for demo purposes
+                                           sample_size = 200,
+                                           fun = function(x){TPDs(species = rep(1,200),
+                                                                  traits = x) %>%
+                                               REND(TPDs = .)})
+
+# reformat the results to make plotting easier
+  boot_tpd %>%
+    rowwise()%>%
+    mutate(FRichness = .data$result$species$FRichness,
+           FEvenness = .data$result$species$FEvenness,
+           FDivergence = .data$result$species$FDivergence) %>%
+    dplyr::select(-result)%>%
+    tidyr::pivot_longer(cols = c("FRichness","FEvenness","FDivergence"),
+                        names_to = "metric") -> boot_tpd
+
+
+boot_tpd %>%
+  ggplot()+
+  geom_violin(mapping = aes(y=value,x=PlotID, fill=PlotID),
+              alpha=0.5,
+              draw_quantiles = c(0.025,0.975))+
+  facet_wrap(~metric,scales = "free")
+
+
+```
+
+
 ## Check your data
 
 Traitstrap has a couple of functions to check the data.
