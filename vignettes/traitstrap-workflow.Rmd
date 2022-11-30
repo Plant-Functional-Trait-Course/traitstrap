@@ -407,7 +407,7 @@ boot_multi <- trait_multivariate_bootstrap(multivariate_traits,
 # We'll extract Rao's Quadratic Entropy, since that performs well with bootstrapping.
 
 raoq_est <-
-boot_multi %>%
+  boot_multi %>%
   rowwise() %>%
   mutate(RaoQ = .data$result$RaoQ) %>%
   dplyr::select(-result)
@@ -445,7 +445,7 @@ boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
 # reformat the results to make plotting easier
 
 boot_tpd <-
-boot_tpd %>%
+  boot_tpd %>%
   rowwise() %>%
   mutate(
     FRichness = .data$result$species$FRichness,
