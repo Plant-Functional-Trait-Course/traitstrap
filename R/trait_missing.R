@@ -12,14 +12,17 @@ trait_missing <- function(selected_trait, comm) {
 
   comm %>%
     left_join(selected_trait,
-              by = attrib$taxon_col,
-              suffix = c("", "_trait")) %>%
+      by = attrib$taxon_col,
+      suffix = c("", "_trait")
+    ) %>%
     ungroup() %>%
     group_by(.data[[attrib$taxon_col]]) %>%
     mutate(max_abun = max(.data[[attrib$abundance_col]])) %>%
     ungroup() %>%
-    distinct(across(all_of(c(attrib$trait_col, attrib$taxon_col))),
-             .data$max_abun) %>%
+    distinct(
+      across(all_of(c(attrib$trait_col, attrib$taxon_col))),
+      .data$max_abun
+    ) %>%
     group_by(.data[[attrib$taxon_col]], .data$max_abun) %>%
     summarise(n_traits = n())
 }
