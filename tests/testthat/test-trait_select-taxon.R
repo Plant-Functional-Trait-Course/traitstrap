@@ -14,7 +14,7 @@ test_that("trait_select taxonomic selection", {
 
   mini_comm <- tidyr::crossing(
     genus = c("G1", "G2"),
-    taxon =  c("sp1", "sp2"),
+    taxon = c("sp1", "sp2"),
     site = c("A", "B"),
     plot = 1:2
   ) %>%
@@ -38,67 +38,67 @@ test_that("trait_select taxonomic selection", {
     min_n_in_sample = 1
   )
 
-  #check expected value of trait selected (A1 sp1)
+  # check expected value of trait selected (A1 sp1)
   cond <- with(ti_1, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     ti_1[cond, "value"],
     mini_trait[(mini_trait$taxon == "G1 sp1" &
-                  mini_trait$site == "A" &
-                  mini_trait$plot == 1), "value"]
+      mini_trait$site == "A" &
+      mini_trait$plot == 1), "value"]
   )
 
-  #check selection from correct level (site)
+  # check selection from correct level (site)
   expect_equal(
     as.vector(ti_1[cond, "level", drop = TRUE]),
     "site"
   )
-  #check selection from correct level (site)
+  # check selection from correct level (site)
   expect_equal(
     ti_1[cond, "weight", drop = TRUE],
     mini_comm[(mini_trait$taxon == "G1 sp1" &
-                 mini_trait$site == "A" &
-                 mini_trait$plot == 1), "cover", drop = TRUE]
+      mini_trait$site == "A" &
+      mini_trait$plot == 1), "cover", drop = TRUE]
   )
-  #check all selections at correct taxon level (taxon)
+  # check all selections at correct taxon level (taxon)
   expect_true(
     all(ti_1[cond, "taxon_level", drop = TRUE] == "taxon")
   )
 
   #### test set 1b ####
-  #exactly the same as test set 1a but with pipes
+  # exactly the same as test set 1a but with pipes
   ti_1 <- trait_select(
-      comm = mini_comm,
-      traits = mini_trait1,
-      scale_hierarchy = c("site", "plot"),
-      taxon_col = c("taxon", "genus"),
-      trait_col = "trait",
-      value_col = "value",
-      abundance_col = "cover",
-      min_n_in_sample = 1
-    )
+    comm = mini_comm,
+    traits = mini_trait1,
+    scale_hierarchy = c("site", "plot"),
+    taxon_col = c("taxon", "genus"),
+    trait_col = "trait",
+    value_col = "value",
+    abundance_col = "cover",
+    min_n_in_sample = 1
+  )
 
-  #check expected value of trait selected (A1 sp1)
+  # check expected value of trait selected (A1 sp1)
   cond <- with(ti_1, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     ti_1[cond, "value"],
     mini_trait[(mini_trait$taxon == "G1 sp1" &
-                  mini_trait$site == "A" &
-                  mini_trait$plot == 1), "value"]
+      mini_trait$site == "A" &
+      mini_trait$plot == 1), "value"]
   )
 
-  #check selection from correct level (site)
+  # check selection from correct level (site)
   expect_equal(
     as.vector(ti_1[cond, "level", drop = TRUE]),
     "site"
   )
-  #check selection from correct level (site)
+  # check selection from correct level (site)
   expect_equal(
     ti_1[cond, "weight", drop = TRUE],
     mini_comm[(mini_trait$taxon == "G1 sp1" &
-                 mini_trait$site == "A" &
-                 mini_trait$plot == 1), "cover", drop = TRUE]
+      mini_trait$site == "A" &
+      mini_trait$plot == 1), "cover", drop = TRUE]
   )
-  #check all selections at correct taxon level (taxon)
+  # check all selections at correct taxon level (taxon)
   expect_true(
     all(ti_1[cond, "taxon_level", drop = TRUE] == "taxon")
   )
@@ -120,12 +120,11 @@ test_that("trait_select taxonomic selection", {
     min_n_in_sample = 1
   )
 
-  #for site A, should select from G1 sp2 at site A
+  # for site A, should select from G1 sp2 at site A
   got <- ti_2 %>% filter(site == "A", taxon == "G1 sp1")
   target <- mini_trait %>% filter(site == "A", taxon == "G1 sp2")
   expect_equal(
     sort(got$value),
     sort(target$value)
   )
-
 })

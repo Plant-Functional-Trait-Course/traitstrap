@@ -15,7 +15,7 @@ test_that("trait_select minimum number in sample", {
 
   mini_comm <- tidyr::crossing(
     genus = c("G1", "G2"),
-    taxon =  c("sp1", "sp2"),
+    taxon = c("sp1", "sp2"),
     site = c("A", "B"),
     plot = 1:2
   ) %>%
@@ -40,14 +40,14 @@ test_that("trait_select minimum number in sample", {
     min_n_in_sample = 5
   )
 
-  #check expected number of samples (two from plot 2, five from plot 2)
+  # check expected number of samples (two from plot 2, five from plot 2)
   cond <- with(ti_1, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     unique(ti_1[cond, "n_sample", drop = TRUE]),
     5 + 2
   )
 
-  #check selection from correct level (site)
+  # check selection from correct level (site)
   expect_equal(
     as.character(unique(ti_1[cond, "level", drop = TRUE])),
     "site"
@@ -71,14 +71,14 @@ test_that("trait_select minimum number in sample", {
     min_n_in_sample = 5
   )
 
-  #check expected number in sample (2 each from A plots, 5 each from B plots) = 14
+  # check expected number in sample (2 each from A plots, 5 each from B plots) = 14
   cond <- with(ti_2, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     unique(ti_2[cond, "n_sample", drop = TRUE]),
     (5 + 2) * 2
   )
 
-  #check selection from correct level (global)
+  # check selection from correct level (global)
   expect_equal(
     as.character(unique(ti_2[cond, "level", drop = TRUE])),
     "global"
@@ -102,14 +102,14 @@ test_that("trait_select minimum number in sample", {
     min_n_in_sample = 5
   )
 
-  #check expected number of leaves (one from each plot) == 4
+  # check expected number of leaves (one from each plot) == 4
   cond <- with(ti_3, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     unique(ti_3[cond, "n_sample", drop = TRUE]),
     1 * 4
   )
 
-  #check selection from correct level (global)
+  # check selection from correct level (global)
   expect_equal(
     as.character(unique(ti_3[cond, "level", drop = TRUE])),
     "global"

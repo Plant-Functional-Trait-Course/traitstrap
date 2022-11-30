@@ -20,7 +20,7 @@ funtion.}
 a ggplot
 }
 \description{
-Function calculates the trait coverage of the community 
+Function calculates the trait coverage of the community
 for each level of the sampling hierarchy and makes a barplot.
 
 Shows at which level the data are coming from in each plot.
@@ -29,9 +29,11 @@ Shows at which level the data are coming from in each plot.
 require("ggplot2")
 data(community)
 data(trait)
-selected_traits <-trait_select(comm = community, traits = trait,
-                 scale_hierarchy = c("Site", "PlotID"),
-                 taxon_col = "Taxon", value_col = "Value",
-                 trait_col = "Trait", abundance_col = "Cover")
+selected_traits <- trait_select(
+  comm = community, traits = trait,
+  scale_hierarchy = c("Site", "PlotID"),
+  taxon_col = "Taxon", value_col = "Value",
+  trait_col = "Trait", abundance_col = "Cover"
+)
 autoplot(selected_traits)
 }

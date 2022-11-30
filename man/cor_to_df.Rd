@@ -20,6 +20,7 @@ Helper function for bootstrap_traits_multivariate that
 x <- matrix(ncol = 5, rnorm(20))
 colnames(x) <- letters[1:5]
 cor(x) |> cor_to_df()
+
 }
 \references{
 Modified from https://stackoverflow.com/a/23476844/2055765

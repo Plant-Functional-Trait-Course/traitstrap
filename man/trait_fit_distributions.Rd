@@ -17,28 +17,29 @@ a tibble
 }
 \description{
 Function to fit parametric distributions for each species-by-trait
-combination at the finest scale of the user-supplied hierarchy. This function 
+combination at the finest scale of the user-supplied hierarchy. This function
 returns a tibble containing the fitted parameters.
-
-
 }
 \details{
 The distributions can either be a single distribution type which is
 used for all traits, or traits can be assigned specific distributions types by
-supplying the function with a named list of traits, e.g. list(height="normal", 
+supplying the function with a named list of traits, e.g. list(height="normal",
 mass="lognormal")).
- 
+
 The function returns a dataframe containing fitted distribution parameters.
 }
 \examples{
 data(community)
 data(trait)
-selected_traits <- trait_select(comm = community, traits = trait,
-                  scale_hierarchy = c("Site", "PlotID"),
-                  taxon_col = "Taxon", value_col = "Value",
-                  trait_col = "Trait", abundance_col = "Cover")
+selected_traits <- trait_select(
+  comm = community, traits = trait,
+  scale_hierarchy = c("Site", "PlotID"),
+  taxon_col = "Taxon", value_col = "Value",
+  trait_col = "Trait", abundance_col = "Cover"
+)
 fitted_distributions <- trait_fit_distributions(
-                        selected_traits = selected_traits,
-                        distribution_type = "normal")
+  selected_traits = selected_traits,
+  distribution_type = "normal"
+)
 
 }
