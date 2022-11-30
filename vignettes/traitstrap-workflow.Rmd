@@ -406,10 +406,11 @@ boot_multi <- trait_multivariate_bootstrap(multivariate_traits,
 # Because dbFD returns output as a list, we need to do a bit of work to wrangle it into a more useful format
 # We'll extract Rao's Quadratic Entropy, since that performs well with bootstrapping.
 
+raoq_est <-
 boot_multi %>%
   rowwise() %>%
   mutate(RaoQ = .data$result$RaoQ) %>%
-  dplyr::select(-result) -> raoq_est
+  dplyr::select(-result)
 
 raoq_est %>%
   ggplot(mapping = aes(
@@ -442,6 +443,8 @@ boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
 )
 
 # reformat the results to make plotting easier
+
+boot_tpd <-
 boot_tpd %>%
   rowwise() %>%
   mutate(
@@ -453,7 +456,7 @@ boot_tpd %>%
   tidyr::pivot_longer(
     cols = c("FRichness", "FEvenness", "FDivergence"),
     names_to = "metric"
-  ) -> boot_tpd
+  )
 
 
 boot_tpd %>%
