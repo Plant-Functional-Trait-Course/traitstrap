@@ -71,7 +71,8 @@ test_that("trait_fill minimum number in sample", {
     min_n_in_sample = 5
   )
 
-  # check expected number in sample (2 each from A plots, 5 each from B plots) = 14
+  # check expected number in sample
+  # (2 each from A plots, 5 each from B plots) = 14
   cond <- with(ti_2, (taxon == "G1 sp1" & site == "A" & plot == 2))
   expect_equal(
     unique(ti_2[cond, "n_sample", drop = TRUE]),

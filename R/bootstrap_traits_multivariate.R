@@ -1,21 +1,24 @@
 #' Bootstrap traits
-#' @description Function for nonparametric bootstrap resampling to calculate community
+#' @description Function for nonparametric bootstrap resampling to
+#' calculate community
 #' weighted trait correlations, other bivariate or multivariate statistics
 #' @param selected_traits output from the trait_fill function.
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size
-#' @param raw logical; argument to extract the raw data of the trait distributions.
-#' The default is raw = FALSE. If raw = TRUE, nrep is restricted to 1 to avoid
-#' memory issues.
+#' @param raw logical; argument to extract the raw data of the trait
+#' distributions.
+#' The default is `raw = FALSE`.
+#' If `raw = TRUE`, `nrep` is restricted to 1 to avoid memory issues.
 #' @param id column name of unique identifiers of each leaf
-#' @param fun bivariate or multivate function to apply
+#' @param fun bivariate or multivariate function to apply
 #'
-#' @details The observed and selected leaves  are re-sampled in proportion to their weights,
-#' e.g. the abundance of a species or the biomass. Values across all individuals
-#' in a community are resampled n times (nrep) to incorporate the full
-#' spectrum of trait variation, generating n number (sample_size) of trait distributions.
-#' From these distributions the function estimates the mean and the higher moments
-#' including variance, skewness and kurtosis.
+#' @details The observed and selected leaves are re-sampled in proportion to
+#' their weights, e.g. the abundance of a species or the biomass.
+#' Values across all individuals
+#' in a community are resampled `sample_size` times to incorporate the full
+#' spectrum of trait variation, generating `nrep` trait distributions.
+#' From these distributions the function estimates the mean and the higher
+#' moments including variance, skewness and kurtosis.
 #'
 #' #' The output of trait_np_bootstrap can be summarized using
 #' trait_summarize_boot_moments.
@@ -57,11 +60,16 @@
 
 #' @export
 
-trait_multivariate_bootstrap <- function(selected_traits, nrep = 100, sample_size = 200, raw = FALSE, id = "ID", fun) {
+trait_multivariate_bootstrap <- function(selected_traits,
+                                         nrep = 100,
+                                         sample_size = 200,
+                                         raw = FALSE,
+                                         id = "ID",
+                                         fun) {
   if (raw) {
     nrep <- 1
   }
-  #  stopifnot(class(traits_com) == "selected_traits")
+
   attrib <- attr(selected_traits, "attrib")
   value_col <- attrib$value_col
 

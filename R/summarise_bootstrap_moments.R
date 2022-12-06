@@ -1,5 +1,6 @@
 #' Summarise Bootstrap traits
-#' @description Summarizes the mean and confidence interval for each trait moment.
+#' @description Summarizes the mean and confidence interval for each
+#' trait moment.
 #' @param bootstrap_moments trait moments from trait_np_bootstrap or
 #' trait_parametric_bootstrap
 #' @param parametric logical; default is TRUE.

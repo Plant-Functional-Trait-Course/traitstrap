@@ -1,8 +1,8 @@
 #' Coverage plot of filled Traits
 #' @description Function calculates the trait coverage of the community
 #' for each level of the sampling hierarchy and makes a barplot.
-#' @param filled_traits output from trait_np_bootstrap or trait_parametric_bootstrap
-#' funtion.
+#' @param filled_traits output from `trait_np_bootstrap()` or
+#' `trait_parametric_bootstrap()`.
 #' @param other_col_how what to do with the other columns in other data.
 #'  Options are to `filter` by one of the columns, add them to the x-`axis`,
 #' `facet` by them, or to `ignore`.
@@ -35,7 +35,7 @@ autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
   # get scale_hierarchy and concatenate to make an ID
   attrib <- attr(filled_traits, "attrib")
 
-  if (length(attrib$other_col) > 0 & missing(other_col_how)) {
+  if (length(attrib$other_col) > 0 && missing(other_col_how)) {
     stop(
       glue("Autoplot needs to know what to do with the other_col. Options are:
             axis: add to x-axis labels
@@ -52,7 +52,9 @@ autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
     )
   }
 
-  filled_traits_summary <- fortify.filled_trait(filled_traits, other_col_how, ...)
+  filled_traits_summary <- fortify.filled_trait(filled_traits,
+                                                other_col_how,
+                                                ...)
 
   plot <- ggplot(filled_traits_summary, aes(
     x = .data$.id,

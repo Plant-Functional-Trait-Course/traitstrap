@@ -14,18 +14,18 @@ test_that("get_ci ranks are appropriate", {
   )
 
   expect_gt(
-    object = get_ci(data = test_vector, which = "high", parametric = F),
-    expected = get_ci(data = test_vector, which = "low", parametric = F)
+    object = get_ci(data = test_vector, which = "high", parametric = FALSE),
+    expected = get_ci(data = test_vector, which = "low", parametric = FALSE)
   )
 
   expect_gt(
     object = get_ci(
       data = test_vector, which = "low",
-      parametric = F, ci = 0.45
+      parametric = FALSE, ci = 0.45
     ),
     expected = get_ci(
       data = test_vector, which = "low",
-      parametric = F, ci = 0.99
+      parametric = FALSE, ci = 0.99
     )
   )
 })
@@ -49,11 +49,11 @@ test_that("get_ci data order doesn't matter", {
   expect_equal(
     object = get_ci(
       data = test_vector[100:1],
-      which = "high", parametric = F
+      which = "high", parametric = FALSE
     ),
     expected = get_ci(
       data = test_vector[1:100],
-      which = "high", parametric = F
+      which = "high", parametric = FALSE
     )
   )
 })

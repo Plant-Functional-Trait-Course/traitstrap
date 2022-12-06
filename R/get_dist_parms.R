@@ -32,7 +32,7 @@ get_dist_parms <- function(data, distribution_type) {
   }
 
   # Hack to have fit a distribution with only one point for normal or lognormal
-  if (distribution_type %in% c("normal", "lognormal") & length(data) == 1) {
+  if (distribution_type %in% c("normal", "lognormal") && length(data) == 1) {
     data <- replicate(n = 2, expr = data)
   }
 

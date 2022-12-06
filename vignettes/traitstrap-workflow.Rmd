@@ -403,8 +403,10 @@ boot_multi <- trait_multivariate_bootstrap(multivariate_traits,
   }
 )
 
-# Because dbFD returns output as a list, we need to do a bit of work to wrangle it into a more useful format
-# We'll extract Rao's Quadratic Entropy, since that performs well with bootstrapping.
+# Because dbFD returns output as a list, we need to do a bit of work to wrangle
+# it into a more useful format
+# We'll extract Rao's Quadratic Entropy, since that performs well with
+# bootstrapping.
 
 raoq_est <-
   boot_multi %>%
@@ -427,7 +429,8 @@ Next, we'll show how we can use a similar method to combine `trait_multivariate_
 library(TPD)
 
 
-# for each replicated site, convert the distribution into a trait probability distribution and then derive functional diversity metrics
+# for each replicated site, convert the distribution into a trait probability
+# distribution and then derive functional diversity metrics
 
 boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
   id = "ID",

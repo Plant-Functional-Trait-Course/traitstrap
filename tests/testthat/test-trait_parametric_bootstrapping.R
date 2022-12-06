@@ -29,8 +29,7 @@ test_that("output is properly formatted", {
   %in% colnames(pbs_out)))
 
   expect_true("tbl" %in%
-    class(trait_summarise_boot_moments
-    (bootstrap_moments = pbs_out)))
+    class(trait_summarise_boot_moments(bootstrap_moments = pbs_out)))
 
   scale_hierarchy <- attr(fitted_distributions, "attr")$scale_hierarchy
   taxon_col <- attr(fitted_distributions, "attr")$taxon_col
