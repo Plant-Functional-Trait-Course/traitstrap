@@ -14,8 +14,8 @@ Authors@R: c(
            comment = c(ORCID = "https://orcid.org/0000-0002-2118-9880"))
   )
 Description: Calculate trait moments from trait and community data.
-URL: https://github.com/richardjtelford/traitstrap/
-BugReports: https://github.com/richardjtelford/traitstrap/issues
+URL: https://github.com/Plant-Functional-Trait-Course/traitstrap/
+BugReports: https://github.com/Plant-Functional-Trait-Course/traitstrap/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
