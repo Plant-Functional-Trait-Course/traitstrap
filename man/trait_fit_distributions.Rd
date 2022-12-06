@@ -4,10 +4,10 @@
 \alias{trait_fit_distributions}
 \title{Fit trait distributions}
 \usage{
-trait_fit_distributions(imputed_traits, distribution_type = "normal")
+trait_fit_distributions(filled_traits, distribution_type = "normal")
 }
 \arguments{
-\item{imputed_traits}{output from the trait_impute function.}
+\item{filled_traits}{output from the trait_fill function.}
 
 \item{distribution_type}{the type of statistical distribution to use.
 Character or named list. Currently accepts "normal","lognormal", and "beta".}
@@ -17,28 +17,29 @@ a tibble
 }
 \description{
 Function to fit parametric distributions for each species-by-trait
-combination at the finest scale of the user-supplied hierarchy. This function 
+combination at the finest scale of the user-supplied hierarchy. This function
 returns a tibble containing the fitted parameters.
-
-
 }
 \details{
 The distributions can either be a single distribution type which is
 used for all traits, or traits can be assigned specific distributions types by
-supplying the function with a named list of traits, e.g. list(height="normal", 
+supplying the function with a named list of traits, e.g. list(height="normal",
 mass="lognormal")).
- 
+
 The function returns a dataframe containing fitted distribution parameters.
 }
 \examples{
 data(community)
 data(trait)
-imputed_traits <- trait_impute(comm = community, traits = trait,
-                  scale_hierarchy = c("Site", "PlotID"),
-                  taxon_col = "Taxon", value_col = "Value",
-                  trait_col = "Trait", abundance_col = "Cover")
+filled_traits <- trait_fill(
+  comm = community, traits = trait,
+  scale_hierarchy = c("Site", "PlotID"),
+  taxon_col = "Taxon", value_col = "Value",
+  trait_col = "Trait", abundance_col = "Cover"
+)
 fitted_distributions <- trait_fit_distributions(
-                        imputed_traits = imputed_traits,
-                        distribution_type = "normal")
+  filled_traits = filled_traits,
+  distribution_type = "normal"
+)
 
 }

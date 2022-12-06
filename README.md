@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/richardjtelford/traitstrap/workflows/R-CMD-check/badge.svg)](https://github.com/richardjtelford/traitstrap/actions)
 <!-- badges: end -->
 
-The goal of traitstrap is to impute traits in hierarchical sampling
+The goal of traitstrap is to select traits in hierarchical sampling
 designs.
 
 ## Installation

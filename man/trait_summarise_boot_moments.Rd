@@ -15,7 +15,7 @@ trait_summarise_boot_moments(
 \item{bootstrap_moments}{trait moments from trait_np_bootstrap or
 trait_parametric_bootstrap}
 
-\item{parametric}{logical; default is TRUE. 
+\item{parametric}{logical; default is TRUE.
 Should Confidence Intervals be calculated parametrically
 (using the mean and SD) or nonparametrically (using quantiles).}
 
@@ -31,16 +31,16 @@ tibble with the grouping variables and the mean of each moment
 }
 \description{
 Summarizes the mean and confidence interval for each trait moment.
-
-
 }
 \examples{
 data(community)
 data(trait)
-imputed_traits <-trait_impute(comm = community, traits = trait,
-                 scale_hierarchy = c("Site", "PlotID"),
-                 taxon_col = "Taxon", value_col = "Value",
-                 trait_col = "Trait", abundance_col = "Cover")
-boot_traits <- trait_np_bootstrap(imputed_traits)
+filled_traits <- trait_fill(
+  comm = community, traits = trait,
+  scale_hierarchy = c("Site", "PlotID"),
+  taxon_col = "Taxon", value_col = "Value",
+  trait_col = "Trait", abundance_col = "Cover"
+)
+boot_traits <- trait_np_bootstrap(filled_traits)
 trait_summarise_boot_moments(boot_traits)
 }

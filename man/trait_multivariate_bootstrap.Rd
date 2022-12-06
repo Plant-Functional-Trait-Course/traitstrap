@@ -5,7 +5,7 @@
 \title{Bootstrap traits}
 \usage{
 trait_multivariate_bootstrap(
-  imputed_traits,
+  selected_traits,
   nrep = 100,
   sample_size = 200,
   raw = FALSE,
@@ -14,14 +14,14 @@ trait_multivariate_bootstrap(
 )
 }
 \arguments{
-\item{imputed_traits}{output from the trait_impute function.}
+\item{selected_traits}{output from the trait_fill function.}
 
 \item{nrep}{number of bootstrap replicates}
 
 \item{sample_size}{bootstrap size}
 
 \item{raw}{logical; argument to extract the raw data of the trait distributions.
-The default is raw = FALSE. If raw = TRUE, nrep is restricted to 1 to avoid 
+The default is raw = FALSE. If raw = TRUE, nrep is restricted to 1 to avoid
 memory issues.}
 
 \item{id}{column name of unique identifiers of each leaf}
@@ -32,16 +32,14 @@ memory issues.}
 a tibble
 }
 \description{
-Function for nonparametric bootstrap resampling to calculate community 
+Function for nonparametric bootstrap resampling to calculate community
 weighted trait correlations, other bivariate or multivariate statistics
-
-
 }
 \details{
-The observed and imputed leaves  are re-sampled in proportion to their weights, 
-e.g. the abundance of a species or the biomass. Values across all individuals 
-in a community are resampled n times (nrep) to incorporate the full 
-spectrum of trait variation, generating n number (sample_size) of trait distributions. 
+The observed and selected leaves  are re-sampled in proportion to their weights,
+e.g. the abundance of a species or the biomass. Values across all individuals
+in a community are resampled n times (nrep) to incorporate the full
+spectrum of trait variation, generating n number (sample_size) of trait distributions.
 From these distributions the function estimates the mean and the higher moments
 including variance, skewness and kurtosis.
 
@@ -55,21 +53,23 @@ require(ggplot2)
 require(purrr)
 data(community)
 data(trait)
-imputed_traits <- trait_impute(comm = community, traits = trait,
-                  scale_hierarchy = c("Site", "PlotID"),
-                  taxon_col = "Taxon", value_col = "Value",
-                  trait_col = "Trait", abundance_col = "Cover", 
-                  complete_only = TRUE, leaf_id = "ID")
-boot_traits <- trait_multivariate_bootstrap(imputed_traits, fun = cor)
-boot_traits_long <- boot_traits |> 
-  mutate(correlations = map(result, ~cor_to_df(.x))) |> 
-  select(-result) |> 
+selected_traits <- trait_fill(
+  comm = community, traits = trait,
+  scale_hierarchy = c("Site", "PlotID"),
+  taxon_col = "Taxon", value_col = "Value",
+  trait_col = "Trait", abundance_col = "Cover",
+  complete_only = TRUE, leaf_id = "ID"
+)
+boot_traits <- trait_multivariate_bootstrap(selected_traits, fun = cor)
+boot_traits_long <- boot_traits |>
+  mutate(correlations = map(result, ~ cor_to_df(.x))) |>
+  select(-result) |>
   unnest(correlations)
 
-   boot_traits_long |>
-     ggplot(aes(x= paste(row, "v",  col), y = value)) +
-     geom_violin() +
-     facet_grid(Site ~ PlotID) +
-     coord_flip() +
-     labs(y = "Correlation", x = "")
+boot_traits_long |>
+  ggplot(aes(x = paste(row, "v", col), y = value)) +
+  geom_violin() +
+  facet_grid(Site ~ PlotID) +
+  coord_flip() +
+  labs(y = "Correlation", x = "")
 }
