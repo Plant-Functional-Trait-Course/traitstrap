@@ -18,8 +18,10 @@ trait_parametric_bootstrap(
 
 \item{sample_size}{bootstrap size}
 
-\item{raw}{logical; argument to extract the raw data of the trait distributions.
-The default is raw = FALSE. If raw = TRUE, nrep is restricted to 1 to avoid
+\item{raw}{logical; argument to extract the raw data of the
+trait distributions.
+The default is \code{raw = FALSE}.
+If \code{raw = TRUE}, \code{nrep} is restricted to 1 to avoid
 memory issues.}
 }
 \value{
@@ -30,15 +32,19 @@ Function for parametric bootstrap resampling to calculate
 community weighted trait mean and higher moments.
 }
 \details{
-The trait_parametric_bootstrap function is a parametric analog of the
-trait_np_bootstrap function. It randomly samples from among the fitted distributions
-proportionally to species abundance. The number of samples per replicated are drawn
-specified with the parameter sample_size, and the number of replicated is specified
-by the parameter nrep. From these distributions the function estimates the mean
+\code{trait_parametric_bootstrap()} is a parametric analogue of the
+\code{trait_np_bootstrap()}.
+It randomly samples from among the fitted distributions
+proportionally to species abundance.
+The number of samples per replicated are drawn
+specified with the parameter sample_size,
+and the number of replicates is specified
+by the parameter\code{ nrep}.
+From these distributions the function estimates the mean
 and the higher moments including variance, skewness and kurtosis.
 
-The output of trait_parametric_bootstrap can be summarized using
-trait_summarize_boot_moments.
+The output of \code{trait_parametric_bootstrap()} can be summarized using
+\code{trait_summarize_boot_moments()}.
 }
 \examples{
 data(community)

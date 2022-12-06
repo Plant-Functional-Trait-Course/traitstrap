@@ -54,56 +54,65 @@ treatment should be filtered}
 \item{keep_all}{logical; keep trait data at all available levels
 or just finest scale available}
 
-\item{min_n_in_sample}{numeric; minimum number in sample with traits to accept before
-searching for traits higher up the hierarchy. The default is 5.}
+\item{min_n_in_sample}{numeric; minimum number in sample with traits to
+accept before searching for traits higher up the hierarchy. The default is 5.}
 
-\item{complete_only}{logical; use only leaves with a full set of traits. Set to TRUE when imputing for \code{trait_multivariate_bootstrap}}
+\item{complete_only}{logical; use only leaves with a full set of traits.
+Set to TRUE when imputing for \code{trait_multivariate_bootstrap}}
 
-\item{leaf_id}{character; unique leaf identifiers. Only needed when \code{complete_only} is TRUE.}
+\item{leaf_id}{character; unique leaf identifiers.
+Only needed when \code{complete_only} is TRUE.}
 }
 \value{
 a tibble with extra class \code{filled_trait}
 }
 \description{
-A function for trait filling using a hierarchical sampling design,
-which allows to account for incomplete trait collections, traits from different
-spatial or temporal levels (i.e. local traits vs. databases) and experimental designs.
+A function for trait filling using a hierarchical sampling
+design, which allows to account for incomplete trait collections,
+traits from different spatial or temporal levels
+(i.e. local traits vs. databases) and experimental designs.
 }
 \details{
 The function uses a hierarchical sampling design, which allows it to
-account for incomplete trait collections, traits from different spatial or temporal
-levels (i.e. local traits vs. databases) and/or experimental designs.
+account for incomplete trait collections, traits from different spatial or
+temporal levels (i.e. local traits vs. databases) and/or
+experimental designs.
 
 With scale_hierarchy you can define the levels at which the traits have been
-collected and their order starting with the highest level (e.g. global database,
-region, site, block, plot).
+collected and their order starting with the highest level
+(e.g. global database, region, site, block, plot).
 
-The trait_fill function will choose if available a trait value from the lowest
-level, i.e. species X from plot A and if no trait is available from that level,
-it will move up the hierarchy and choose a trait from species X from plot B at
-the same site. If there is no trait available from species X in the same site, it
+\code{trait_fill()} will choose if available a trait value from the lowest
+level, i.e. species X from plot A and if no trait is available from that
+level, it will move up the hierarchy and choose a trait from species X from
+plot B at the same site.
+If there is no trait available from species X in the same site, it
 will choose a trait value from another site.
 
-The argument min_n_in_samples allows users to define the minimum number in sample
-at each level for the trait filling. If the minimum number is not reached, trait
-values from the next level will also be selected, to avoid sampling the same
-individual several times, which will result in unrealistic variances. The default
-value is 5
+The argument \code{min_n_in_samples} allows users to define the minimum number in
+sample at each level for the trait filling.
+If the minimum number is not reached,
+trait values from the next level will also be selected, to avoid sampling the
+same individual several times, which will result in unrealistic variances.
+The default value is 5.
 
-In the other_col argument other grouping variables in the community dataset can be
-defined and will be kept after the trait filling step.
+In the \code{other_col} argument other grouping variables in the community dataset
+can be defined and will be kept after the trait filling step.
 
 Traitstrap also allows to include taxonomy and experimental design in the
 trait filling step.
 
-With taxon_col a hierarchy for the taxonomy can be defined. If traits for a specific
-species are not available, traits from next level, e.g. the genus will be selected.
+With taxon_col a hierarchy for the taxonomy can be defined.
+If traits for a specific
+species are not available, traits from next level,
+e.g. the genus will be selected.
 For this a list of the taxonomic hierarchy has to be defined (e.g. "taxon",
 "genus", "family").
 
 The argument treatment_col allows to incorporate an experimental design where
 traits are selected from the same experimental treatment or the first factor
-level, which is assumed to be the control. Therefore, it is important to order
+level, which is assumed to be the control.
+Therefore, it is important to order
 the levels of a treatment in the right order, i.e. the first level has to be
 the control.
 If you have two or more treatments and you want filling to be done only

@@ -14,7 +14,7 @@ A data.frame of correlations
 }
 \description{
 Helper function for bootstrap_traits_multivariate that
- extracts results from a correlation matrix
+extracts results from a correlation matrix
 }
 \examples{
 x <- matrix(ncol = 5, rnorm(20))

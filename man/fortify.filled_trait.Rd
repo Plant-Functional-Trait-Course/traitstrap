@@ -10,10 +10,10 @@
 \item{filled_traits}{filled traits from trait_fill}
 
 \item{other_col_how}{what to do with the other columns in other data.
-Options are to `filter` by one of the columns, add them to the x-`axis`,
-`facet` by them, or to `ignore`.}
+Options are to \code{filter} by one of the columns, add them to the x-\code{axis},
+\code{facet} by them, or to \code{ignore}.}
 
-\item{...}{optional filters for use with `other_col_how = "filter"`}
+\item{...}{optional filters for use with \code{other_col_how = "filter"}}
 }
 \value{
 a tibble

@@ -27,10 +27,11 @@ Defaults to 0.95.}
 }
 \value{
 tibble with the grouping variables and the mean of each moment
- (+/- sd_mult * SD)
+(+/- sd_mult * SD)
 }
 \description{
-Summarizes the mean and confidence interval for each trait moment.
+Summarizes the mean and confidence interval for each
+trait moment.
 }
 \examples{
 data(community)
