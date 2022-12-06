@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/richardjtelford/traitstrap/workflows/R-CMD-check/badge.svg)](https://github.com/richardjtelford/traitstrap/actions)
+[![R-CMD-check](https://github.com/richardjtelford/traitstrap/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/richardjtelford/traitstrap/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of traitstrap is to select traits in hierarchical sampling
