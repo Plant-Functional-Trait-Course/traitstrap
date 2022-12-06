@@ -43,14 +43,14 @@ trait_summarize_boot_moments.
 \examples{
 data(community)
 data(trait)
-selected_traits <- trait_select(
+filled_traits <- trait_fill(
   comm = community, traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
   trait_col = "Trait", abundance_col = "Cover"
 )
 fitted_distributions <- trait_fit_distributions(
-  selected_traits = selected_traits,
+  filled_traits = filled_traits,
   distribution_type = "normal"
 )
 parametric_distributions <- trait_parametric_bootstrap(

@@ -4,10 +4,10 @@
 \alias{trait_missing}
 \title{Which taxa lack traits}
 \usage{
-trait_missing(selected_trait, comm)
+trait_missing(filled_trait, comm)
 }
 \arguments{
-\item{selected_trait}{output of trait_select function.}
+\item{filled_trait}{output of trait_fill function.}
 
 \item{comm}{community data}
 }

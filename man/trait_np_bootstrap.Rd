@@ -7,7 +7,7 @@
 trait_np_bootstrap(selected_traits, nrep = 100, sample_size = 200, raw = FALSE)
 }
 \arguments{
-\item{selected_traits}{output from the trait_select function.}
+\item{selected_traits}{output from the trait_fill function.}
 
 \item{nrep}{number of bootstrap replicates}
 
@@ -38,7 +38,7 @@ trait_summarize_boot_moments.
 \examples{
 data(community)
 data(trait)
-selected_traits <- trait_select(
+selected_traits <- trait_fill(
   comm = community, traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",

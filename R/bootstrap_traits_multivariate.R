@@ -1,7 +1,7 @@
 #' Bootstrap traits
 #' @description Function for nonparametric bootstrap resampling to calculate community
 #' weighted trait correlations, other bivariate or multivariate statistics
-#' @param selected_traits output from the trait_select function.
+#' @param selected_traits output from the trait_fill function.
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size
 #' @param raw logical; argument to extract the raw data of the trait distributions.
@@ -35,7 +35,7 @@
 #' require(purrr)
 #' data(community)
 #' data(trait)
-#' selected_traits <- trait_select(
+#' selected_traits <- trait_fill(
 #'   comm = community, traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
@@ -77,7 +77,7 @@ trait_multivariate_bootstrap <- function(selected_traits, nrep = 100, sample_siz
 
   if (any(check_n_traits$.n != n_traits)) {
     stop("Some leaves with incomplete set of traits.
-         Please run trait_select() with complete_only set to TRUE.")
+         Please run trait_fill() with complete_only set to TRUE.")
   }
 
   # pivot_wider

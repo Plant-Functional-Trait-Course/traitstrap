@@ -4,10 +4,10 @@
 \alias{trait_fit_distributions}
 \title{Fit trait distributions}
 \usage{
-trait_fit_distributions(selected_traits, distribution_type = "normal")
+trait_fit_distributions(filled_traits, distribution_type = "normal")
 }
 \arguments{
-\item{selected_traits}{output from the trait_select function.}
+\item{filled_traits}{output from the trait_fill function.}
 
 \item{distribution_type}{the type of statistical distribution to use.
 Character or named list. Currently accepts "normal","lognormal", and "beta".}
@@ -31,14 +31,14 @@ The function returns a dataframe containing fitted distribution parameters.
 \examples{
 data(community)
 data(trait)
-selected_traits <- trait_select(
+filled_traits <- trait_fill(
   comm = community, traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
   trait_col = "Trait", abundance_col = "Cover"
 )
 fitted_distributions <- trait_fit_distributions(
-  selected_traits = selected_traits,
+  filled_traits = filled_traits,
   distribution_type = "normal"
 )
 

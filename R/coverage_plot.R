@@ -1,7 +1,7 @@
-#' Coverage plot of selected Traits
+#' Coverage plot of filled Traits
 #' @description Function calculates the trait coverage of the community
 #' for each level of the sampling hierarchy and makes a barplot.
-#' @param selected_traits output from trait_np_bootstrap or trait_parametric_bootstrap
+#' @param filled_traits output from trait_np_bootstrap or trait_parametric_bootstrap
 #' funtion.
 #' @param other_col_how what to do with the other columns in other data.
 #'  Options are to `filter` by one of the columns, add them to the x-`axis`,
@@ -22,18 +22,18 @@
 #' require("ggplot2")
 #' data(community)
 #' data(trait)
-#' selected_traits <- trait_select(
+#' filled_traits <- trait_fill(
 #'   comm = community, traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
 #'   trait_col = "Trait", abundance_col = "Cover"
 #' )
-#' autoplot(selected_traits)
+#' autoplot(filled_traits)
 #' @export
 
-autoplot.selected_trait <- function(selected_traits, other_col_how, ...) {
+autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
   # get scale_hierarchy and concatenate to make an ID
-  attrib <- attr(selected_traits, "attrib")
+  attrib <- attr(filled_traits, "attrib")
 
   if (length(attrib$other_col) > 0 & missing(other_col_how)) {
     stop(
@@ -52,9 +52,9 @@ autoplot.selected_trait <- function(selected_traits, other_col_how, ...) {
     )
   }
 
-  selected_traits_summary <- fortify.selected_trait(selected_traits, other_col_how, ...)
+  filled_traits_summary <- fortify.filled_trait(filled_traits, other_col_how, ...)
 
-  plot <- ggplot(selected_traits_summary, aes(
+  plot <- ggplot(filled_traits_summary, aes(
     x = .data$.id,
     y = .data$s, fill = .data$level
   )) +

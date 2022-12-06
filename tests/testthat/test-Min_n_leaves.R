@@ -1,6 +1,6 @@
-context("trait_select minimum number in sample")
+context("trait_fill minimum number in sample")
 
-test_that("trait_select minimum number in sample", {
+test_that("trait_fill minimum number in sample", {
   #### set-up ####
   mini_trait <- tidyr::crossing(
     genus = c("G1", "G2"),
@@ -24,12 +24,12 @@ test_that("trait_select minimum number in sample", {
 
   #### test set 1 ####
   # site A plot 2 G1 sp1 has only 2 samples
-  # select should include samples from plot 2
+  # fill should include samples from plot 2
 
   mini_trait1 <- mini_trait %>%
     filter(!(taxon == "G1 sp1" & site == "A" & plot == 2 & n_sample > 2))
 
-  ti_1 <- trait_select(
+  ti_1 <- trait_fill(
     comm = mini_comm,
     traits = mini_trait1,
     scale_hierarchy = c("site", "plot"),
@@ -55,12 +55,12 @@ test_that("trait_select minimum number in sample", {
 
   #### test set 2 ####
   # site A G1 sp1 has only 2 samples in each plot = 4 overall
-  # select should be at global level
+  # fill should be at global level
 
   mini_trait2 <- mini_trait %>%
     filter(!(taxon == "G1 sp1" & site == "A" & n_sample > 2))
 
-  ti_2 <- trait_select(
+  ti_2 <- trait_fill(
     comm = mini_comm,
     traits = mini_trait2,
     scale_hierarchy = c("site", "plot"),
@@ -86,12 +86,12 @@ test_that("trait_select minimum number in sample", {
 
   #### test set 3 ####
   # G1 sp1 has only 1 sample in each plot = 4 overall !< min_n_in_sample
-  # select should be at global level
+  # fill should be at global level
 
   mini_trait3 <- mini_trait %>%
     filter(!(taxon == "G1 sp1" & n_sample > 1))
 
-  ti_3 <- trait_select(
+  ti_3 <- trait_fill(
     comm = mini_comm,
     traits = mini_trait3,
     scale_hierarchy = c("site", "plot"),

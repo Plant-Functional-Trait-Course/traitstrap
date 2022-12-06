@@ -14,7 +14,7 @@ trait_multivariate_bootstrap(
 )
 }
 \arguments{
-\item{selected_traits}{output from the trait_select function.}
+\item{selected_traits}{output from the trait_fill function.}
 
 \item{nrep}{number of bootstrap replicates}
 
@@ -53,7 +53,7 @@ require(ggplot2)
 require(purrr)
 data(community)
 data(trait)
-selected_traits <- trait_select(
+selected_traits <- trait_fill(
   comm = community, traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",

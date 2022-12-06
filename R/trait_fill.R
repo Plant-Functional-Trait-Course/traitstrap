@@ -1,5 +1,5 @@
-#' Select traits
-#' @description A function for trait selection using a hierarchical sampling design,
+#' fill traits
+#' @description A function for trait filling using a hierarchical sampling design,
 #' which allows to account for incomplete trait collections, traits from different
 #' spatial or temporal levels (i.e. local traits vs. databases) and experimental designs.
 #' @param comm a datafram in long format with community data
@@ -8,7 +8,7 @@
 #' to small (e.g. site/block/plot)
 #' @param taxon_col character; name of taxon column in comm and traits.
 #' Can be a vector (e.g. "species", "genus"), in which case if traits cannot be
-#' selected for the first taxon column, subsequent columns will be used in order.
+#' filled for the first taxon column, subsequent columns will be used in order.
 #' @param trait_col character; name of trait name column in traits
 #' @param value_col character; name of trait value column in traits
 #' @param abundance_col character; name of species abundance column in comm
@@ -35,23 +35,23 @@
 #' collected and their order starting with the highest level (e.g. global database,
 #' region, site, block, plot).
 #'
-#' The trait_select function will choose if available a trait value from the lowest
+#' The trait_fill function will choose if available a trait value from the lowest
 #' level, i.e. species X from plot A and if no trait is available from that level,
 #' it will move up the hierarchy and choose a trait from species X from plot B at
 #' the same site. If there is no trait available from species X in the same site, it
 #' will choose a trait value from another site.
 #'
 #' The argument min_n_in_samples allows users to define the minimum number in sample
-#' at each level for the trait selection. If the minimum number is not reached, trait
+#' at each level for the trait filling. If the minimum number is not reached, trait
 #' values from the next level will also be selected, to avoid sampling the same
 #' individual several times, which will result in unrealistic variances. The default
 #' value is 5
 #'
-#' In the other_col arumgent other grouping variable in the community dataset can be
-#' defined and will be kept after the trait selection step.
+#' In the other_col argument other grouping variables in the community dataset can be
+#' defined and will be kept after the trait filling step.
 #'
 #' Traitstrap also allows to include taxonomy and experimental design in the
-#' trait selection step.
+#' trait filling step.
 #'
 #' With taxon_col a hierarchy for the taxonomy can be defined. If traits for a specific
 #' species are not available, traits from next level, e.g. the genus will be selected.
@@ -63,15 +63,15 @@
 #' level, which is assumed to be the control. Therefore, it is important to order
 #' the levels of a treatment in the right order, i.e. the first level has to be
 #' the control.
-#' If you have two or more treatments and you want selection to be done only
+#' If you have two or more treatments and you want filling to be done only
 #' within a treatment, and not from a treatment and the control, then
 #' make the first level of the factor a level that is not in the data.
-#' The selection step can be defined at certain level using the
-#' treatment_level argument. Depending on the experimental design trait selection
+#' The filling step can be defined at certain level using the
+#' treatment_level argument. Depending on the experimental design trait filling
 #' should occur a certain level, e.g. block or site.
 
 #'
-#' @return a tibble with extra class \code{selected_trait}
+#' @return a tibble with extra class \code{filled_trait}
 #'
 #' @importFrom stats sd var weighted.mean
 #' @importFrom magrittr %>%
@@ -84,7 +84,7 @@
 #' @examples
 #' data(community)
 #' data(trait)
-#' selected_traits <- trait_select(
+#' filled_traits <- trait_fill(
 #'   comm = community, traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
@@ -92,18 +92,18 @@
 #' )
 #' @export
 
-trait_select <- function(comm,
-                         traits,
-                         scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"),
-                         global = TRUE,
-                         taxon_col = "taxon", trait_col = "trait",
-                         value_col = "Value", abundance_col = "Cover",
-                         treatment_col = NULL, treatment_level = NULL,
-                         other_col = character(0),
-                         keep_all = FALSE,
-                         min_n_in_sample = 5,
-                         complete_only = FALSE,
-                         leaf_id) {
+trait_fill <- function(comm,
+                       traits,
+                       scale_hierarchy = c("Country", "Site", "BlockID", "PlotID"),
+                       global = TRUE,
+                       taxon_col = "taxon", trait_col = "trait",
+                       value_col = "Value", abundance_col = "Cover",
+                       treatment_col = NULL, treatment_level = NULL,
+                       other_col = character(0),
+                       keep_all = FALSE,
+                       min_n_in_sample = 5,
+                       complete_only = FALSE,
+                       leaf_id) {
   #### sanity checks on input (are columns present etc) ####
   # check data have all scales in scale_hierarchy
   if (!all(scale_hierarchy %in% names(comm))) {
@@ -241,7 +241,7 @@ trait_select <- function(comm,
 
   ##### routine if length(taxon_col) > 1
   if (length(taxon_col) > 1) {
-    result <- trait_select_multi_level(
+    result <- trait_fill_multi_level(
       comm = comm,
       traits = traits,
       scale_hierarchy = scale_hierarchy,
@@ -384,7 +384,7 @@ trait_select <- function(comm,
   )
   attr(out, "attrib") <- attrib
 
-  class(out) <- c("selected_trait", class(out))
+  class(out) <- c("filled_trait", class(out))
 
   return(out)
 }

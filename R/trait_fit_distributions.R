@@ -2,7 +2,7 @@
 #' @description Function to fit parametric distributions for each species-by-trait
 #' combination at the finest scale of the user-supplied hierarchy. This function
 #' returns a tibble containing the fitted parameters.
-#' @param selected_traits output from the trait_select function.
+#' @param filled_traits output from the trait_fill function.
 #' @param distribution_type the type of statistical distribution to use.
 #' Character or named list. Currently accepts "normal","lognormal", and "beta".
 #'
@@ -27,37 +27,37 @@
 #' @examples
 #' data(community)
 #' data(trait)
-#' selected_traits <- trait_select(
+#' filled_traits <- trait_fill(
 #'   comm = community, traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
 #'   trait_col = "Trait", abundance_col = "Cover"
 #' )
 #' fitted_distributions <- trait_fit_distributions(
-#'   selected_traits = selected_traits,
+#'   filled_traits = filled_traits,
 #'   distribution_type = "normal"
 #' )
 #'
 #' @export
-trait_fit_distributions <- function(selected_traits,
+trait_fit_distributions <- function(filled_traits,
                                     distribution_type = "normal") {
-  # Check selected traits
-  if (!inherits(selected_traits, "selected_trait")) {
-    stop("selected traits are not appropriately formatted.
-    Please use trait_select() ")
+  # Check filled traits
+  if (!inherits(filled_traits, "filled_trait")) {
+    stop("filled traits are not appropriately formatted.
+    Please use trait_fill() ")
   }
 
 
-  # Pull useful information from selected traits object
-  value_col <- attributes(selected_traits)$attrib$value_col
-  trait_col <- attributes(selected_traits)$attrib$trait_col
-  taxon_col <- attributes(selected_traits)$attrib$taxon_col
-  abundance_col <- attributes(selected_traits)$attrib$abundance_col
-  scale_hierarchy <- attributes(selected_traits)$attrib$scale_hierarchy
+  # Pull useful information from filled traits object
+  value_col <- attributes(filled_traits)$attrib$value_col
+  trait_col <- attributes(filled_traits)$attrib$trait_col
+  taxon_col <- attributes(filled_traits)$attrib$taxon_col
+  abundance_col <- attributes(filled_traits)$attrib$abundance_col
+  scale_hierarchy <- attributes(filled_traits)$attrib$scale_hierarchy
 
   # If only a single type of distribution was supplied, apply it to all traits
   if (length(distribution_type) == 1) {
-    distributions <- unique(as.data.frame(selected_traits)[, trait_col])
+    distributions <- unique(as.data.frame(filled_traits)[, trait_col])
     dist_list <- replicate(n = length(distributions), expr = distribution_type)
     names(dist_list) <- distributions
     distribution_type <- as.list(dist_list)
@@ -77,7 +77,7 @@ trait_fit_distributions <- function(selected_traits,
   # Beta checks
   if ("beta" %in% distribution_type) {
     # make sure every species x hierarchy combination has at least 2 data points
-    beta_counts <- selected_traits %>%
+    beta_counts <- filled_traits %>%
       filter(.data[[trait_col]] %in%
         names(distribution_type)[distribution_type == "beta"])
 
@@ -88,7 +88,7 @@ trait_fit_distributions <- function(selected_traits,
     }
 
     # check that values are between 0 and 1
-    beta_vals <- selected_traits %>%
+    beta_vals <- filled_traits %>%
       ungroup() %>%
       filter(.data[[trait_col]] %in%
         names(distribution_type)[distribution_type == "beta"]) %>%
@@ -102,9 +102,9 @@ trait_fit_distributions <- function(selected_traits,
 
   # lognormal checks
   if ("lognormal" %in% distribution_type) {
-    ln_vals <- selected_traits %>%
+    ln_vals <- filled_traits %>%
       ungroup() %>%
-      filter(.data[[trait_col]] ==
+      filter(.data[[trait_col]] %in%
         names(distribution_type)[distribution_type == "lognormal"]) %>%
       select(all_of(value_col))
 
@@ -115,7 +115,7 @@ trait_fit_distributions <- function(selected_traits,
 
   # Main body
 
-  distribution_parms <- selected_traits %>%
+  distribution_parms <- filled_traits %>%
     group_by(.data[[c(taxon_col)]],
       .data[[c(abundance_col)]], .data$n_sample,
       .add = TRUE
@@ -133,7 +133,7 @@ trait_fit_distributions <- function(selected_traits,
 
 
   # set arguments as attributes so next functions have access to them
-  attr(distribution_parms, "attrib") <- attributes(selected_traits)$attrib
+  attr(distribution_parms, "attrib") <- attributes(filled_traits)$attrib
 
   class(distribution_parms) <- c(
     "parametric_distributions",

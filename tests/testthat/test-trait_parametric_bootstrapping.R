@@ -5,7 +5,7 @@ test_that("output is properly formatted", {
   data(community)
   data(trait)
   nrep_pbs <- 10
-  selected_traits <- trait_select(
+  filled_traits <- trait_fill(
     comm = community,
     traits = trait,
     scale_hierarchy = c("Site", "PlotID"),
@@ -16,7 +16,7 @@ test_that("output is properly formatted", {
   )
 
   fitted_distributions <- trait_fit_distributions(
-    selected_traits = selected_traits, distribution_type = "lognormal"
+    filled_traits = filled_traits, distribution_type = "lognormal"
   )
 
   pbs_out <- trait_parametric_bootstrap(
@@ -39,7 +39,7 @@ test_that("output is properly formatted", {
 
   expect_equal(
     object = nrow(pbs_out),
-    expected = selected_traits %>%
+    expected = filled_traits %>%
       group_by_at(c(
         as.character(scale_hierarchy),
         trait_col
@@ -54,7 +54,7 @@ test_that("Bad inputs return errors", {
   data(community)
   data(trait)
   nrep_pbs <- 10
-  selected_traits <- trait_select(
+  filled_traits <- trait_fill(
     comm = community,
     traits = trait,
     scale_hierarchy = c("Site", "PlotID"),
@@ -65,7 +65,7 @@ test_that("Bad inputs return errors", {
   )
 
   fitted_distributions <- trait_fit_distributions(
-    selected_traits = selected_traits, distribution_type = "lognormal"
+    filled_traits = filled_traits, distribution_type = "lognormal"
   )
 
   expect_error(object = trait_parametric_bootstrap(

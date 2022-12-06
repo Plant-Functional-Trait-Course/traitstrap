@@ -57,7 +57,7 @@ Further, this package uses a hierarchical sampling design, which allows accounti
 
 The package has three **main functions**:
 
-* **trait selection** function which allows to account for intraspecific trait variation and hierarchical sampling design.
+* **trait filling** function which allows to account for intraspecific trait variation and hierarchical sampling design.
 * a resample method using **bootstrapping** (parametric or nonparametric method) to calculate community weighted mean and happy moments (variance, skewness and kurtosis).
 * a **summary function** that summarizes the trait moments and calculates confidence intervals.
 
@@ -129,9 +129,9 @@ trait
 ```
 
 
-## Trait selection
+## Trait filling
 
-The `trait_select` function uses a hierarchical sampling design, which allows to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases), different taxonomic resolution and/or experimental design. 
+The `trait_fill` function uses a hierarchical sampling design, which allows to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases), different taxonomic resolution and/or experimental design. 
 
 The first two mandatory arguments in the function are the two datasets:
 `comm` and `traits`
@@ -145,23 +145,23 @@ The next four arguments are also mandatory and refer to specific columns in the 
 
 All the other arguments are not mandatory.
 
-With `scale_hierarchy` you can define the levels at which the traits have been collected and the order of trait selection starting with the highest level (e.g. global database, regional, site, plot).
+With `scale_hierarchy` you can define the levels at which the traits have been collected and the order of trait filling starting with the highest level (e.g. global database, regional, site, plot).
 In the example below we have the levels **Site** and **PlotID**, starting with the highest level.
 
-The `trait_select` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
+The `trait_fill` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
 If no trait value is available from that level (plot A, site 1), it will other groups in the same level and choose a trait value from species X from plot B or C at site 1.
 If there is no trait available, it will move up the hierarchy to the next level and choose trait values from species X from other sites (site 2, 3, etc.).
 
 The argument `min_n_in_samples` allows users to define the minimum number in samples that are chosen at each level.
-If the minimum number is not reached (i.e. there are only 3 trait values at a specific level), trait values from the next higher level will be selected, to avoid sampling the same individual several times, which could result in unrealistic variances.
+If the minimum number is not reached (i.e. there are only 3 trait values at a specific level), trait values from the next higher level will be filled, to avoid sampling the same individual several times, which could result in unrealistic variances.
 The default minimum number of samples is 5.
 
-In the `other_col` argument other grouping variables in the community dataset can be defined and will be kept after the trait selection.
+In the `other_col` argument other grouping variables in the community dataset can be defined and will be kept after the trait filling.
 
 
-```{r trait-select, echo=TRUE, eval=TRUE}
+```{r trait-fill, echo=TRUE, eval=TRUE}
 
-trait_selection <- trait_select(
+trait_filling <- trait_fill(
   # input data (mandatory)
   comm = community,
   traits = trait,
@@ -179,28 +179,28 @@ trait_selection <- trait_select(
   min_n_in_sample = 9
 )
 
-trait_selection
+trait_filling
 ```
 
 
-Traitstrap also allows to include taxonomy and experimental design in the trait selection step.
+Traitstrap also allows to include taxonomy and experimental design in the trait filling step.
 
 With the argument `taxon_col` the taxonomic hierarchy for sampling can be defined.
-This means if traits for a specific species are not available, trait values from the same genus will be selected.
+This means if traits for a specific species are not available, trait values from the same genus will be used.
 For this a list of the taxonomic hierarchy has to be defined (e.g. "Taxon", "Genus").
-Note that traits from species of the same genus can have very different traits and it might not be meaningful to select these traits.
-Therefore, you should always check the trait distributions for the same genus before using taxonomic trait selection.
+Note that traits from species of the same genus can have very different traits and it might not be meaningful to use these traits.
+Therefore, you should always check the trait distributions for the same genus before using taxonomic trait filling.
 
-The argument `treatment_col` allows to incorporate an experimental design where traits are selected from the same experimental treatment or the first factor level, which is assumed to be the control.
+The argument `treatment_col` allows to incorporate an experimental design where traits are filled from the same experimental treatment or the first factor level, which is assumed to be the control.
 Therefore, it is important to order the levels of a treatment in the right order, i.e. the first level has to be the control.
-The selection step can be defined at certain level using the `treatment_level` argument.
-Depending on the experimental design it might make sense to select traits at a certain level, e.g. block or site.
+The filling step can be defined at certain level using the `treatment_level` argument.
+Depending on the experimental design it might make sense to fill traits at a certain level, e.g. block or site.
 
-Here is an example how to include taxonomy and experimental design in the trait selection function (code not run).
+Here is an example how to include taxonomy and experimental design in the trait filling function (code not run).
 
-```{r trait-select2, echo=TRUE, eval=FALSE}
+```{r trait-fill2, echo=TRUE, eval=FALSE}
 
-trait_selection2 <- trait_select(
+trait_filling2 <- trait_fill(
   comm = community,
   traits = trait,
   abundance_col = "Cover",
@@ -223,7 +223,7 @@ trait_selection2 <- trait_select(
 
 ## Nonparametric bootstrapping
 
-The output of the trait selection function is then used to do a **nonparametric bootstrapping** using the `trait_np_bootstrap` function.
+The output of the trait filling function is then used to do a **nonparametric bootstrapping** using the `trait_np_bootstrap` function.
 
 Nonparametric bootstrapping is a resampling method to estimate the trait moments.
 The traits are re-sampled in proportion to their weight in the community (e.g. by the abundance of the species).
@@ -242,7 +242,7 @@ If the raw data is extracted, `nrep` is forced to 1 to avoid memory issues.
 
 # run nonparametric bootstrapping
 np_bootstrapped_moments <- trait_np_bootstrap(
-  trait_selection,
+  trait_filling,
   nrep = 200
 )
 
@@ -277,7 +277,7 @@ Traitstrap also offers the option to run a **parametric bootstrapping**.
 The `trait_fit_distributions` function fits parametric distributions for each species-by-trait combination at the finest scale of the user-supplied hierarchy. 
 This function takes as input:
 
-* an object of class selected traits (as produced by the function `trait_select`), and 
+* an object of class filled traits (as produced by the function `trait_fill`), and 
 * the type of distribution to be fitted.
 
 Either a single distribution type can be used for all traits, or traits can be assigned specific distributions types by supplying the function with a named list of traits (e.g. `list(height = "normal", mass = "lognormal")`).
@@ -290,7 +290,7 @@ The function returns a dataframe containing fitted distribution parameters.
 
 # fit distributions
 fitted_distributions <- trait_fit_distributions(
-  selected_traits = trait_selection,
+  filled_traits = trait_filling,
   distribution_type = "lognormal"
 )
 
@@ -302,7 +302,7 @@ fitted_distributions
 
 # fit several types of distributions
 fitted_distributions <- trait_fit_distributions(
-  selected_traits = trait_selection,
+  filled_traits = trait_filling,
   distribution_type = list(Plant_Height_cm = "normal", Wet_Mass_g = "lognormal")
 )
 
@@ -340,7 +340,7 @@ In traitstrap both the parametric and nonparametric bootstrapping functions allo
 
 # run nonparametric bootstrapping
 raw_dist_np <- trait_np_bootstrap(
-  trait_selection,
+  trait_filling,
   raw = TRUE
 )
 
@@ -369,7 +369,7 @@ While the core functionality of traitstrap was designed with univariate distribu
 library(FD)
 
 
-multivariate_traits <- trait_select(
+multivariate_traits <- trait_fill(
   comm = community %>%
     # to make the example faster, we'll only use a subset of plots
     filter(
@@ -475,14 +475,14 @@ boot_tpd %>%
 Traitstrap has a couple of functions to check the data.
 
 The `coverage_plot` function shows the trait coverage of the community for each level.
-Basically, this function summarizes from which level the traits are selected, and how much coverage of the community is reached.
+Basically, this function summarizes from which level the traits are filled, and how much coverage of the community is reached.
 
 Based on simulations, we recommend to collect traits for at least 80% of the community cover (Maitner et al. in prep).
 
 ```{r coverage-plot, echo=TRUE, eval=TRUE, fig.width = 6}
 
 # show coverage plot
-autoplot(trait_selection) +
+autoplot(trait_filling) +
   theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 0.5))
 ```
 
@@ -498,7 +498,7 @@ Traitstrap has a function `trait_missing` which gives you a table with all missi
 
 # list missing traits
 trait_missing(
-  selected_trait = trait_selection,
+  filled_trait = trait_filling,
   comm = community
 )
 ```

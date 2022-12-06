@@ -1,7 +1,7 @@
 #' Bootstrap traits
 #' @description Function for nonparametric bootstrap resampling to calculate community
 #' weighted trait mean and higher moments.
-#' @param selected_traits output from the trait_select function.
+#' @param selected_traits output from the trait_fill function.
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size
 #' @param raw logical; argument to extract the raw data of the trait distributions.
@@ -28,7 +28,7 @@
 #' @examples
 #' data(community)
 #' data(trait)
-#' selected_traits <- trait_select(
+#' selected_traits <- trait_fill(
 #'   comm = community, traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",

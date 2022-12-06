@@ -1,6 +1,6 @@
-context("trait_select")
+context("trait_fill")
 
-test_that("trait_selection works", {
+test_that("trait_fill works", {
   #### setup ####
   mini_trait <- tidyr::crossing(
     taxon = c("sp1", "sp2"),
@@ -22,7 +22,7 @@ test_that("trait_selection works", {
   mini_trait1 <- mini_trait %>%
     filter(!(taxon == "sp1" & site == "A" & plot == 2))
 
-  ti_1 <- trait_select(
+  ti_1 <- trait_fill(
     comm = mini_comm,
     traits = mini_trait1,
     scale_hierarchy = c("site", "plot"),
@@ -62,7 +62,7 @@ test_that("trait_selection works", {
   mini_trait2 <- mini_trait %>%
     filter(!(taxon == "sp1" & site == "A"))
 
-  ti_2 <- trait_select(
+  ti_2 <- trait_fill(
     comm = mini_comm,
     traits = mini_trait2,
     scale_hierarchy = c("site", "plot"),
