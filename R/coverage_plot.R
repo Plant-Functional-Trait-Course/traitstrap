@@ -16,7 +16,6 @@
 #' @importFrom rlang .data
 #' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes
 #' @importFrom ggplot2 scale_y_continuous labs fortify facet_grid
-#' @importFrom stats reformulate
 #' @importFrom glue glue
 #' @examples
 #' require("ggplot2")
@@ -67,9 +66,9 @@ autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
   # add facets
   if (!missing(other_col_how) && other_col_how == "facet") {
     plot <- plot +
-      facet_grid(reformulate(attrib$trait_col, attrib$other_col))
+      facet_grid(rows = attrib$trait_col, cols = attrib$other_col)
   } else {
-    plot <- plot + facet_wrap(~ .data[[attrib$trait_col]])
+    plot <- plot + facet_wrap(facets = attrib$trait_col)
   }
 
   return(plot)

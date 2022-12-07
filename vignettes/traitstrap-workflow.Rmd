@@ -357,7 +357,7 @@ ggplot(raw_dist_np, aes(x = log(Value), fill = Site)) +
   geom_density(alpha = 0.4) +
   scale_fill_viridis_d(end = 0.9, option = "plasma") +
   labs(x = "log(trait value)") +
-  facet_wrap(~Trait, scales = "free")
+  facet_wrap(facets = vars(Trait), scales = "free")
 ```
 
 # Multivariate analyses
@@ -469,7 +469,7 @@ boot_tpd %>%
     alpha = 0.5,
     draw_quantiles = c(0.025, 0.975)
   ) +
-  facet_wrap(~metric, scales = "free")
+  facet_wrap(facets = vars(metric), scales = "free")
 ```
 
 
