@@ -19,8 +19,10 @@ library(tidyr)
 library(stringr)
 library(purrr)
 library(ggplot2)
-library(wesanderson)
 
+# wes anderson colours
+col_palettes <- list(
+  GrandBudapest1 = c("#FD6467", "#5B1A18", "#D67236"))
 theme_set(theme_minimal(base_size = 12))
 ```
 
@@ -360,10 +362,12 @@ The raw data can be useful for visualizing the trait distributions.
 Use colour and facets to separate between the different traits, hierarchies and treatments.
 
 ```{r plot-raw-dist-np, echo=TRUE, eval=TRUE, fig.width = 6}
+ggplot(df, aes(x=cond, y=yval, fill=cond)) + geom_bar(stat="identity") + 
+    scale_fill_manual(values=c("#CC6666", "#9999CC", "#66CC99"))
 
 ggplot(raw_dist_np, aes(x = log(Value), fill = Site)) +
   geom_density(alpha = 0.4) +
-  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+  scale_fill_manual(values = col_palettes$GrandBudapest1) +
   labs(x = "log(trait value)") +
   facet_wrap(facets = vars(Trait), scales = "free")
 ```
@@ -442,7 +446,7 @@ Let's plot RaoQ:
 
 ggplot(data = raoq_est, mapping = aes(x = RaoQ, fill = PlotID)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+  scale_fill_manual(values = col_palettes$GrandBudapest1) +
   xlim(c(0, 6))
 
 ```
@@ -485,7 +489,7 @@ ggplot(data = tpd) +
     alpha = 0.5,
     draw_quantiles = c(0.025, 0.975)
   ) +
-  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+  scale_fill_manual(values = col_palettes$GrandBudapest1) +
   facet_wrap(facets = vars(metric), scales = "free")
 ```
 
@@ -503,7 +507,7 @@ Based on simulations, we recommend to collect traits for at least 80% of the com
 
 # show coverage plot
 autoplot(trait_filling) +
-  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+  scale_fill_manual(values = col_palettes$GrandBudapest1) +
   theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 0.5))
 ```
 
