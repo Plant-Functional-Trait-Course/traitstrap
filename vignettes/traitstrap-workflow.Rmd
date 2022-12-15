@@ -15,7 +15,11 @@ knitr::opts_chunk$set(
 
 library(traitstrap)
 library(dplyr)
+library(tidyr)
+library(stringr)
+library(purrr)
 library(ggplot2)
+library(wesanderson)
 
 theme_set(theme_minimal(base_size = 12))
 ```
@@ -94,6 +98,10 @@ trait <- trait %>%
     Taxon == "silene acaulis" ~ "silene acaudis",
     TRUE ~ Taxon
   ))
+
+# shorten trait names
+trait <- trait |> 
+  mutate(Trait = recode(Trait, "Leaf_Thickness_Ave_mm" = "Thickness_mm"))
 ```
 
 
@@ -131,7 +139,7 @@ trait
 
 ## Trait filling
 
-The `trait_fill` function uses a hierarchical sampling design, which allows to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases), different taxonomic resolution and/or experimental design. 
+The `trait_fill()` function uses a hierarchical sampling design, which allows to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases), different taxonomic resolution and/or experimental design. 
 
 The first two mandatory arguments in the function are the two datasets:
 `comm` and `traits`
@@ -148,7 +156,7 @@ All the other arguments are not mandatory.
 With `scale_hierarchy` you can define the levels at which the traits have been collected and the order of trait filling starting with the highest level (e.g. global database, regional, site, plot).
 In the example below we have the levels **Site** and **PlotID**, starting with the highest level.
 
-The `trait_fill` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
+The `trait_fill()` function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1.
 If no trait value is available from that level (plot A, site 1), it will other groups in the same level and choose a trait value from species X from plot B or C at site 1.
 If there is no trait available, it will move up the hierarchy to the next level and choose trait values from species X from other sites (site 2, 3, etc.).
 
@@ -223,7 +231,7 @@ trait_filling2 <- trait_fill(
 
 ## Nonparametric bootstrapping
 
-The output of the trait filling function is then used to do a **nonparametric bootstrapping** using the `trait_np_bootstrap` function.
+The output of the trait filling function is then used to do a **nonparametric bootstrapping** using the `trait_np_bootstrap()` function.
 
 Nonparametric bootstrapping is a resampling method to estimate the trait moments.
 The traits are re-sampled in proportion to their weight in the community (e.g. by the abundance of the species).
@@ -251,7 +259,7 @@ np_bootstrapped_moments
 
 One advantage of using a bootstrapping approach, is that we get much more than a mean trait value.
 We can also estimate the variance and other moments of these trait distributions.
-In traitstrap happy moments can be summarized and the confidence intervals calculated using the `trait_summarise_boot_moments` function.
+In traitstrap happy moments can be summarized and the confidence intervals calculated using the `trait_summarise_boot_moments()` function.
 The input variable for this function is the output from the nonparametric bootstrapping function (or the parametric bootstrapping function, see below).
 
 The confidence interval can be calculated parametrically, using the mean and standard deviation, or nonparametrically using quantiles.
@@ -274,7 +282,7 @@ sum_boot_moment
 
 Traitstrap also offers the option to run a **parametric bootstrapping**.
 
-The `trait_fit_distributions` function fits parametric distributions for each species-by-trait combination at the finest scale of the user-supplied hierarchy. 
+The `trait_fit_distributions()` function fits parametric distributions for each species-by-trait combination at the finest scale of the user-supplied hierarchy. 
 This function takes as input:
 
 * an object of class filled traits (as produced by the function `trait_fill`), and 
@@ -310,10 +318,10 @@ fitted_distributions
 ```
 
 
-The `trait_parametric_bootstrap` function is a parametric analogue of the `trait_np_bootstrap` function.
+The `trait_parametric_bootstrap()` function is a parametric analogue of the `trait_np_bootstrap()` function.
 It takes in fitted trait distributions produced by `trait_fit_distributions` and randomly samples from among the fitted distributions proportionally to species abundances in the community.
 
-As with `trait_np_bootstrap`, the number of samples per replicated draw are specified with the parameter `sample_size`, and the number of replicated draws is specified by the parameter `nrep.`
+As with `trait_np_bootstrap()`, the number of samples per replicated draw are specified with the parameter `sample_size`, and the number of replicated draws is specified by the parameter `nrep.`
 The argument `raw` allows to extract raw distributions (see above).
 
 
@@ -328,7 +336,7 @@ p_bootstrapped_moments <- trait_parametric_bootstrap(
 p_bootstrapped_moments
 ```
 
-The output of trait_parametric_bootstrap can be summarized using `trait_summarize_boot_moments` (see above).
+The output of trait_parametric_bootstrap can be summarized using `trait_summarize_boot_moments()` (see above).
 
 
 ## Extracting raw distributions
@@ -340,7 +348,7 @@ In traitstrap both the parametric and nonparametric bootstrapping functions allo
 
 # run nonparametric bootstrapping
 raw_dist_np <- trait_np_bootstrap(
-  trait_filling,
+  selected_traits = trait_filling,
   raw = TRUE
 )
 
@@ -355,19 +363,24 @@ Use colour and facets to separate between the different traits, hierarchies and 
 
 ggplot(raw_dist_np, aes(x = log(Value), fill = Site)) +
   geom_density(alpha = 0.4) +
-  scale_fill_viridis_d(end = 0.9, option = "plasma") +
+  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
   labs(x = "log(trait value)") +
   facet_wrap(facets = vars(Trait), scales = "free")
 ```
 
-# Multivariate analyses
+## Multivariate analyses
 
-While the core functionality of traitstrap was designed with univariate distributions in mind, it can also be used for multivariate questions as well using the function `trait_multivariate_bootstrap`. This function allows users to supply any appropriate function for analyses of multivariate data, including those included in popular packages for functional diversity calculations. Here, we demonstrate how to combine `trait_multivariate_bootstrap` with the function dbFD from the FD package.
+While the core functionality of traitstrap was designed with univariate distributions in mind, it can also be used for multivariate questions as well using the function `trait_multivariate_bootstrap()`. 
+This function allows users to supply any appropriate function for analyses of multivariate data, including those included in popular packages for functional diversity calculations. 
+Here, we demonstrate how to combine `trait_multivariate_bootstrap()` with the function `dbFD()` from the FD package.
 
-```{r multivariate, warning=FALSE, fig.width = 6}
+We first use the `trait_fill()` function similar to the univariate case.
+Note that we are also using the argument `complete_only` to specify that we are only interested in individuals that have all traits and the argument `leaf_id`, which tells the function which column contains the unique individual ID.
+Also, we are subsetting the data to make it run faster.
+
+```{r multivariate-prep, warning=FALSE}
 
 library(FD)
-
 
 multivariate_traits <- trait_fill(
   comm = community %>%
@@ -386,11 +399,24 @@ multivariate_traits <- trait_fill(
   leaf_id = "ID"
 )
 
+```
 
-boot_multi <- trait_multivariate_bootstrap(multivariate_traits,
-  id = "ID",
-  nrep = 20, # Note that the number of reps is set low for demo purposes
+Then we are using the `trait_multivariate_bootstrap()` function to do the actual bootstrapping.
+This function needs the output from the trait filling as `selected_traits`, number bootstraped of replications `nrep`, bootsrap size `sample_size` and `id`.
+The last argument is `fun`, that takes any function to apply to the data.
+In this case we are using diversity functions from the dbFD package.
+
+Note that we are using a low number of replicates (nrep) to make it run faster. 
+
+The `dbFD()` function returns a list as output, and we need to wrangle the data a bit to get it into a more useful format.
+We will extract Rao's Quadratic Entropy, since that performs well with bootstrapping.
+
+```{r multivariate-bootstrap, warning=FALSE}
+boot_multi <- trait_multivariate_bootstrap(
+  selected_traits = multivariate_traits,
+  nrep = 20, # number of reps is set low for demo purposes
   sample_size = 200,
+  id = "ID",
   fun = function(x) {
     dbFD(
       x = x,
@@ -403,34 +429,31 @@ boot_multi <- trait_multivariate_bootstrap(multivariate_traits,
   }
 )
 
-# Because dbFD returns output as a list, we need to do a bit of work to wrangle
-# it into a more useful format
-# We'll extract Rao's Quadratic Entropy, since that performs well with
-# bootstrapping.
+# data wrangling
+raoq_est <- boot_multi %>% 
+  mutate(result = map(result, as.data.frame)) %>% 
+  unnest(result)
 
-raoq_est <-
-  boot_multi %>%
-  rowwise() %>%
-  mutate(RaoQ = .data$result$RaoQ) %>%
-  dplyr::select(-result)
-
-raoq_est %>%
-  ggplot(mapping = aes(
-    x = RaoQ,
-    fill = PlotID
-  )) +
-  geom_density(alpha = 0.5) +
-  xlim(c(0, 6))
 ```
 
-Next, we'll show how we can use a similar method to combine `trait_multivariate_bootstrap` with the functions TPDs and REND from the TPD package.
-```{r multivariate tpd, echo=TRUE, warning=FALSE, message=FALSE, fig.width = 6}
+Let's plot RaoQ:
+
+```{r multivariate-plot, warning=FALSE, fig.width = 6}
+
+ggplot(data = raoq_est, mapping = aes(x = RaoQ, fill = PlotID)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+  xlim(c(0, 6))
+
+```
+
+Next, we'll show how we can use a similar method to combine `trait_multivariate_bootstrap` with the functions `TPDs()` and `REND()` from the TPD package.
+
+For each replicated site, we convert the distribution into a trait probability distribution and then derive functional diversity metrics.
+
+```{r multivariate-tpd, echo=TRUE, warning=FALSE, message=FALSE, fig.width = 6}
 
 library(TPD)
-
-
-# for each replicated site, convert the distribution into a trait probability
-# distribution and then derive functional diversity metrics
 
 boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
   id = "ID",
@@ -445,30 +468,24 @@ boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
   }
 )
 
-# reformat the results to make plotting easier
-
-boot_tpd <-
-  boot_tpd %>%
-  rowwise() %>%
-  mutate(
-    FRichness = .data$result$species$FRichness,
-    FEvenness = .data$result$species$FEvenness,
-    FDivergence = .data$result$species$FDivergence
-  ) %>%
-  dplyr::select(-result) %>%
-  tidyr::pivot_longer(
-    cols = c("FRichness", "FEvenness", "FDivergence"),
-    names_to = "metric"
-  )
+# wrangling data
+tpd <- boot_tpd %>% 
+  mutate(result = map(result, as.data.frame)) %>% 
+  unnest(result) |> 
+  pivot_longer(cols = species.FRichness:species.FDivergence,
+               values_to = "value",
+               names_to = "metric") |> 
+  mutate(metric = str_remove(metric, "species\\."))
 
 
-boot_tpd %>%
-  ggplot() +
+# and make plot
+ggplot(data = tpd) +
   geom_violin(
     mapping = aes(y = value, x = PlotID, fill = PlotID),
     alpha = 0.5,
     draw_quantiles = c(0.025, 0.975)
   ) +
+  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
   facet_wrap(facets = vars(metric), scales = "free")
 ```
 
@@ -477,7 +494,7 @@ boot_tpd %>%
 
 Traitstrap has a couple of functions to check the data.
 
-The `coverage_plot` function shows the trait coverage of the community for each level.
+The `coverage_plot()` function shows the trait coverage of the community for each level.
 Basically, this function summarizes from which level the traits are filled, and how much coverage of the community is reached.
 
 Based on simulations, we recommend to collect traits for at least 80% of the community cover (Maitner et al. in prep).
@@ -486,6 +503,7 @@ Based on simulations, we recommend to collect traits for at least 80% of the com
 
 # show coverage plot
 autoplot(trait_filling) +
+  scale_fill_manual(values = wes_palette("GrandBudapest1")) +
   theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 0.5))
 ```
 
@@ -494,7 +512,7 @@ Another important information is to know of which taxa traits are missing.
 This can be useful if the data sampling is not finished and you want to know which species should be sampled.
 The function also tells you the maximal abundance of each missing species, and gives you useful information if the missing species are abundant or rare.
 
-Traitstrap has a function `trait_missing` which gives you a table with all missing values.
+Traitstrap has a function `trait_missing()` which gives you a table with all missing values.
 
 
 ```{r missing-traits, echo=TRUE, eval=TRUE}
