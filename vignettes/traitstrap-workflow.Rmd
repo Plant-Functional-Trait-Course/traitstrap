@@ -362,14 +362,13 @@ The raw data can be useful for visualizing the trait distributions.
 Use colour and facets to separate between the different traits, hierarchies and treatments.
 
 ```{r plot-raw-dist-np, echo=TRUE, eval=TRUE, fig.width = 6}
-ggplot(df, aes(x=cond, y=yval, fill=cond)) + geom_bar(stat="identity") + 
-    scale_fill_manual(values=c("#CC6666", "#9999CC", "#66CC99"))
 
 ggplot(raw_dist_np, aes(x = log(Value), fill = Site)) +
   geom_density(alpha = 0.4) +
   scale_fill_manual(values = col_palettes$GrandBudapest1) +
   labs(x = "log(trait value)") +
   facet_wrap(facets = vars(Trait), scales = "free")
+
 ```
 
 ## Multivariate analyses
