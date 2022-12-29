@@ -7,12 +7,12 @@
 \format{
 A data frame with 705 rows and 6 variables:
 \describe{
-  \item{Site}{site name}
-  \item{PlotID}{plot name}
-  \item{Taxon}{species name}
-  \item{ID}{Unique leaf ID}
-  \item{Trait}{trait name with unit}
-  \item{Value}{trait value}
+\item{Site}{site name}
+\item{PlotID}{plot name}
+\item{Taxon}{species name}
+\item{ID}{Unique leaf ID}
+\item{Trait}{trait name with unit}
+\item{Value}{trait value}
 }
 }
 \source{

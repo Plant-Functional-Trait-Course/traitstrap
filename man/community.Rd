@@ -7,10 +7,10 @@
 \format{
 A data frame with 110 rows and 4 variables:
 \describe{
-  \item{Taxon}{species name}
-  \item{Cover}{cover, in percent}
-  \item{Site}{site name}
-  \item{PlotID}{plot name}
+\item{Taxon}{species name}
+\item{Cover}{cover, in percent}
+\item{Site}{site name}
+\item{PlotID}{plot name}
 }
 }
 \source{
@@ -21,6 +21,6 @@ community
 }
 \description{
 A dataset containing plant cover in control plots on Svalbard from PFCT4
- TraitTrain course.
+TraitTrain course.
 }
 \keyword{datasets}

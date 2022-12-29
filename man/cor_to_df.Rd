@@ -14,12 +14,13 @@ A data.frame of correlations
 }
 \description{
 Helper function for bootstrap_traits_multivariate that
- extracts results from a correlation matrix
+extracts results from a correlation matrix
 }
 \examples{
 x <- matrix(ncol = 5, rnorm(20))
 colnames(x) <- letters[1:5]
 cor(x) |> cor_to_df()
+
 }
 \references{
 Modified from https://stackoverflow.com/a/23476844/2055765

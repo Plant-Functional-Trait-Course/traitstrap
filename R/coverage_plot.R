@@ -1,8 +1,8 @@
-#' Coverage plot of selected Traits
-#' @description Function calculates the trait coverage of the community 
+#' Coverage plot of filled Traits
+#' @description Function calculates the trait coverage of the community
 #' for each level of the sampling hierarchy and makes a barplot.
-#' @param selected_traits output from trait_np_bootstrap or trait_parametric_bootstrap
-#' funtion.
+#' @param filled_traits output from `trait_np_bootstrap()` or
+#' `trait_parametric_bootstrap()`.
 #' @param other_col_how what to do with the other columns in other data.
 #'  Options are to `filter` by one of the columns, add them to the x-`axis`,
 #' `facet` by them, or to `ignore`.
@@ -16,24 +16,25 @@
 #' @importFrom rlang .data
 #' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes
 #' @importFrom ggplot2 scale_y_continuous labs fortify facet_grid
-#' @importFrom stats reformulate
 #' @importFrom glue glue
 #' @examples
 #' require("ggplot2")
 #' data(community)
 #' data(trait)
-#' selected_traits <-trait_select(comm = community, traits = trait,
-#'                  scale_hierarchy = c("Site", "PlotID"),
-#'                  taxon_col = "Taxon", value_col = "Value",
-#'                  trait_col = "Trait", abundance_col = "Cover")
-#' autoplot(selected_traits)
+#' filled_traits <- trait_fill(
+#'   comm = community, traits = trait,
+#'   scale_hierarchy = c("Site", "PlotID"),
+#'   taxon_col = "Taxon", value_col = "Value",
+#'   trait_col = "Trait", abundance_col = "Cover"
+#' )
+#' autoplot(filled_traits)
 #' @export
 
-autoplot.selected_trait <- function(selected_traits, other_col_how, ...) {
-  #get scale_hierarchy and concatenate to make an ID
-  attrib <- attr(selected_traits, "attrib")
-  
-  if (length(attrib$other_col) > 0 & missing(other_col_how)) {
+autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
+  # get scale_hierarchy and concatenate to make an ID
+  attrib <- attr(filled_traits, "attrib")
+
+  if (length(attrib$other_col) > 0 && missing(other_col_how)) {
     stop(
       glue("Autoplot needs to know what to do with the other_col. Options are:
             axis: add to x-axis labels
@@ -42,29 +43,33 @@ autoplot.selected_trait <- function(selected_traits, other_col_how, ...) {
             ignore: ignore")
     )
   }
-  
+
   if (!missing(other_col_how)) {
     other_col_how <- match.arg(
-      arg = other_col_how, 
+      arg = other_col_how,
       choices = c("axis", "facet", "filter", "ignore")
     )
   }
-  
-  selected_traits_summary <- fortify.selected_trait(selected_traits, other_col_how, ...)
-  
-  plot <- ggplot(selected_traits_summary, aes(x = .data$.id,
-                                     y = .data$s, fill = .data$level)) +
+
+  filled_traits_summary <- fortify.filled_trait(filled_traits,
+                                                other_col_how,
+                                                ...)
+
+  plot <- ggplot(filled_traits_summary, aes(
+    x = .data$.id,
+    y = .data$s, fill = .data$level
+  )) +
     geom_col() +
     scale_y_continuous(expand = c(0, 0)) +
     labs(x = "Plot", y = "Proportion of cover", fill = "Data source")
-  
+
   # add facets
-  if (!missing(other_col_how) && other_col_how == "facet"){
-    plot <- plot + 
-      facet_grid(reformulate(attrib$trait_col, attrib$other_col))
+  if (!missing(other_col_how) && other_col_how == "facet") {
+    plot <- plot +
+      facet_grid(rows = attrib$trait_col, cols = attrib$other_col)
   } else {
-   plot <- plot + facet_wrap(~ .data[[attrib$trait_col]])
+    plot <- plot + facet_wrap(facets = attrib$trait_col)
   }
-  
+
   return(plot)
 }

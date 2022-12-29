@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.902</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -61,7 +57,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/richardjtelford/traitstrap/">
+  <a href="https://github.com/Plant-Functional-Trait-Course/traitstrap/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -76,13 +72,13 @@
 
       
 
-      </header><script src="traitstrap-workflow_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>traitstrap-workflow</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/richardjtelford/traitstrap/blob/master/vignettes/traitstrap-workflow.Rmd"><code>vignettes/traitstrap-workflow.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Plant-Functional-Trait-Course/traitstrap/blob/HEAD/vignettes/traitstrap-workflow.Rmd" class="external-link"><code>vignettes/traitstrap-workflow.Rmd</code></a></small>
       <div class="hidden name"><code>traitstrap-workflow.Rmd</code></div>
 
     </div>
@@ -90,378 +86,659 @@
     
     
 <!-- fig.align = 'right',  -->
-<p><img src="../man/figures/Traitstrap_hex.png" width="15%" style="float:right; padding:8px"></p>
-<p>This vignette explains how to use the traitstrap package (Telford et al). For more details on the methods see Maitner et al.</p>
-<p>First of all, relax and turn on some music. We have prepared the <a href="https://tinyurl.com/traitstrap">traitstrap playlist</a> for you!</p>
-<div id="the-aim-of-traitstrap" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-aim-of-traitstrap" class="anchor"></a>The aim of traitstrap</h2>
-<p>Trait distributions can be used to infer the importance of community assembly processes and the role of climate drivers in shaping species and community responses to climate change. Community ecology has typically focused on the <strong>mean</strong>, however the <strong>higher moments</strong> (variance, skewness, and kurtosis) of trait distributions can reveal information about the various processes shaping species diversity.</p>
+<p><img src="../reference/figures/Traitstrap_hex.png" width="15%" style="float:right; padding:8px"></p>
+<p>This vignette explains how to use the traitstrap package (Telford et
+al). For more details on the methods see Maitner et al.</p>
+<p>First of all, relax and turn on some music. We have prepared the <a href="https://tinyurl.com/traitstrap" class="external-link">traitstrap playlist</a> for
+you!</p>
+<div class="section level3">
+<h3 id="the-aim-of-traitstrap">The aim of traitstrap<a class="anchor" aria-label="anchor" href="#the-aim-of-traitstrap"></a>
+</h3>
+<p>Trait distributions can be used to infer the importance of community
+assembly processes and the role of climate drivers in shaping species
+and community responses to climate change. Community ecology has
+typically focused on the <strong>mean</strong>, however the
+<strong>higher moments</strong> (variance, skewness, and kurtosis) of
+trait distributions can reveal information about the various processes
+shaping species diversity.</p>
 <p><img src="true-dist.png" width="90%"></p>
-<p>Measuring trait distributions is often difficult and time-consuming as it requires information on measuring trait values of all individuals present. Sampling protocols often limit sampling to a non-representative subset of the community, or rely upon species-level average traits values calculated in other locations or across many locations.</p>
-<p>Traditionally the moments of trait distributions have been estimated using weighting approaches that rely on the average traits of species weighted by some measure of abundance within the community. Such <strong>community-weighted</strong> trait moments methods assume that a species’ trait expression can be adequately represented by the mean, ignoring intraspecific trait variation.</p>
-<p>To more accurately estimate local trait distributions, trait sampling should thus occur both across multiple individuals within each species, and across multiple locations or experimental treatments across the extent of the study in order to capture both inter- and intra-specific variability.</p>
+<p>Measuring trait distributions is often difficult and time-consuming
+as it requires information on measuring trait values of all individuals
+present. Sampling protocols often limit sampling to a non-representative
+subset of the community, or rely upon species-level average traits
+values calculated in other locations or across many locations.</p>
+<p>Traditionally the moments of trait distributions have been estimated
+using weighting approaches that rely on the average traits of species
+weighted by some measure of abundance within the community. Such
+<strong>community-weighted</strong> trait moments methods assume that a
+species’ trait expression can be adequately represented by the mean,
+ignoring intraspecific trait variation.</p>
+<p>To more accurately estimate local trait distributions, trait sampling
+should thus occur both across multiple individuals within each species,
+and across multiple locations or experimental treatments across the
+extent of the study in order to capture both inter- and intra-specific
+variability.</p>
 <p><img src="comm-boot.png" width="90%"></p>
-<p><strong>Traitstrap</strong> is an <strong>R package</strong> to estimate the moments of community trait distributions using a <strong>bootstrapping approach</strong>. Further, this package uses a hierarchical sampling design, which allows accounting for incomplete trait collections, traits from different spatial or temporal levels (e.g. local traits vs. databases), taxonomic hierarchies (e.g., species vs genus) and experimental designs (e.g., multiple sites, or treated vs. control sampling units).</p>
+<p><strong>Traitstrap</strong> is an <strong>R package</strong> to
+estimate the moments of community trait distributions using a
+<strong>bootstrapping approach</strong>. Further, this package uses a
+hierarchical sampling design, which allows accounting for incomplete
+trait collections, traits from different spatial or temporal levels
+(e.g. local traits vs. databases), taxonomic hierarchies (e.g., species
+vs genus) and experimental designs (e.g., multiple sites, or treated
+vs. control sampling units).</p>
 <p>The package has three <strong>main functions</strong>:</p>
 <ul>
 <li>
-<strong>trait imputation</strong> function which allows to account for intraspecific trait variation and hierarchical sampling design.</li>
-<li>a resample method using <strong>bootstrapping</strong> (parametric or nonparametric method) to calculate community weighted mean and happy moments (variance, skewness and kurtosis).</li>
-<li>a <strong>summary function</strong> that summarizes the trait moments and calculates confidence intervals.</li>
+<strong>trait filling</strong> function which allows to account for
+intraspecific trait variation and hierarchical sampling design.</li>
+<li>a resample method using <strong>bootstrapping</strong> (parametric
+or nonparametric method) to calculate community weighted mean and happy
+moments (variance, skewness and kurtosis).</li>
+<li>a <strong>summary function</strong> that summarizes the trait
+moments and calculates confidence intervals.</li>
 </ul>
-<p>Note that for this tutorial we are calling the mean and the higher moments the happy moments :-)</p>
+<p>Note that for this tutorial we are calling the mean and the higher
+moments the happy moments :-)</p>
 </div>
-<div id="the-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-data" class="anchor"></a>The data</h2>
-<p>For this vignette we will use part of a vascular plant dataset from two sites near Longyearbyen on Svalbard. The data was collected during the Plant Functional Trait Course in 2018 and contains data on the plant community composition and functional traits. For more details see this <a href="https://github.com/Plant-Functional-Trait-Course/PFTC_4_Svalbard">GitHub repo</a></p>
+<div class="section level3">
+<h3 id="the-data">The data<a class="anchor" aria-label="anchor" href="#the-data"></a>
+</h3>
+<p>For this vignette we will use part of a vascular plant dataset from
+two sites near Longyearbyen on Svalbard. The data was collected during
+the Plant Functional Trait Course in 2018 and contains data on the plant
+community composition and functional traits. For more details see this
+<a href="https://github.com/Plant-Functional-Trait-Course/PFTC_4_Svalbard" class="external-link">GitHub
+repo</a></p>
 <p>Note that some of the species names have been adapted.</p>
 </div>
-<div id="organize-your-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#organize-your-data" class="anchor"></a>Organize your data</h2>
+<div class="section level3">
+<h3 id="organize-your-data">Organize your data<a class="anchor" aria-label="anchor" href="#organize-your-data"></a>
+</h3>
 <p>To run traitstrap two datasets are required:</p>
 <ul>
-<li>one dataset with information on abundance (e.g. biomass, size, cover, etc.) of the community, which is used to weight species traits by abundance in the community.</li>
-<li>one dataset with the traits for each species (or as many species and individuals you have data for) in your community.</li>
+<li>one dataset with information on abundance (e.g. biomass, size,
+cover, etc.) of the community, which is used to weight species traits by
+abundance in the community.</li>
+<li>one dataset with the traits for each species (or as many species and
+individuals you have data for) in your community.</li>
 </ul>
-<p>The datasets need to be organized in a <strong>tidy</strong> and <strong>long</strong> format and certain columns (see below) are required, but the naming of these columns are up to the user.</p>
+<p>The datasets need to be organized in a <strong>tidy</strong> and
+<strong>long</strong> format and certain columns (see below) are
+required, but the naming of these columns are up to the user.</p>
 <p>Let us have a look at these datasets in an example.</p>
-<p>The <strong>community data</strong> should have information the abundance of species in the community. This dataset will be used to weigh the traits by species abundance. Note that abundance can also be cover, size, biomass, or something similar.</p>
-<p>In this example the contains species names (e.g. <strong>Taxon</strong>), cover of each species per plot (e.g. <strong>Cover</strong>) and two columns with information about the <strong>hierarchy</strong> (i.e. <strong>Site</strong> and <strong>PlotID</strong>).</p>
-<pre><code>#&gt; # A tibble: 110 x 4
-#&gt;    Taxon             Cover Site  PlotID
-#&gt;    &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-#&gt;  1 alopecurus ovatus   0.5 1     B     
-#&gt;  2 alopecurus ovatus   1   1     C     
-#&gt;  3 alopecurus ovatus   1   1     D     
-#&gt;  4 alopecurus ovatus   2   1     F     
-#&gt;  5 alopecurus ovatus   0.1 1     G     
-#&gt;  6 bistorta vigdis    10   1     A     
-#&gt;  7 bistorta vigdis    25   1     B     
-#&gt;  8 bistorta vigdis    10   1     C     
-#&gt;  9 bistorta vigdis     2   1     D     
-#&gt; 10 bistorta vigdis     1   1     F     
-#&gt; # … with 100 more rows</code></pre>
-<p>The <strong>trait data</strong> should contain information about traits and trait values for as many species and individuals in the community data as possible. The data should be organized in the same way as the community data and should have corresponding columns. In this example the trait data contains <strong>Taxon</strong>, <strong>Site</strong> and <strong>PlotID</strong> as well as <strong>Trait</strong> and <strong>Value</strong>.</p>
-<pre><code>#&gt; # A tibble: 749 x 5
-#&gt;    Taxon                   Site  PlotID Trait         Value
-#&gt;    &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;
-#&gt;  1 saxifraga oppositifolia 1     A      Wet_Mass_g 0.000695
-#&gt;  2 bistorta vigdis         1     C      Wet_Mass_g 0.0105  
-#&gt;  3 festuca rubra           2     C      Wet_Mass_g 0.00724 
-#&gt;  4 bistorta vigdis         1     C      Wet_Mass_g 0.0189  
-#&gt;  5 equisetum arvense       1     E      Wet_Mass_g 0.270   
-#&gt;  6 bistorta vigdis         1     B      Wet_Mass_g 0.0231  
-#&gt;  7 luzula confusa          1     F      Wet_Mass_g 0.0135  
-#&gt;  8 alopecurus ovatus       1     G      Wet_Mass_g 0.0234  
-#&gt;  9 alopecurus ovatus       1     G      Wet_Mass_g 0.0300  
-#&gt; 10 alopecurus ovatus       1     C      Wet_Mass_g 0.0267  
-#&gt; # … with 739 more rows</code></pre>
+<p>The <strong>community data</strong> should have information the
+abundance of species in the community. This dataset will be used to
+weigh the traits by species abundance. Note that abundance can also be
+cover, size, biomass, or something similar.</p>
+<p>In this example the contains species names
+(e.g. <strong>Taxon</strong>), cover of each species per plot
+(e.g. <strong>Cover</strong>) and two columns with information about the
+<strong>hierarchy</strong> (i.e. <strong>Site</strong> and
+<strong>PlotID</strong>).</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 110 × 4</span></span></span>
+<span><span class="co">#&gt;    Taxon             Cover Site  PlotID</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> alopecurus ovatus   0.5 1     B     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> alopecurus ovatus   1   1     C     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> alopecurus ovatus   1   1     D     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> alopecurus ovatus   2   1     F     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> alopecurus ovatus   0.1 1     G     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> bistorta vigdis    10   1     A     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> bistorta vigdis    25   1     B     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> bistorta vigdis    10   1     C     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> bistorta vigdis     2   1     D     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> bistorta vigdis     1   1     F     </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 100 more rows</span></span></span></code></pre>
+<p>The <strong>trait data</strong> should contain information about
+traits and trait values for as many species and individuals in the
+community data as possible. The data should be organized in the same way
+as the community data and should have corresponding columns. In this
+example the trait data contains <strong>Taxon</strong>,
+<strong>Site</strong> and <strong>PlotID</strong> as well as
+<strong>Trait</strong> and <strong>Value</strong>.</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 705 × 6</span></span></span>
+<span><span class="co">#&gt;    Site  PlotID Taxon                   ID      Trait                    Value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1     A      saxifraga oppositifolia ANF4320 Plant_Height_cm       2       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1     A      saxifraga oppositifolia ANF4320 Wet_Mass_g            0.000<span style="text-decoration: underline;">695</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1     A      saxifraga oppositifolia ANF4320 Leaf_Thickness_Ave_mm 0.127   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1     C      bistorta vigdis         ARQ4344 Plant_Height_cm       4.2     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1     C      bistorta vigdis         ARQ4344 Wet_Mass_g            0.010<span style="text-decoration: underline;">5</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1     C      bistorta vigdis         ARQ4344 Leaf_Thickness_Ave_mm 0.154   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2     C      festuca rubra           AMT1545 Plant_Height_cm       7       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2     C      festuca rubra           AMT1545 Wet_Mass_g            0.007<span style="text-decoration: underline;">24</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2     C      festuca rubra           AMT1545 Leaf_Thickness_Ave_mm 0.257   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1     C      bistorta vigdis         ARP2422 Plant_Height_cm       1       </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 695 more rows</span></span></span></code></pre>
 </div>
-<div id="trait-imputation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#trait-imputation" class="anchor"></a>Trait imputation</h2>
-<p>The <code>trait_impute</code> function uses a hierarchical sampling design, which allows to account for incomplete trait collections, traits from different spatial or temporal levels (i.e. local traits vs. databases), different taxonomic resolution and/or experimental design.</p>
-<p>The first two mandatory arguments in the function are the two datasets: <code>comm</code> and <code>traits</code></p>
-<p>The next four arguments are also mandatory and refer to specific columns in the trait or community dataset:</p>
+<div class="section level3">
+<h3 id="trait-filling">Trait filling<a class="anchor" aria-label="anchor" href="#trait-filling"></a>
+</h3>
+<p>The <code>trait_fill</code> function uses a hierarchical sampling
+design, which allows to account for incomplete trait collections, traits
+from different spatial or temporal levels (i.e. local traits
+vs. databases), different taxonomic resolution and/or experimental
+design.</p>
+<p>The first two mandatory arguments in the function are the two
+datasets: <code>comm</code> and <code>traits</code></p>
+<p>The next four arguments are also mandatory and refer to specific
+columns in the trait or community dataset:</p>
 <ul>
 <li>
-<code>abundance</code> which is the abundance of your species in your community dataset. This can be abundance, cover, biomass, or size, etc.</li>
+<code>abundance</code> which is the abundance of your species in
+your community dataset. This can be abundance, cover, biomass, or size,
+etc.</li>
 <li>
-<code>taxon_col</code> is the column in your community and trait data that define the species.</li>
+<code>taxon_col</code> is the column in your community and trait
+data that define the species.</li>
 <li>
-<code>trait_col</code> is the column in your trait data that defines the traits.</li>
+<code>trait_col</code> is the column in your trait data that defines
+the traits.</li>
 <li>
-<code>value_col</code> is the column in your trait data that defines the trait values.</li>
+<code>value_col</code> is the column in your trait data that defines
+the trait values.</li>
 </ul>
 <p>All the other arguments are not mandatory.</p>
-<p>With <code>scale_hierarchy</code> you can define the levels at which the traits have been collected and the order of trait imputation starting with the highest level (e.g. global database, regional, site, plot). In the example below we have the levels <strong>Site</strong> and <strong>PlotID</strong>, starting with the highest level.</p>
-<p>The <code>trait_impute</code> function will choose if available a trait value from the lowest level, i.e. species X from plot A in site 1. If no trait value is available from that level (plot A, site 1), it will other groups in the same level and choose a trait value from species X from plot B or C at site 1. If there is no trait available, it will move up the hierarchy to the next level and choose trait values from species X from other sites (site 2, 3, etc.).</p>
-<p>The argument <code>min_n_in_samples</code> allows users to define the minimum number in samples that are chosen at each level. If the minimum number is not reached (i.e. there are only 3 trait values at a specific level), trait values from the next higher level will be imputed, to avoid sampling the same individual several times, which could result in unrealistic variances. The default minimum number of samples is 5.</p>
-<p>In the <code>other_col</code> argument other grouping variables in the community dataset can be defined and will be kept after the trait imputation.</p>
+<p>With <code>scale_hierarchy</code> you can define the levels at which
+the traits have been collected and the order of trait filling starting
+with the highest level (e.g. global database, regional, site, plot). In
+the example below we have the levels <strong>Site</strong> and
+<strong>PlotID</strong>, starting with the highest level.</p>
+<p>The <code>trait_fill</code> function will choose if available a trait
+value from the lowest level, i.e. species X from plot A in site 1. If no
+trait value is available from that level (plot A, site 1), it will other
+groups in the same level and choose a trait value from species X from
+plot B or C at site 1. If there is no trait available, it will move up
+the hierarchy to the next level and choose trait values from species X
+from other sites (site 2, 3, etc.).</p>
+<p>The argument <code>min_n_in_samples</code> allows users to define the
+minimum number in samples that are chosen at each level. If the minimum
+number is not reached (i.e. there are only 3 trait values at a specific
+level), trait values from the next higher level will be filled, to avoid
+sampling the same individual several times, which could result in
+unrealistic variances. The default minimum number of samples is 5.</p>
+<p>In the <code>other_col</code> argument other grouping variables in
+the community dataset can be defined and will be kept after the trait
+filling.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">trait_imputation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_impute.html">trait_impute</a></span><span class="op">(</span>
-    <span class="co"># input data (mandatory)</span>
-    comm <span class="op">=</span> <span class="va">community</span>,
-    traits <span class="op">=</span> <span class="va">trait</span>,
-    
-    <span class="co"># specifies columns in your data (mandatory)</span>
-    abundance_col <span class="op">=</span> <span class="st">"Cover"</span>,
-    taxon_col <span class="op">=</span> <span class="st">"Taxon"</span>,
-    trait_col <span class="op">=</span> <span class="st">"Trait"</span>,
-    value_col <span class="op">=</span> <span class="st">"Value"</span>,
-    
-    <span class="co"># specifies sampling hierarchy</span>
-    scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,
-    
-    <span class="co"># min number of samples</span>
-    min_n_in_sample <span class="op">=</span> <span class="fl">9</span>
-  <span class="op">)</span>
-
-<span class="va">trait_imputation</span>
-<span class="co">#&gt; # A tibble: 4,007 x 12</span>
-<span class="co">#&gt; # Groups:   global, Site, PlotID, Trait [28]</span>
-<span class="co">#&gt;    Taxon Cover Site  PlotID global sum_abun Trait   Value n_sample weight level</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;    &lt;int&gt;  &lt;dbl&gt; &lt;ord&gt;</span>
-<span class="co">#&gt;  1 fest…     1 1     A      global     38.2 Wet_… 0.00724       11 0.0909 glob…</span>
-<span class="co">#&gt;  2 fest…     1 1     A      global     38.2 Wet_… 0.0160        11 0.0909 glob…</span>
-<span class="co">#&gt;  3 fest…     1 1     A      global     38.2 Wet_… 0.00529       11 0.0909 glob…</span>
-<span class="co">#&gt;  4 fest…     1 1     A      global     38.2 Wet_… 0.0154        11 0.0909 glob…</span>
-<span class="co">#&gt;  5 fest…     1 1     A      global     38.2 Wet_… 0.0066        11 0.0909 glob…</span>
-<span class="co">#&gt;  6 fest…     1 1     A      global     38.2 Wet_… 0.00637       11 0.0909 glob…</span>
-<span class="co">#&gt;  7 fest…     1 1     A      global     38.2 Wet_… 0.00491       11 0.0909 glob…</span>
-<span class="co">#&gt;  8 fest…     1 1     A      global     38.2 Wet_… 0.0132        11 0.0909 glob…</span>
-<span class="co">#&gt;  9 fest…     1 1     A      global     38.2 Wet_… 0.0233        11 0.0909 glob…</span>
-<span class="co">#&gt; 10 fest…     1 1     A      global     38.2 Wet_… 0.0115        11 0.0909 glob…</span>
-<span class="co">#&gt; # … with 3,997 more rows, and 1 more variable: max_n_in_sample &lt;int&gt;</span></code></pre></div>
-<p>Traitstrap also allows to include taxonomy and experimental design in the trait imputation step.</p>
-<p>With the argument <code>taxon_col</code> the taxonomic hierarchy for sampling can be defined. This means if traits for a specific species are not available, trait values from the same genus will be imputed. For this a list of the taxonomic hierarchy has to be defined (e.g. “Taxon”, “Genus”). Note that traits from species of the same genus can have very different traits and it might not be meaningful to impute these traits. Therefore, you should always check the trait distributions for the same genus before using taxonomic trait imputation.</p>
-<p>The argument <code>treatment_col</code> allows to incorporate an experimental design where traits are imputed from the same experimental treatment or the first factor level, which is assumed to be the control. Therefore, it is important to order the levels of a treatment in the right order, i.e. the first level has to be the control. The imputation step can be defined at certain level using the <code>treatment_level</code> argument. Depending on the experimental design it might make sense to impute traits at a certain level, e.g. block or site.</p>
-<p>Here is an example how to include taxonomy and experimental design in the trait imputation function (code not run).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>trait_imputation2 <span class="ot">&lt;-</span> <span class="fu">trait_impute</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">comm =</span> community,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">traits =</span> trait,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">abundance_col =</span> <span class="st">"Cover"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># defining taxonomic hierarchy</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">taxon_col =</span> <span class="fu">c</span>(<span class="st">"Taxon"</span>, <span class="st">"Genus"</span>),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">trait_col =</span> <span class="st">"Trait"</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">value_col =</span> <span class="st">"Value"</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale_hierarchy =</span> <span class="fu">c</span>(<span class="st">"Site"</span>, <span class="st">"PlotID"</span>),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_n_in_sample =</span> <span class="dv">3</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># specifying experimental design</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">treatment_col =</span> <span class="st">"Treatment"</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">treatment_level =</span> <span class="st">"Site"</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">trait_filling</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fill.html">trait_fill</a></span><span class="op">(</span></span>
+<span>  <span class="co"># input data (mandatory)</span></span>
+<span>  comm <span class="op">=</span> <span class="va">community</span>,</span>
+<span>  traits <span class="op">=</span> <span class="va">trait</span>,</span>
+<span></span>
+<span>  <span class="co"># specifies columns in your data (mandatory)</span></span>
+<span>  abundance_col <span class="op">=</span> <span class="st">"Cover"</span>,</span>
+<span>  taxon_col <span class="op">=</span> <span class="st">"Taxon"</span>,</span>
+<span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>,</span>
+<span>  value_col <span class="op">=</span> <span class="st">"Value"</span>,</span>
+<span></span>
+<span>  <span class="co"># specifies sampling hierarchy</span></span>
+<span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span>
+<span></span>
+<span>  <span class="co"># min number of samples</span></span>
+<span>  min_n_in_sample <span class="op">=</span> <span class="fl">9</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">trait_filling</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4,011 × 13</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait [42]</span></span></span>
+<span><span class="co">#&gt;    Taxon   Cover Site  PlotID global sum_abun ID    Trait Value n_sample  weight</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> dryas …   0.1 1     A      global     38.2 ATC4… Plan…   1.3       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> dryas …   0.1 1     A      global     38.2 ADC9… Plan…   1.4       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> dryas …   0.1 1     A      global     38.2 AVU2… Plan…   1.5       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> dryas …   0.1 1     A      global     38.2 AHU1… Plan…   2         17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> dryas …   0.1 1     A      global     38.2 AHS4… Plan…   2.5       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> dryas …   0.1 1     A      global     38.2 AHR0… Plan…   2.4       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> dryas …   0.1 1     A      global     38.2 ABE6… Plan…   0.6       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> dryas …   0.1 1     A      global     38.2 BUP1… Plan…   2.2       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> dryas …   0.1 1     A      global     38.2 ADE9… Plan…   1         17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> dryas …   0.1 1     A      global     38.2 ACH6… Plan…   3         17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 4,001 more rows, and 2 more variables: level &lt;ord&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   max_n_in_sample &lt;int&gt;</span></span></span></code></pre></div>
+<p>Traitstrap also allows to include taxonomy and experimental design in
+the trait filling step.</p>
+<p>With the argument <code>taxon_col</code> the taxonomic hierarchy for
+sampling can be defined. This means if traits for a specific species are
+not available, trait values from the same genus will be used. For this a
+list of the taxonomic hierarchy has to be defined (e.g. “Taxon”,
+“Genus”). Note that traits from species of the same genus can have very
+different traits and it might not be meaningful to use these traits.
+Therefore, you should always check the trait distributions for the same
+genus before using taxonomic trait filling.</p>
+<p>The argument <code>treatment_col</code> allows to incorporate an
+experimental design where traits are filled from the same experimental
+treatment or the first factor level, which is assumed to be the control.
+Therefore, it is important to order the levels of a treatment in the
+right order, i.e. the first level has to be the control. The filling
+step can be defined at certain level using the
+<code>treatment_level</code> argument. Depending on the experimental
+design it might make sense to fill traits at a certain level, e.g. block
+or site.</p>
+<p>Here is an example how to include taxonomy and experimental design in
+the trait filling function (code not run).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">trait_filling2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fill.html">trait_fill</a></span><span class="op">(</span></span>
+<span>  comm <span class="op">=</span> <span class="va">community</span>,</span>
+<span>  traits <span class="op">=</span> <span class="va">trait</span>,</span>
+<span>  abundance_col <span class="op">=</span> <span class="st">"Cover"</span>,</span>
+<span></span>
+<span>  <span class="co"># defining taxonomic hierarchy</span></span>
+<span>  taxon_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Taxon"</span>, <span class="st">"Genus"</span><span class="op">)</span>,</span>
+<span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>,</span>
+<span>  value_col <span class="op">=</span> <span class="st">"Value"</span>,</span>
+<span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span>
+<span>  min_n_in_sample <span class="op">=</span> <span class="fl">3</span>,</span>
+<span></span>
+<span>  <span class="co"># specifying experimental design</span></span>
+<span>  treatment_col <span class="op">=</span> <span class="st">"Treatment"</span>,</span>
+<span>  treatment_level <span class="op">=</span> <span class="st">"Site"</span>,</span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="nonparametric-bootstrapping" class="section level2">
-<h2 class="hasAnchor">
-<a href="#nonparametric-bootstrapping" class="anchor"></a>Nonparametric bootstrapping</h2>
-<p>The output of the trait imputation function is then used to do a <strong>nonparametric bootstrapping</strong> using the <code>trait_np_bootstrap</code> function.</p>
-<p>Nonparametric bootstrapping is a resampling method to estimate the trait moments. The traits are re-sampled in proportion to their weight in the community (e.g. by the abundance of the species).</p>
-<p>The trait values across all individuals in a community are resampled n times (<code>sample_size</code>; the default is 200) to incorporate the full spectrum of trait variation, generating n number (<code>nrep</code>; the default is 100) of trait distributions.</p>
-<p>From these trait distributions the happy moments are estimated: <strong>mean</strong>, <strong>variance</strong>, <strong>skewness</strong> and <strong>kurtosis</strong>.</p>
-<p>This function also allows to extract raw distributions by setting the argument <code>raw = TRUE</code>. The raw data can be useful for visualizing the trait distributions. If the raw data is extracted, <code>nrep</code> is forced to 1 to avoid memory issues.</p>
+<div class="section level3">
+<h3 id="nonparametric-bootstrapping">Nonparametric bootstrapping<a class="anchor" aria-label="anchor" href="#nonparametric-bootstrapping"></a>
+</h3>
+<p>The output of the trait filling function is then used to do a
+<strong>nonparametric bootstrapping</strong> using the
+<code>trait_np_bootstrap</code> function.</p>
+<p>Nonparametric bootstrapping is a resampling method to estimate the
+trait moments. The traits are re-sampled in proportion to their weight
+in the community (e.g. by the abundance of the species).</p>
+<p>The trait values across all individuals in a community are resampled
+n times (<code>sample_size</code>; the default is 200) to incorporate
+the full spectrum of trait variation, generating n number
+(<code>nrep</code>; the default is 100) of trait distributions.</p>
+<p>From these trait distributions the happy moments are estimated:
+<strong>mean</strong>, <strong>variance</strong>,
+<strong>skewness</strong> and <strong>kurtosis</strong>.</p>
+<p>This function also allows to extract raw distributions by setting the
+argument <code>raw = TRUE</code>. The raw data can be useful for
+visualizing the trait distributions. If the raw data is extracted,
+<code>nrep</code> is forced to 1 to avoid memory issues.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># run nonparametric bootstrapping</span>
-<span class="va">np_bootstrapped_moments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_np_bootstrap.html">trait_np_bootstrap</a></span><span class="op">(</span>
-  <span class="va">trait_imputation</span>, 
-  nrep <span class="op">=</span> <span class="fl">200</span>
-  <span class="op">)</span>
-
-<span class="va">np_bootstrapped_moments</span>
-<span class="co">#&gt; # A tibble: 5,600 x 9</span>
-<span class="co">#&gt; # Groups:   global, Site, PlotID [14]</span>
-<span class="co">#&gt;    n     global Site  PlotID Trait             mean   variance skewness kurtosis</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1     global 1     A      Plant_Height_cm 1.74    2.70         2.86     9.83 </span>
-<span class="co">#&gt;  2 1     global 1     A      Wet_Mass_g      0.0117  0.0000580    1.00     1.53 </span>
-<span class="co">#&gt;  3 1     global 1     B      Plant_Height_cm 1.93    3.02         2.36     6.28 </span>
-<span class="co">#&gt;  4 1     global 1     B      Wet_Mass_g      0.0133  0.0000657    1.87     6.20 </span>
-<span class="co">#&gt;  5 1     global 1     C      Plant_Height_cm 1.69    1.92         2.68     7.92 </span>
-<span class="co">#&gt;  6 1     global 1     C      Wet_Mass_g      0.0161  0.000219     5.83    43.5  </span>
-<span class="co">#&gt;  7 1     global 1     D      Plant_Height_cm 1.98    4.76         2.31     5.07 </span>
-<span class="co">#&gt;  8 1     global 1     D      Wet_Mass_g      0.0117  0.0000402    0.860    0.307</span>
-<span class="co">#&gt;  9 1     global 1     E      Plant_Height_cm 7.00   16.3          0.115   -0.635</span>
-<span class="co">#&gt; 10 1     global 1     E      Wet_Mass_g      0.0167  0.000303     2.61     5.92 </span>
-<span class="co">#&gt; # … with 5,590 more rows</span></code></pre></div>
-<p>One advantage of using a bootstrapping approach, is that we get much more than a mean trait value. We can also estimate the variance and other moments of these trait distributions. In traitstrap happy moments can be summarized and the confidence intervals calculated using the <code>trait_summarise_boot_moments</code> function. The input variable for this function is the output from the nonparametric bootstrapping function (or the parametric bootstrapping function, see below).</p>
-<p>The confidence interval can be calculated parametrically, using the mean and standard deviation, or nonparametrically using quantiles. The default is using the mean and standard deviation (<code>parametric = TRUE</code>) with one standard deviation around each trait moment (<code>sd_mult = 1</code>). For the nonparametric approach the default is a 0.95 confidence level.</p>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># run nonparametric bootstrapping</span></span>
+<span><span class="va">np_bootstrapped_moments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_np_bootstrap.html">trait_np_bootstrap</a></span><span class="op">(</span></span>
+<span>  <span class="va">trait_filling</span>,</span>
+<span>  nrep <span class="op">=</span> <span class="fl">200</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">np_bootstrapped_moments</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8,400 × 9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID [14]</span></span></span>
+<span><span class="co">#&gt;    n     global Site  PlotID Trait               mean variance skewness kurtosis</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1     global 1     A      Leaf_Thickness_A… 0.218   4.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    1.60     2.60 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1     global 1     A      Plant_Height_cm   1.42    2.46<span style="color: #949494;">e</span>+0    3.83    16.7  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1     global 1     A      Wet_Mass_g        0.012<span style="text-decoration: underline;">0</span>  4.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>    0.444   -<span style="color: #BB0000;">1.01</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1     global 1     B      Leaf_Thickness_A… 0.197   1.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    0.258   -<span style="color: #BB0000;">0.681</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1     global 1     B      Plant_Height_cm   1.58    2.00<span style="color: #949494;">e</span>+0    2.56     8.09 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1     global 1     B      Wet_Mass_g        0.011<span style="text-decoration: underline;">9</span>  4.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>    0.506   -<span style="color: #BB0000;">1.15</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1     global 1     C      Leaf_Thickness_A… 0.203   2.30<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    1.36     4.19 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1     global 1     C      Plant_Height_cm   1.67    3.80<span style="color: #949494;">e</span>+0    2.76     7.98 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1     global 1     C      Wet_Mass_g        0.011<span style="text-decoration: underline;">4</span>  4.12<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>    0.744   -<span style="color: #BB0000;">0.726</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1     global 1     D      Leaf_Thickness_A… 0.197   1.43<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    0.224   -<span style="color: #BB0000;">0.994</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 8,390 more rows</span></span></span></code></pre></div>
+<p>One advantage of using a bootstrapping approach, is that we get much
+more than a mean trait value. We can also estimate the variance and
+other moments of these trait distributions. In traitstrap happy moments
+can be summarized and the confidence intervals calculated using the
+<code>trait_summarise_boot_moments</code> function. The input variable
+for this function is the output from the nonparametric bootstrapping
+function (or the parametric bootstrapping function, see below).</p>
+<p>The confidence interval can be calculated parametrically, using the
+mean and standard deviation, or nonparametrically using quantiles. The
+default is using the mean and standard deviation
+(<code>parametric = TRUE</code>) with one standard deviation around each
+trait moment (<code>sd_mult = 1</code>). For the nonparametric approach
+the default is a 0.95 confidence level.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># summarizes bootstrapping output</span>
-<span class="va">sum_boot_moment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_summarise_boot_moments.html">trait_summarise_boot_moments</a></span><span class="op">(</span>
-  <span class="va">np_bootstrapped_moments</span>
-  <span class="op">)</span>
-
-<span class="va">sum_boot_moment</span>
-<span class="co">#&gt; # A tibble: 28 x 17</span>
-<span class="co">#&gt; # Groups:   global, Site, PlotID [14]</span>
-<span class="co">#&gt;    global Site  PlotID Trait     n   mean ci_low_mean ci_high_mean     var</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 global 1     A      Plan…   200 1.73        1.60         1.85   2.67e+0</span>
-<span class="co">#&gt;  2 global 1     A      Wet_…   200 0.0121      0.0115       0.0126 6.55e-5</span>
-<span class="co">#&gt;  3 global 1     B      Plan…   200 1.74        1.64         1.85   2.63e+0</span>
-<span class="co">#&gt;  4 global 1     B      Wet_…   200 0.0137      0.0131       0.0142 6.96e-5</span>
-<span class="co">#&gt;  5 global 1     C      Plan…   200 1.71        1.61         1.82   1.86e+0</span>
-<span class="co">#&gt;  6 global 1     C      Wet_…   200 0.0149      0.0141       0.0158 1.31e-4</span>
-<span class="co">#&gt;  7 global 1     D      Plan…   200 1.84        1.68         2.00   4.51e+0</span>
-<span class="co">#&gt;  8 global 1     D      Wet_…   200 0.0117      0.0112       0.0122 4.69e-5</span>
-<span class="co">#&gt;  9 global 1     E      Plan…   200 7.08        6.78         7.37   1.70e+1</span>
-<span class="co">#&gt; 10 global 1     E      Wet_…   200 0.0161      0.0150       0.0173 2.75e-4</span>
-<span class="co">#&gt; # … with 18 more rows, and 8 more variables: ci_low_var &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   ci_high_var &lt;dbl&gt;, skew &lt;dbl&gt;, ci_low_skew &lt;dbl&gt;, ci_high_skew &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   kurt &lt;dbl&gt;, ci_low_kurt &lt;dbl&gt;, ci_high_kurt &lt;dbl&gt;</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># summarizes bootstrapping output</span></span>
+<span><span class="va">sum_boot_moment</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_summarise_boot_moments.html">trait_summarise_boot_moments</a></span><span class="op">(</span></span>
+<span>  <span class="va">np_bootstrapped_moments</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sum_boot_moment</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 × 17</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID [14]</span></span></span>
+<span><span class="co">#&gt;    global Site  PlotID Trait           n   mean ci_low_mean ci_high_mean     var</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Leaf_Thick…   200 0.214       0.210        0.218  3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Plant_Heig…   200 1.62        1.48         1.75   3.22<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g    200 0.010<span style="text-decoration: underline;">9</span>      0.010<span style="text-decoration: underline;">4</span>       0.011<span style="text-decoration: underline;">4</span> 4.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     B      Leaf_Thick…   200 0.203       0.200        0.206  1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     B      Plant_Heig…   200 1.62        1.51         1.74   3.12<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g    200 0.012<span style="text-decoration: underline;">1</span>      0.011<span style="text-decoration: underline;">7</span>       0.012<span style="text-decoration: underline;">6</span> 4.60<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     C      Leaf_Thick…   200 0.204       0.201        0.208  2.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     C      Plant_Heig…   200 1.70        1.55         1.84   3.90<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g    200 0.011<span style="text-decoration: underline;">7</span>      0.010<span style="text-decoration: underline;">9</span>       0.012<span style="text-decoration: underline;">5</span> 1.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     D      Leaf_Thick…   200 0.201       0.198        0.203  1.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 32 more rows, and 8 more variables: ci_low_var &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ci_high_var &lt;dbl&gt;, skew &lt;dbl&gt;, ci_low_skew &lt;dbl&gt;, ci_high_skew &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   kurt &lt;dbl&gt;, ci_low_kurt &lt;dbl&gt;, ci_high_kurt &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
-<div id="parametric-bootstrapping" class="section level2">
-<h2 class="hasAnchor">
-<a href="#parametric-bootstrapping" class="anchor"></a>Parametric bootstrapping</h2>
-<p>Traitstrap also offers the option to run a <strong>parametric bootstrapping</strong>.</p>
-<p>The <code>trait_fit_distributions</code> function fits parametric distributions for each species-by-trait combination at the finest scale of the user-supplied hierarchy. This function takes as input:</p>
+<div class="section level3">
+<h3 id="parametric-bootstrapping">Parametric bootstrapping<a class="anchor" aria-label="anchor" href="#parametric-bootstrapping"></a>
+</h3>
+<p>Traitstrap also offers the option to run a <strong>parametric
+bootstrapping</strong>.</p>
+<p>The <code>trait_fit_distributions</code> function fits parametric
+distributions for each species-by-trait combination at the finest scale
+of the user-supplied hierarchy. This function takes as input:</p>
 <ul>
-<li>an object of class imputed traits (as produced by the function <code>trait_impute</code>), and</li>
+<li>an object of class filled traits (as produced by the function
+<code>trait_fill</code>), and</li>
 <li>the type of distribution to be fitted.</li>
 </ul>
-<p>Either a single distribution type can be used for all traits, or traits can be assigned specific distributions types by supplying the function with a named list of traits (e.g. <code><a href="https://rdrr.io/r/base/list.html">list(height = "normal", mass = "lognormal")</a></code>).</p>
-<p>Currently the function supports normal, log-normal, and beta (values between 0 and 1) distributions.</p>
-<p>The function returns a dataframe containing fitted distribution parameters.</p>
+<p>Either a single distribution type can be used for all traits, or
+traits can be assigned specific distributions types by supplying the
+function with a named list of traits
+(e.g. <code>list(height = "normal", mass = "lognormal")</code>).</p>
+<p>Currently the function supports normal, log-normal, and beta (values
+between 0 and 1) distributions.</p>
+<p>The function returns a dataframe containing fitted distribution
+parameters.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># fit distributions</span>
-<span class="va">fitted_distributions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fit_distributions.html">trait_fit_distributions</a></span><span class="op">(</span>
-  imputed_traits <span class="op">=</span> <span class="va">trait_imputation</span>,
-  distribution_type <span class="op">=</span> <span class="st">"lognormal"</span>
-  <span class="op">)</span>
-<span class="co">#&gt; Warning in .data[["Trait"]] == names(distribution_type)[distribution_type == :</span>
-<span class="co">#&gt; longer object length is not a multiple of shorter object length</span>
-
-<span class="va">fitted_distributions</span>
-<span class="co">#&gt; # A tibble: 202 x 15</span>
-<span class="co">#&gt; # Groups:   global, Site, PlotID, Trait, Taxon, Cover, n_sample [202]</span>
-<span class="co">#&gt;    global Site  PlotID Trait Taxon Cover n_sample distribution_ty…  parm1 parm2</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;    &lt;int&gt; &lt;fct&gt;             &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 global 1     A      Plan… bist…  10         28 lognormal         0.328 0.517</span>
-<span class="co">#&gt;  2 global 1     A      Plan… drya…   0.1        9 lognormal         1.04  0.704</span>
-<span class="co">#&gt;  3 global 1     A      Plan… fest…   1         11 lognormal         1.61  0.377</span>
-<span class="co">#&gt;  4 global 1     A      Plan… luzu…   0.5       15 lognormal         1.50  0.325</span>
-<span class="co">#&gt;  5 global 1     A      Plan… luzu…   1         20 lognormal         0.588 0.459</span>
-<span class="co">#&gt;  6 global 1     A      Plan… sali…  20         44 lognormal        -0.138 0.931</span>
-<span class="co">#&gt;  7 global 1     A      Plan… saxi…   2          6 lognormal         1.13  0.469</span>
-<span class="co">#&gt;  8 global 1     A      Plan… saxi…   2          2 lognormal         0.693 0    </span>
-<span class="co">#&gt;  9 global 1     A      Plan… sile…   1          3 lognormal        -0.221 0.277</span>
-<span class="co">#&gt; 10 global 1     A      Wet_… bist…  10         29 lognormal        -4.06  0.454</span>
-<span class="co">#&gt; # … with 192 more rows, and 5 more variables: sd1 &lt;lgl&gt;, sd2 &lt;lgl&gt;, ks &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   cvm &lt;dbl&gt;, ad &lt;dbl&gt;</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># fit distributions</span></span>
+<span><span class="va">fitted_distributions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fit_distributions.html">trait_fit_distributions</a></span><span class="op">(</span></span>
+<span>  filled_traits <span class="op">=</span> <span class="va">trait_filling</span>,</span>
+<span>  distribution_type <span class="op">=</span> <span class="st">"lognormal"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fitted_distributions</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 303 × 15</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait, Taxon, Cover, n_sample [303]</span></span></span>
+<span><span class="co">#&gt;    global Site  PlotID Trait Taxon Cover n_sample distribution_ty…  parm1  parm2</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Leaf… bist…  10         17 lognormal        -<span style="color: #BB0000;">1.55</span>  0.194 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Leaf… drya…   0.1        9 lognormal        -<span style="color: #BB0000;">1.32</span>  0.113 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Leaf… fest…   1         11 lognormal        -<span style="color: #BB0000;">1.44</span>  0.290 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     A      Leaf… luzu…   0.5       11 lognormal        -<span style="color: #BB0000;">1.50</span>  0.093<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     A      Leaf… luzu…   1         15 lognormal        -<span style="color: #BB0000;">1.89</span>  0.224 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     A      Leaf… sali…  20         23 lognormal        -<span style="color: #BB0000;">1.64</span>  0.181 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     A      Leaf… saxi…   2          6 lognormal        -<span style="color: #BB0000;">1.24</span>  0.294 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     A      Leaf… saxi…   2          3 lognormal        -<span style="color: #BB0000;">1.45</span>  0.446 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     A      Leaf… sile…   1          3 lognormal        -<span style="color: #BB0000;">1.34</span>  0.154 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     A      Plan… bist…  10         17 lognormal         0.156 0.587 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 293 more rows, and 5 more variables: sd1 &lt;lgl&gt;, sd2 &lt;lgl&gt;, ks &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   cvm &lt;dbl&gt;, ad &lt;dbl&gt;</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># fit several types of distributions</span>
-<span class="va">fitted_distributions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fit_distributions.html">trait_fit_distributions</a></span><span class="op">(</span>
-  imputed_traits <span class="op">=</span> <span class="va">trait_imputation</span>,
-  distribution_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Plant_Height_cm <span class="op">=</span> <span class="st">"normal"</span>, Wet_Mass_g <span class="op">=</span> <span class="st">"lognormal"</span><span class="op">)</span>
-  <span class="op">)</span>
-
-<span class="va">fitted_distributions</span></code></pre></div>
-<p>The <code>trait_parametric_bootstrap</code> function is a parametric analogue of the <code>trait_np_bootstrap</code> function. It takes in fitted trait distributions produced by <code>trait_fit_distributions</code> and randomly samples from among the fitted distributions proportionally to species abundances in the community.</p>
-<p>As with <code>trait_np_bootstrap</code>, the number of samples per replicated draw are specified with the parameter <code>sample_size</code>, and the number of replicated draws is specified by the parameter <code>nrep.</code> The argument <code>raw</code> allows to extract raw distributions (see above).</p>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># fit several types of distributions</span></span>
+<span><span class="va">fitted_distributions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fit_distributions.html">trait_fit_distributions</a></span><span class="op">(</span></span>
+<span>  filled_traits <span class="op">=</span> <span class="va">trait_filling</span>,</span>
+<span>  distribution_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Plant_Height_cm <span class="op">=</span> <span class="st">"normal"</span>, Wet_Mass_g <span class="op">=</span> <span class="st">"lognormal"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fitted_distributions</span></span></code></pre></div>
+<p>The <code>trait_parametric_bootstrap</code> function is a parametric
+analogue of the <code>trait_np_bootstrap</code> function. It takes in
+fitted trait distributions produced by
+<code>trait_fit_distributions</code> and randomly samples from among the
+fitted distributions proportionally to species abundances in the
+community.</p>
+<p>As with <code>trait_np_bootstrap</code>, the number of samples per
+replicated draw are specified with the parameter
+<code>sample_size</code>, and the number of replicated draws is
+specified by the parameter <code>nrep.</code> The argument
+<code>raw</code> allows to extract raw distributions (see above).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># run parametric bootstrapping</span>
-<span class="va">p_bootstrapped_moments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_parametric_bootstrap.html">trait_parametric_bootstrap</a></span><span class="op">(</span>
-    fitted_distributions <span class="op">=</span> <span class="va">fitted_distributions</span>, 
-    nrep <span class="op">=</span> <span class="fl">200</span>
-    <span class="op">)</span>
-
-<span class="va">p_bootstrapped_moments</span>
-<span class="co">#&gt; # A tibble: 5,600 x 9</span>
-<span class="co">#&gt; # Groups:   global, Site, PlotID, Trait [28]</span>
-<span class="co">#&gt;    n     global Site  PlotID Trait             mean   variance skewness kurtosis</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1     global 1     A      Plant_Height_cm 1.61    2.38         2.61     9.38 </span>
-<span class="co">#&gt;  2 1     global 1     A      Wet_Mass_g      0.0119  0.0000569    1.28     2.40 </span>
-<span class="co">#&gt;  3 1     global 1     B      Plant_Height_cm 1.90    3.12         2.02     4.44 </span>
-<span class="co">#&gt;  4 1     global 1     B      Wet_Mass_g      0.0122  0.0000520    1.55     3.41 </span>
-<span class="co">#&gt;  5 1     global 1     C      Plant_Height_cm 1.59    1.43         2.58     6.98 </span>
-<span class="co">#&gt;  6 1     global 1     C      Wet_Mass_g      0.0155  0.000144     6.47    63.1  </span>
-<span class="co">#&gt;  7 1     global 1     D      Plant_Height_cm 1.86    3.58         1.62     2.21 </span>
-<span class="co">#&gt;  8 1     global 1     D      Wet_Mass_g      0.0115  0.0000375    1.98     6.48 </span>
-<span class="co">#&gt;  9 1     global 1     E      Plant_Height_cm 7.20   15.4          0.289    0.184</span>
-<span class="co">#&gt; 10 1     global 1     E      Wet_Mass_g      0.0168  0.000381     5.12    38.4  </span>
-<span class="co">#&gt; # … with 5,590 more rows</span></code></pre></div>
-<p>The output of trait_parametric_bootstrap can be summarized using <code>trait_summarize_boot_moments</code> (see above).</p>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># run parametric bootstrapping</span></span>
+<span><span class="va">p_bootstrapped_moments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_parametric_bootstrap.html">trait_parametric_bootstrap</a></span><span class="op">(</span></span>
+<span>  fitted_distributions <span class="op">=</span> <span class="va">fitted_distributions</span>,</span>
+<span>  nrep <span class="op">=</span> <span class="fl">200</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p_bootstrapped_moments</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8,400 × 9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait [42]</span></span></span>
+<span><span class="co">#&gt;    n     global Site  PlotID Trait               mean variance skewness kurtosis</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1     global 1     A      Leaf_Thickness_A… 0.210   3.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    2.22     9.81 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1     global 1     A      Plant_Height_cm   1.84    2.98<span style="color: #949494;">e</span>+0    2.10     5.86 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1     global 1     A      Wet_Mass_g        0.010<span style="text-decoration: underline;">5</span>  4.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>    0.917    0.672</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1     global 1     B      Leaf_Thickness_A… 0.207   2.20<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    1.24     4.60 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1     global 1     B      Plant_Height_cm   1.63    2.56<span style="color: #949494;">e</span>+0    2.21     6.45 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1     global 1     B      Wet_Mass_g        0.012<span style="text-decoration: underline;">7</span>  4.12<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>    0.465   -<span style="color: #BB0000;">0.170</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1     global 1     C      Leaf_Thickness_A… 0.202   2.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    3.37    26.8  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1     global 1     C      Plant_Height_cm   1.64    3.76<span style="color: #949494;">e</span>+0    2.63     9.43 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1     global 1     C      Wet_Mass_g        0.011<span style="text-decoration: underline;">4</span>  7.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>    3.74    23.1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1     global 1     D      Leaf_Thickness_A… 0.197   1.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    0.360   -<span style="color: #BB0000;">0.230</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 8,390 more rows</span></span></span></code></pre></div>
+<p>The output of trait_parametric_bootstrap can be summarized using
+<code>trait_summarize_boot_moments</code> (see above).</p>
 </div>
-<div id="extracting-raw-distributions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#extracting-raw-distributions" class="anchor"></a>Extracting raw distributions</h2>
-<p>In traitstrap both the parametric and nonparametric bootstrapping functions allow returning raw trait distributions.</p>
+<div class="section level3">
+<h3 id="extracting-raw-distributions">Extracting raw distributions<a class="anchor" aria-label="anchor" href="#extracting-raw-distributions"></a>
+</h3>
+<p>In traitstrap both the parametric and nonparametric bootstrapping
+functions allow returning raw trait distributions.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># run nonparametric bootstrapping</span>
-<span class="va">raw_dist_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_np_bootstrap.html">trait_np_bootstrap</a></span><span class="op">(</span>
-  <span class="va">trait_imputation</span>,
-  raw <span class="op">=</span> <span class="cn">TRUE</span>
-  <span class="op">)</span>
-
-<span class="va">raw_dist_np</span>
-<span class="co">#&gt; # A tibble: 5,600 x 13</span>
-<span class="co">#&gt; # Groups:   global, Site, PlotID, Trait [28]</span>
-<span class="co">#&gt;    n     Taxon Cover Site  PlotID global sum_abun Trait Value n_sample weight</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;    &lt;int&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1     sile…     1 1     A      global     38.2 Plan…   1          3  0.333</span>
-<span class="co">#&gt;  2 1     saxi…     2 1     A      global     38.2 Plan…   2          2  1    </span>
-<span class="co">#&gt;  3 1     sali…    20 1     A      global     38.2 Plan…   1.6       44  0.455</span>
-<span class="co">#&gt;  4 1     sali…    20 1     A      global     38.2 Plan…   1         44  0.455</span>
-<span class="co">#&gt;  5 1     saxi…     2 1     A      global     38.2 Plan…   5.6        6  0.333</span>
-<span class="co">#&gt;  6 1     sali…    20 1     A      global     38.2 Plan…  10         44  0.455</span>
-<span class="co">#&gt;  7 1     sali…    20 1     A      global     38.2 Plan…   0.4       44  0.455</span>
-<span class="co">#&gt;  8 1     sali…    20 1     A      global     38.2 Plan…   0.3       44  0.455</span>
-<span class="co">#&gt;  9 1     bist…    10 1     A      global     38.2 Plan…   1         28  0.357</span>
-<span class="co">#&gt; 10 1     bist…    10 1     A      global     38.2 Plan…   2.3       28  0.357</span>
-<span class="co">#&gt; # … with 5,590 more rows, and 2 more variables: level &lt;ord&gt;,</span>
-<span class="co">#&gt; #   max_n_in_sample &lt;int&gt;</span></code></pre></div>
-<p>The raw data can be useful for visualizing the trait distributions.</p>
-<p>Use colour and facets to separate between the different traits, hierarchies and treatments.</p>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># run nonparametric bootstrapping</span></span>
+<span><span class="va">raw_dist_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_np_bootstrap.html">trait_np_bootstrap</a></span><span class="op">(</span></span>
+<span>  <span class="va">trait_filling</span>,</span>
+<span>  raw <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">raw_dist_np</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8,400 × 14</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait [42]</span></span></span>
+<span><span class="co">#&gt;    n     Taxon     Cover Site  PlotID global sum_abun ID    Trait Value n_sample</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1     salix po…  20   1     A      global     38.2 AQV6… Leaf… 0.247       23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1     salix po…  20   1     A      global     38.2 AXW1… Leaf… 0.22        23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1     salix po…  20   1     A      global     38.2 AXV9… Leaf… 0.163       23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1     salix po…  20   1     A      global     38.2 BRH9… Leaf… 0.26        23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1     luzula c…   0.5 1     A      global     38.2 AWX9… Leaf… 0.179       11</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1     salix po…  20   1     A      global     38.2 BRE0… Leaf… 0.219       23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1     saxifrag…   2   1     A      global     38.2 ANF4… Leaf… 0.127        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1     bistorta…  10   1     A      global     38.2 ASE0… Leaf… 0.199       17</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1     bistorta…  10   1     A      global     38.2 ASN6… Leaf… 0.165       17</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1     bistorta…  10   1     A      global     38.2 ASI1… Leaf… 0.232       17</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 8,390 more rows, and 3 more variables: weight &lt;dbl&gt;, level &lt;ord&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   max_n_in_sample &lt;int&gt;</span></span></span></code></pre></div>
+<p>The raw data can be useful for visualizing the trait
+distributions.</p>
+<p>Use colour and facets to separate between the different traits,
+hierarchies and treatments.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">raw_dist_np</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">Site</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span>end <span class="op">=</span> <span class="fl">0.9</span>, option <span class="op">=</span> <span class="st">"plasma"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"log(trait value)"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">Trait</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">raw_dist_np</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">Site</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_d</a></span><span class="op">(</span>end <span class="op">=</span> <span class="fl">0.9</span>, option <span class="op">=</span> <span class="st">"plasma"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"log(trait value)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">Trait</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="traitstrap-workflow_files/figure-html/plot-raw-dist-np-1.png" width="576"></p>
 </div>
-<div id="check-your-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#check-your-data" class="anchor"></a>Check your data</h2>
-<p>Traitstrap has a couple of functions to check the data.</p>
-<p>The <code>coverage_plot</code> function shows the trait coverage of the community for each level. Basically, this function summarizes from which level the traits are imputed, and how much coverage of the community is reached.</p>
-<p>Based on simulations, we recommend to collect traits for at least 80% of the community cover (Maitner et al. in prep).</p>
+<div class="section level2">
+<h2 id="multivariate-analyses">Multivariate analyses<a class="anchor" aria-label="anchor" href="#multivariate-analyses"></a>
+</h2>
+<p>While the core functionality of traitstrap was designed with
+univariate distributions in mind, it can also be used for multivariate
+questions as well using the function
+<code>trait_multivariate_bootstrap</code>. This function allows users to
+supply any appropriate function for analyses of multivariate data,
+including those included in popular packages for functional diversity
+calculations. Here, we demonstrate how to combine
+<code>trait_multivariate_bootstrap</code> with the function dbFD from
+the FD package.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># show coverage plot</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">trait_imputation</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="traitstrap-workflow_files/figure-html/coverage-plot-1.png" width="576"></p>
-<p>Another important information is to know of which taxa traits are missing. This can be useful if the data sampling is not finished and you want to know which species should be sampled. The function also tells you the maximal abundance of each missing species, and gives you useful information if the missing species are abundant or rare.</p>
-<p>Traitstrap has a function <code>trait_missing</code> which gives you a table with all missing values.</p>
+<code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FD</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: ade4</span></span>
+<span><span class="co">#&gt; Loading required package: ape</span></span>
+<span><span class="co">#&gt; Loading required package: geometry</span></span>
+<span><span class="co">#&gt; Loading required package: vegan</span></span>
+<span><span class="co">#&gt; Loading required package: permute</span></span>
+<span><span class="co">#&gt; Loading required package: lattice</span></span>
+<span><span class="co">#&gt; This is vegan 2.6-2</span></span>
+<span></span>
+<span></span>
+<span><span class="va">multivariate_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fill.html">trait_fill</a></span><span class="op">(</span></span>
+<span>  comm <span class="op">=</span> <span class="va">community</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="co"># to make the example faster, we'll only use a subset of plots</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">Site</span> <span class="op">==</span> <span class="st">"1"</span>,</span>
+<span>      <span class="va">PlotID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>  traits <span class="op">=</span> <span class="va">trait</span>,</span>
+<span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span>
+<span>  taxon_col <span class="op">=</span> <span class="st">"Taxon"</span>,</span>
+<span>  value_col <span class="op">=</span> <span class="st">"Value"</span>,</span>
+<span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>,</span>
+<span>  abundance_col <span class="op">=</span> <span class="st">"Cover"</span>,</span>
+<span>  complete_only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  leaf_id <span class="op">=</span> <span class="st">"ID"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">boot_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_multivariate_bootstrap.html">trait_multivariate_bootstrap</a></span><span class="op">(</span><span class="va">multivariate_traits</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  nrep <span class="op">=</span> <span class="fl">20</span>, <span class="co"># Note that the number of reps is set low for demo purposes</span></span>
+<span>  sample_size <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/FD/man/dbFD.html" class="external-link">dbFD</a></span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">x</span>,</span>
+<span>      calc.FRic <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      calc.FDiv <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      calc.CWM <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      stand.x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      scale.RaoQ <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Because dbFD returns output as a list, we need to do a bit of work to wrangle</span></span>
+<span><span class="co"># it into a more useful format</span></span>
+<span><span class="co"># We'll extract Rao's Quadratic Entropy, since that performs well with</span></span>
+<span><span class="co"># bootstrapping.</span></span>
+<span></span>
+<span><span class="va">raoq_est</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">boot_multi</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>RaoQ <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">RaoQ</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">result</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">raoq_est</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">RaoQ</span>,</span>
+<span>    fill <span class="op">=</span> <span class="va">PlotID</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="traitstrap-workflow_files/figure-html/multivariate-1.png" width="576"></p>
+<p>Next, we’ll show how we can use a similar method to combine
+<code>trait_multivariate_bootstrap</code> with the functions TPDs and
+REND from the TPD package.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># list missing traits</span>
-<span class="fu"><a href="../reference/trait_missing.html">trait_missing</a></span><span class="op">(</span>imputed_trait <span class="op">=</span> <span class="va">trait_imputation</span>,
-              comm <span class="op">=</span> <span class="va">community</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 20 x 3</span>
-<span class="co">#&gt; # Groups:   Taxon [20]</span>
-<span class="co">#&gt;    Taxon                      max_abun n_traits</span>
-<span class="co">#&gt;    &lt;chr&gt;                         &lt;dbl&gt;    &lt;int&gt;</span>
-<span class="co">#&gt;  1 alopecurus ovatus               2          2</span>
-<span class="co">#&gt;  2 bistorta vigdis                25          2</span>
-<span class="co">#&gt;  3 calamagrostis neglecta         60          2</span>
-<span class="co">#&gt;  4 cassiope tetragona              5          2</span>
-<span class="co">#&gt;  5 dryas octopetala               20          2</span>
-<span class="co">#&gt;  6 enquistetum scirpoides          2          2</span>
-<span class="co">#&gt;  7 festuca rubra                   1          2</span>
-<span class="co">#&gt;  8 juncus biglumis                 0.5        1</span>
-<span class="co">#&gt;  9 luzula confusa                  5          2</span>
-<span class="co">#&gt; 10 luzula nivalis                  5          2</span>
-<span class="co">#&gt; 11 maitneranthes hieracifolia      0.5        1</span>
-<span class="co">#&gt; 12 oxyria tanyna                   2          2</span>
-<span class="co">#&gt; 13 poa pratensis                   1          2</span>
-<span class="co">#&gt; 14 salix polaris                  43          2</span>
-<span class="co">#&gt; 15 saxifraga hirculus              2          2</span>
-<span class="co">#&gt; 16 saxifraga oppositifolia         2          2</span>
-<span class="co">#&gt; 17 silene acaudis                  1          2</span>
-<span class="co">#&gt; 18 stelfordaria humifusa           0.5        1</span>
-<span class="co">#&gt; 19 stellaria longipes              0.1        1</span>
-<span class="co">#&gt; 20 trisetum spicatum               3          2</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">TPD</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># for each replicated site, convert the distribution into a trait probability</span></span>
+<span><span class="co"># distribution and then derive functional diversity metrics</span></span>
+<span></span>
+<span><span class="va">boot_tpd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_multivariate_bootstrap.html">trait_multivariate_bootstrap</a></span><span class="op">(</span><span class="va">multivariate_traits</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"ID"</span>,</span>
+<span>  nrep <span class="op">=</span> <span class="fl">20</span>, <span class="co"># Note that the number of reps is set low for demo purposes</span></span>
+<span>  sample_size <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/TPD/man/TPDs.html" class="external-link">TPDs</a></span><span class="op">(</span></span>
+<span>      species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">200</span><span class="op">)</span>,</span>
+<span>      traits <span class="op">=</span> <span class="va">x</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/TPD/man/REND.html" class="external-link">REND</a></span><span class="op">(</span>TPDs <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># reformat the results to make plotting easier</span></span>
+<span></span>
+<span><span class="va">boot_tpd</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">boot_tpd</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    FRichness <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">species</span><span class="op">$</span><span class="va">FRichness</span>,</span>
+<span>    FEvenness <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">species</span><span class="op">$</span><span class="va">FEvenness</span>,</span>
+<span>    FDivergence <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">species</span><span class="op">$</span><span class="va">FDivergence</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">result</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FRichness"</span>, <span class="st">"FEvenness"</span>, <span class="st">"FDivergence"</span><span class="op">)</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="st">"metric"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">boot_tpd</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_violin.html" class="external-link">geom_violin</a></span><span class="op">(</span></span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">value</span>, x <span class="op">=</span> <span class="va">PlotID</span>, fill <span class="op">=</span> <span class="va">PlotID</span><span class="op">)</span>,</span>
+<span>    alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>    draw_quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="traitstrap-workflow_files/figure-html/multivariate%20tpd-1.png" width="576"></p>
+<div class="section level3">
+<h3 id="check-your-data">Check your data<a class="anchor" aria-label="anchor" href="#check-your-data"></a>
+</h3>
+<p>Traitstrap has a couple of functions to check the data.</p>
+<p>The <code>coverage_plot</code> function shows the trait coverage of
+the community for each level. Basically, this function summarizes from
+which level the traits are filled, and how much coverage of the
+community is reached.</p>
+<p>Based on simulations, we recommend to collect traits for at least 80%
+of the community cover (Maitner et al. in prep).</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># show coverage plot</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">trait_filling</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="traitstrap-workflow_files/figure-html/coverage-plot-1.png" width="576"></p>
+<p>Another important information is to know of which taxa traits are
+missing. This can be useful if the data sampling is not finished and you
+want to know which species should be sampled. The function also tells
+you the maximal abundance of each missing species, and gives you useful
+information if the missing species are abundant or rare.</p>
+<p>Traitstrap has a function <code>trait_missing</code> which gives you
+a table with all missing values.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># list missing traits</span></span>
+<span><span class="fu"><a href="../reference/trait_missing.html">trait_missing</a></span><span class="op">(</span></span>
+<span>  filled_trait <span class="op">=</span> <span class="va">trait_filling</span>,</span>
+<span>  comm <span class="op">=</span> <span class="va">community</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Taxon [20]</span></span></span>
+<span><span class="co">#&gt;    Taxon                      max_abun n_traits</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> alopecurus ovatus               2          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> bistorta vigdis                25          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> calamagrostis neglecta         60          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> cassiope tetragona              5          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> dryas octopetala               20          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> enquistetum scirpoides          2          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> festuca rubra                   1          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> juncus biglumis                 0.5        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> luzula confusa                  5          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> luzula nivalis                  5          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> maitneranthes hieracifolia      0.5        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> oxyria tanyna                   2          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> poa pratensis                   1          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> salix polaris                  43          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> saxifraga hirculus              2          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> saxifraga oppositifolia         2          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> silene acaudis                  1          3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> stelfordaria humifusa           0.5        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> stellaria longipes              0.1        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> trisetum spicatum               3          3</span></span></code></pre></div>
+</div>
 </div>
   </div>
 
@@ -476,11 +753,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Richard J. Telford, Aud Halbritter, Brian S. Maitner.</p>
+  <p></p>
+<p>Developed by Richard J. Telford, Aud H. Halbritter, Brian S. Maitner.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -488,6 +767,8 @@
 
   
 
+
+  
 
   </body>
 </html>
