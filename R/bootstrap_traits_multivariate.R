@@ -11,7 +11,6 @@
 #' If `raw = TRUE`, `nrep` is restricted to 1 to avoid memory issues.
 #' @param id column name of unique identifiers of each leaf
 #' @param fun bivariate or multivariate function to apply
-#' @description
 #' @details The observed and selected leaves are re-sampled in proportion to
 #' their weights, e.g. the abundance of a species or the biomass.
 #' Values across all individuals in a community are

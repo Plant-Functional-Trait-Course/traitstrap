@@ -40,13 +40,12 @@ weighted trait correlations, other bivariate or multivariate statistics
 \details{
 The observed and selected leaves are re-sampled in proportion to
 their weights, e.g. the abundance of a species or the biomass.
-Values across all individuals
-in a community are resampled \code{sample_size} times to incorporate the full
+Values across all individuals in a community are
+resampled \code{sample_size} times to incorporate the full
 spectrum of trait variation, generating \code{nrep} trait distributions.
-From these distributions the function estimates the mean and the higher
-moments including variance, skewness and kurtosis.
+The function \code{fun} is applied to the trait distribution at the finest level of the filled trait hierarchy.
 
-#' The output of trait_np_bootstrap can be summarized using
+Note that due to the flexibility of this function, the output CAN NOT be summarized using
 trait_summarize_boot_moments.
 }
 \examples{

@@ -35,6 +35,7 @@
 trait_summarise_boot_moments <- function(bootstrap_moments,
                                          parametric = TRUE,
                                          sd_mult = 1, ci = 0.95) {
+  
   attrib <- attr(bootstrap_moments, "attrib")
   groups <- c(
     as.character(attrib$scale_hierarchy),
