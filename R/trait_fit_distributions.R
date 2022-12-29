@@ -107,7 +107,7 @@ trait_fit_distributions <- function(selected_traits,
 
     ln_vals <- selected_traits %>%
       ungroup() %>%
-      filter(.data[[trait_col]] ==
+      filter(.data[[trait_col]] %in%
                names(distribution_type)[distribution_type == "lognormal"]) %>%
       select(all_of(value_col))
 
