@@ -34,12 +34,16 @@ Summarizes the mean and confidence interval for each
 trait moment.
 }
 \examples{
+library(dplyr)
 data(community)
 data(trait)
 
+# Filter community data to make example faster
+community <- community |>
+  filter(PlotID \%in\% c("A","B"))
+
 filled_traits <- trait_fill(
-  comm = community \%>\%
-    filter(PlotID \%in\% c("A","B")),
+  comm = community,
   traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
