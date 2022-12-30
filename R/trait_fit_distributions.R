@@ -26,11 +26,12 @@
 #' @importFrom fitdistrplus fitdist
 
 #' @examples
+#' library(dplyr)
 #' data(community)
 #' data(trait)
 #' 
 #' filled_traits <- trait_fill(
-#'   comm = community %>%
+#'   comm = community |>
 #'     filter(PlotID %in% c("A","B")),
 #'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),

@@ -40,9 +40,10 @@ moments including variance, skewness and kurtosis.
 \examples{
 data(community)
 data(trait)
+library(dplyr)
 
 selected_traits <- trait_fill(
-  comm = community \%>\%
+  comm = community |>
     filter(PlotID \%in\% c("A","B"),
            Site == 1),
   traits = trait,

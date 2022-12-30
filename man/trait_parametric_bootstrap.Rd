@@ -47,14 +47,15 @@ The output of \code{trait_parametric_bootstrap()} can be summarized using
 \code{trait_summarize_boot_moments()}.
 }
 \examples{
+library(dplyr)
 data(community)
 data(trait)
 
 filled_traits <- trait_fill(
-  comm = community \%>\%
+  comm = community |>
     filter(PlotID \%in\% c("A","B"),
            Site == 1),
-  traits = trait \%>\%
+  traits = trait |>
     filter(Trait \%in\% c("Plant_Height_cm")),
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",

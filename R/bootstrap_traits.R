@@ -28,13 +28,16 @@
 #' @importFrom dplyr slice_sample group_by summarise
 #' @importFrom purrr map_dfr
 #' @examples
+#' library(dplyr)
 #' data(community)
 #' data(trait)
 #' 
+#' # Filter community data to make example faster
+#' community <- community |>
+#'   filter(PlotID %in% c("A","B"),
+#'          Site == 1)
 #' selected_traits <- trait_fill(
-#'   comm = community %>%
-#'     filter(PlotID %in% c("A","B"),
-#'            Site == 1),
+#'   comm = community,
 #'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",

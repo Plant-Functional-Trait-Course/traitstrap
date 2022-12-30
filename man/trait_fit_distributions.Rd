@@ -30,11 +30,12 @@ by supplying the function with a named list of traits, e.g.
 The function returns a dataframe containing fitted distribution parameters.
 }
 \examples{
+library(dplyr)
 data(community)
 data(trait)
 
 filled_traits <- trait_fill(
-  comm = community \%>\%
+  comm = community |>
     filter(PlotID \%in\% c("A","B")),
   traits = trait,
   scale_hierarchy = c("Site", "PlotID"),

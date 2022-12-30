@@ -34,15 +34,22 @@
 #' @importFrom tidyr unnest
 #' @importFrom purrr map_dfr
 #' @examples
+#' library(dplyr)
 #' data(community)
 #' data(trait)
 #' 
+#' # Filter trait and community data to make example faster
+#' 
+#' community <- community |>
+#'        filter(PlotID %in% c("A","B"),
+#'             Site == 1)
+#' 
+#' trait <- trait |>
+#'   filter(Trait %in% c("Plant_Height_cm"))
+#' 
 #' filled_traits <- trait_fill(
-#'   comm = community %>%
-#'     filter(PlotID %in% c("A","B"),
-#'            Site == 1),
-#'   traits = trait %>%
-#'     filter(Trait %in% c("Plant_Height_cm")),
+#'   comm = community,
+#'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
 #'   trait_col = "Trait", abundance_col = "Cover"
