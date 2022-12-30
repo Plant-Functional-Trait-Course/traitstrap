@@ -40,11 +40,18 @@ moments including variance, skewness and kurtosis.
 \examples{
 data(community)
 data(trait)
+
 selected_traits <- trait_fill(
-  comm = community, traits = trait,
+  comm = community \%>\%
+    filter(PlotID \%in\% c("A","B"),
+           Site == 1),
+  traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
   trait_col = "Trait", abundance_col = "Cover"
 )
-boot_traits <- trait_np_bootstrap(selected_traits)
+
+boot_traits <- trait_np_bootstrap(selected_traits,
+                                 nrep = 20,
+                                 sample_size = 200)
 }

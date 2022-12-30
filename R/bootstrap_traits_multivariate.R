@@ -34,28 +34,39 @@
 #' require(tidyr)
 #' require(ggplot2)
 #' require(purrr)
+#' 
 #' data(community)
 #' data(trait)
+#' 
 #' selected_traits <- trait_fill(
-#'   comm = community, traits = trait,
+#'   comm = community %>%
+#'     filter(PlotID %in% c("A","B"),
+#'            Site == 1),
+#'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
 #'   trait_col = "Trait", abundance_col = "Cover",
 #'   complete_only = TRUE, leaf_id = "ID"
 #' )
-#' boot_traits <- trait_multivariate_bootstrap(selected_traits, fun = cor)
+#' 
+#' # Note that more replicates and a greater sample size are advisable
+#' # Here we set them low to make the example run quickly
+#' boot_traits <- trait_multivariate_bootstrap(selected_traits,
+#'                                             fun = cor,
+#'                                             nrep = 10,
+#'                                             sample_size = 100)
+#' 
 #' boot_traits_long <- boot_traits |>
 #'   mutate(correlations = map(result, ~ cor_to_df(.x))) |>
 #'   select(-result) |>
 #'   unnest(correlations)
-#'
+#' 
 #' boot_traits_long |>
 #'   ggplot(aes(x = paste(row, "v", col), y = value)) +
 #'   geom_violin() +
 #'   facet_grid(Site ~ PlotID) +
 #'   coord_flip() +
 #'   labs(y = "Correlation", x = "")
-
 #' @export
 
 trait_multivariate_bootstrap <- function(selected_traits,
