@@ -34,14 +34,27 @@ Summarizes the mean and confidence interval for each
 trait moment.
 }
 \examples{
+library(dplyr)
 data(community)
 data(trait)
+
+# Filter community data to make example faster
+community <- community |>
+  filter(PlotID \%in\% c("A","B"))
+
 filled_traits <- trait_fill(
-  comm = community, traits = trait,
+  comm = community,
+  traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
   trait_col = "Trait", abundance_col = "Cover"
 )
-boot_traits <- trait_np_bootstrap(filled_traits)
+
+# Note that more replicates and a greater sample size are advisable
+# Here we set them low to make the example run quickly
+boot_traits <- trait_np_bootstrap(filled_traits,
+                                  nrep = 20,
+                                  sample_size = 100)
+
 trait_summarise_boot_moments(boot_traits)
 }

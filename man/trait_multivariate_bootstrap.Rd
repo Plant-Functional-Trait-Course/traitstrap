@@ -40,13 +40,12 @@ weighted trait correlations, other bivariate or multivariate statistics
 \details{
 The observed and selected leaves are re-sampled in proportion to
 their weights, e.g. the abundance of a species or the biomass.
-Values across all individuals
-in a community are resampled \code{sample_size} times to incorporate the full
+Values across all individuals in a community are
+resampled \code{sample_size} times to incorporate the full
 spectrum of trait variation, generating \code{nrep} trait distributions.
-From these distributions the function estimates the mean and the higher
-moments including variance, skewness and kurtosis.
+The function \code{fun} is applied to the trait distribution at the finest level of the filled trait hierarchy.
 
-#' The output of trait_np_bootstrap can be summarized using
+Note that due to the flexibility of this function, the output CAN NOT be summarized using
 trait_summarize_boot_moments.
 }
 \examples{
@@ -54,16 +53,28 @@ require(dplyr)
 require(tidyr)
 require(ggplot2)
 require(purrr)
+
 data(community)
 data(trait)
+
 selected_traits <- trait_fill(
-  comm = community, traits = trait,
+  comm = community \%>\%
+    filter(PlotID \%in\% c("A","B"),
+           Site == 1),
+  traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
   trait_col = "Trait", abundance_col = "Cover",
   complete_only = TRUE, leaf_id = "ID"
 )
-boot_traits <- trait_multivariate_bootstrap(selected_traits, fun = cor)
+
+# Note that more replicates and a greater sample size are advisable
+# Here we set them low to make the example run quickly
+boot_traits <- trait_multivariate_bootstrap(selected_traits,
+                                            fun = cor,
+                                            nrep = 10,
+                                            sample_size = 100)
+
 boot_traits_long <- boot_traits |>
   mutate(correlations = map(result, ~ cor_to_df(.x))) |>
   select(-result) |>

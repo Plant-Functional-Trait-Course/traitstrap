@@ -38,13 +38,23 @@ moments including variance, skewness and kurtosis.
 \code{trait_summarize_boot_moments()}.
 }
 \examples{
+library(dplyr)
 data(community)
 data(trait)
+
+# Filter community data to make example faster
+community <- community |>
+  filter(PlotID \%in\% c("A","B"),
+         Site == 1)
 selected_traits <- trait_fill(
-  comm = community, traits = trait,
+  comm = community,
+  traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
   trait_col = "Trait", abundance_col = "Cover"
 )
-boot_traits <- trait_np_bootstrap(selected_traits)
+
+boot_traits <- trait_np_bootstrap(selected_traits,
+                                 nrep = 20,
+                                 sample_size = 200)
 }

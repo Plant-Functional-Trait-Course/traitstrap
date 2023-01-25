@@ -34,22 +34,40 @@
 #' @importFrom tidyr unnest
 #' @importFrom purrr map_dfr
 #' @examples
+#' library(dplyr)
 #' data(community)
 #' data(trait)
+#' 
+#' # Filter trait and community data to make example faster
+#' 
+#' community <- community |>
+#'        filter(PlotID %in% c("A","B"),
+#'             Site == 1)
+#' 
+#' trait <- trait |>
+#'   filter(Trait %in% c("Plant_Height_cm"))
+#' 
 #' filled_traits <- trait_fill(
-#'   comm = community, traits = trait,
+#'   comm = community,
+#'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
 #'   trait_col = "Trait", abundance_col = "Cover"
 #' )
+#' 
 #' fitted_distributions <- trait_fit_distributions(
 #'   filled_traits = filled_traits,
 #'   distribution_type = "normal"
 #' )
+#' 
+#' # Note that more replicates and a greater sample size are advisable
+#' # Here we set them low to make the example run quickly
 #' parametric_distributions <- trait_parametric_bootstrap(
 #'   fitted_distributions = fitted_distributions,
-#'   nrep = 10, sample_size = 100
+#'   nrep = 5,
+#'   sample_size = 100
 #' )
+#' 
 #' moment_summary <- trait_summarise_boot_moments(
 #'   bootstrap_moments = parametric_distributions,
 #'   parametric = FALSE

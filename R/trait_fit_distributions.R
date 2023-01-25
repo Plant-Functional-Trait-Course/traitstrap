@@ -26,19 +26,23 @@
 #' @importFrom fitdistrplus fitdist
 
 #' @examples
+#' library(dplyr)
 #' data(community)
 #' data(trait)
+#' 
 #' filled_traits <- trait_fill(
-#'   comm = community, traits = trait,
+#'   comm = community |>
+#'     filter(PlotID %in% c("A","B")),
+#'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
 #'   trait_col = "Trait", abundance_col = "Cover"
 #' )
+#' 
 #' fitted_distributions <- trait_fit_distributions(
 #'   filled_traits = filled_traits,
 #'   distribution_type = "normal"
-#' )
-#'
+#'   )
 #' @export
 trait_fit_distributions <- function(filled_traits,
                                     distribution_type = "normal") {
@@ -106,7 +110,7 @@ trait_fit_distributions <- function(filled_traits,
     ln_vals <- filled_traits %>%
       ungroup() %>%
       filter(.data[[trait_col]] %in%
-        names(distribution_type)[distribution_type == "lognormal"]) %>%
+               names(distribution_type)[distribution_type == "lognormal"]) %>%
       select(all_of(value_col))
 
     if (any(ln_vals <= 0)) {

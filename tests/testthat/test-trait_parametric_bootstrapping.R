@@ -80,3 +80,4 @@ test_that("Bad inputs return errors", {
     nrep = 10, sample_size = "Kup"
   ))
 })
+
