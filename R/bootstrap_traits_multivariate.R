@@ -113,7 +113,7 @@ trait_multivariate_bootstrap <- function(selected_traits,
     ungroup(.data[[id]]) %>%
     select(-.data[[id]])
 
-  bootstrap_moments <- map_dfr(
+  bootstrap_moments <- map(
     1:nrep,
     ~ {
       raw_dist <- slice_sample(selected_traits_wide,
@@ -133,7 +133,8 @@ trait_multivariate_bootstrap <- function(selected_traits,
       }
     },
     .id = "n"
-  )
+  ) |> 
+    list_rbind()
 
   attr(bootstrap_moments, "attrib") <- attrib
 

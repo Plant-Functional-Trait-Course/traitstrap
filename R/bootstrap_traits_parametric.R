@@ -99,7 +99,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
   scale_hierarchy <- attributes(fitted_distributions)$attrib$scale_hierarchy
   attrib <- attr(fitted_distributions, "attrib")
 
-  bootstrap_moments <- map_dfr(
+  bootstrap_moments <- map(
     1:nrep,
     ~ {
       raw_dist <- fitted_distributions %>%
@@ -141,7 +141,8 @@ trait_parametric_bootstrap <- function(fitted_distributions,
       }
     },
     .id = "n"
-  )
+  ) |> 
+    list_rbind()
 
   attr(bootstrap_moments, "attrib") <- attrib
 

@@ -284,7 +284,7 @@ trait_fill <- function(comm,
 
   #### iterate over grouping hierarchy####
   out <- scale_hierarchy %>%
-    map_dfr(~ {
+    map(~ {
       scale_level <- .x
 
       # drop scales from the hierarchy
@@ -339,7 +339,8 @@ trait_fill <- function(comm,
         )
 
       result
-    }) # end of iterate over grouping hierarchy
+    }) |> 
+    list_rbind() # end of iterate over grouping hierarchy
 
   # check some output
   if (nrow(out) == 0) {
