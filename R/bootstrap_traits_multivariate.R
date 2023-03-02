@@ -16,10 +16,12 @@
 #' Values across all individuals in a community are
 #' resampled `sample_size` times to incorporate the full
 #' spectrum of trait variation, generating `nrep` trait distributions.
-#' The function `fun` is applied to the trait distribution at the finest level of the filled trait hierarchy.
+#' The function `fun` is applied to the trait distribution at the finest level
+#'  of the filled trait hierarchy.
 #'
-#' Note that due to the flexibility of this function, the output CAN NOT be summarized using
-#' trait_summarize_boot_moments.
+#' Note that due to the flexibility of this function, 
+#' the output CAN NOT be summarized using
+#' `trait_summarise_boot_moments`.
 #'
 #' @return a tibble
 #'
