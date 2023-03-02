@@ -18,7 +18,7 @@ trait moment."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
       </span>
     </div>
 
@@ -103,33 +103,49 @@ Defaults to 0.95.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">community</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">community</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">trait</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Filter community data to make example faster</span></span></span>
+<span class="r-in"><span><span class="va">community</span> <span class="op">&lt;-</span> <span class="va">community</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PlotID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">filled_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span>, traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
+<span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span>,</span></span>
+<span class="r-in"><span>  traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
 <span class="r-in"><span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  taxon_col <span class="op">=</span> <span class="st">"Taxon"</span>, value_col <span class="op">=</span> <span class="st">"Value"</span>,</span></span>
 <span class="r-in"><span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>, abundance_col <span class="op">=</span> <span class="st">"Cover"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_np_bootstrap.html">trait_np_bootstrap</a></span><span class="op">(</span><span class="va">filled_traits</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that more replicates and a greater sample size are advisable</span></span></span>
+<span class="r-in"><span><span class="co"># Here we set them low to make the example run quickly</span></span></span>
+<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_np_bootstrap.html">trait_np_bootstrap</a></span><span class="op">(</span><span class="va">filled_traits</span>,</span></span>
+<span class="r-in"><span>  nrep <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">trait_summarise_boot_moments</span><span class="op">(</span><span class="va">boot_traits</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 42 × 17</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   global, Site, PlotID [14]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    global Site  PlotID Trait           n   mean ci_low_mean ci_high_mean     var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> global 1     A      Leaf_Thick…   100 0.214       0.209        0.218  3.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> global 1     A      Plant_Heig…   100 1.62        1.50         1.75   3.31<span style="color: #949494;">e</span>+0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g    100 0.010<span style="text-decoration: underline;">9</span>      0.010<span style="text-decoration: underline;">4</span>       0.011<span style="text-decoration: underline;">3</span> 4.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> global 1     B      Leaf_Thick…   100 0.203       0.200        0.206  1.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> global 1     B      Plant_Heig…   100 1.62        1.49         1.76   3.19<span style="color: #949494;">e</span>+0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g    100 0.012<span style="text-decoration: underline;">2</span>      0.011<span style="text-decoration: underline;">8</span>       0.012<span style="text-decoration: underline;">7</span> 4.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> global 1     C      Leaf_Thick…   100 0.221       0.218        0.224  2.82<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> global 1     C      Plant_Heig…   100 1.72        1.63         1.81   1.58<span style="color: #949494;">e</span>+0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g    100 0.015<span style="text-decoration: underline;">9</span>      0.015<span style="text-decoration: underline;">2</span>       0.016<span style="text-decoration: underline;">7</span> 1.12<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> global 1     D      Leaf_Thick…   100 0.201       0.198        0.204  1.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 32 more rows, and 8 more variables: ci_low_var &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ci_high_var &lt;dbl&gt;, skew &lt;dbl&gt;, ci_low_skew &lt;dbl&gt;, ci_high_skew &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   kurt &lt;dbl&gt;, ci_low_kurt &lt;dbl&gt;, ci_high_kurt &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 17</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   global, Site, PlotID [4]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    global Site  PlotID Trait            n   mean ci_lo…¹ ci_hi…²     var ci_lo…³</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> global 1     A      Leaf_Thickn…    20 0.216   0.210   0.221  3.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 3.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> global 1     A      Plant_Heigh…    20 1.58    1.33    1.83   2.98<span style="color: #949494;">e</span>+0 1.73<span style="color: #949494;">e</span>+0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g      20 0.010<span style="text-decoration: underline;">7</span>  0.010<span style="text-decoration: underline;">1</span>  0.011<span style="text-decoration: underline;">3</span> 4.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 4.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> global 1     B      Leaf_Thickn…    20 0.205   0.200   0.209  1.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 1.54<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> global 1     B      Plant_Heigh…    20 1.54    1.40    1.69   2.65<span style="color: #949494;">e</span>+0 1.85<span style="color: #949494;">e</span>+0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g      20 0.012<span style="text-decoration: underline;">1</span>  0.011<span style="text-decoration: underline;">4</span>  0.012<span style="text-decoration: underline;">7</span> 4.50<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 3.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> global 2     A      Leaf_Thickn…    20 0.212   0.206   0.218  4.79<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 3.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> global 2     A      Plant_Heigh…    20 1.77    1.61    1.94   2.47<span style="color: #949494;">e</span>+0 1.58<span style="color: #949494;">e</span>+0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> global 2     A      Wet_Mass_g      20 0.026<span style="text-decoration: underline;">3</span>  0.024<span style="text-decoration: underline;">5</span>  0.028<span style="text-decoration: underline;">2</span> 3.29<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> global 2     B      Leaf_Thickn…    20 0.198   0.191   0.204  3.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.55<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> global 2     B      Plant_Heigh…    20 2.82    2.62    3.02   6.84<span style="color: #949494;">e</span>+0 5.98<span style="color: #949494;">e</span>+0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> global 2     B      Wet_Mass_g      20 0.020<span style="text-decoration: underline;">6</span>  0.019<span style="text-decoration: underline;">2</span>  0.022<span style="text-decoration: underline;">0</span> 1.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 7 more variables: ci_high_var &lt;dbl&gt;, skew &lt;dbl&gt;, ci_low_skew &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ci_high_skew &lt;dbl&gt;, kurt &lt;dbl&gt;, ci_low_kurt &lt;dbl&gt;, ci_high_kurt &lt;dbl&gt;, and</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable names ¹​ci_low_mean, ²​ci_high_mean, ³​ci_low_var</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -144,7 +160,7 @@ Defaults to 0.95.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
