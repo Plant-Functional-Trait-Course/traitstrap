@@ -1,6 +1,6 @@
 Package: traitstrap
 Title: Bootstrap Trait Values
-Version: 0.0.0.902
+Version: 0.0.0.903
 Date: 2021-02-17
 Authors@R: c(
   person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre"), 
@@ -21,7 +21,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
-Depends: R (>= 4.1.0)
+Depends: R (>= 4.2.0)
 Imports: 
     dplyr (>= 1.0.0),
     purrr,

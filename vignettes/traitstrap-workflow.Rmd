@@ -467,7 +467,7 @@ boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
       species = rep(1, 200),
       traits = x
     ) |>
-      REND(TPDs = .)
+      REND(TPDs = _)
   }
 )
 
