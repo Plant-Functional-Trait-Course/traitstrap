@@ -30,11 +30,13 @@
 #' library(dplyr)
 #' data(community)
 #' data(trait)
-#' 
+#'
 #' # Filter community data to make example faster
 #' community <- community |>
-#'   filter(PlotID %in% c("A","B"),
-#'          Site == 1)
+#'   filter(
+#'     PlotID %in% c("A", "B"),
+#'     Site == 1
+#'   )
 #' selected_traits <- trait_fill(
 #'   comm = community,
 #'   traits = trait,
@@ -43,9 +45,10 @@
 #'   trait_col = "Trait", abundance_col = "Cover"
 #' )
 #'
-#'boot_traits <- trait_np_bootstrap(selected_traits,
-#'                                  nrep = 20,
-#'                                  sample_size = 200)
+#' boot_traits <- trait_np_bootstrap(selected_traits,
+#'   nrep = 20,
+#'   sample_size = 200
+#' )
 #' @export
 
 trait_np_bootstrap <- function(selected_traits,
@@ -79,7 +82,7 @@ trait_np_bootstrap <- function(selected_traits,
       }
     },
     .id = "n"
-  ) |> 
+  ) |>
     list_rbind()
 
   attr(bootstrap_moments, "attrib") <- attrib

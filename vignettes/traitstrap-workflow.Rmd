@@ -22,7 +22,8 @@ library(ggplot2)
 
 # wes anderson colours
 col_palettes <- list(
-  GrandBudapest1 = c("#FD6467", "#5B1A18", "#D67236"))
+  GrandBudapest1 = c("#FD6467", "#5B1A18", "#D67236")
+)
 theme_set(theme_minimal(base_size = 12))
 ```
 
@@ -102,7 +103,7 @@ trait <- trait |>
   ))
 
 # shorten trait names
-trait <- trait |> 
+trait <- trait |>
   mutate(Trait = recode(Trait, "Leaf_Thickness_Ave_mm" = "Thickness_mm"))
 ```
 
@@ -170,7 +171,6 @@ In the `other_col` argument other grouping variables in the community dataset ca
 
 
 ```{r trait-fill, echo=TRUE, eval=TRUE}
-
 trait_filling <- trait_fill(
   # input data (mandatory)
   comm = community,
@@ -209,7 +209,6 @@ Depending on the experimental design it might make sense to fill traits at a cer
 Here is an example how to include taxonomy and experimental design in the trait filling function (code not run).
 
 ```{r trait-fill2, echo=TRUE, eval=FALSE}
-
 trait_filling2 <- trait_fill(
   comm = community,
   traits = trait,
@@ -249,7 +248,6 @@ If the raw data is extracted, `nrep` is forced to 1 to avoid memory issues.
 
 
 ```{r non-parap-boot, echo=TRUE, eval=TRUE}
-
 # run nonparametric bootstrapping
 np_bootstrapped_moments <- trait_np_bootstrap(
   trait_filling,
@@ -270,7 +268,6 @@ For the nonparametric approach the default is a 0.95 confidence level.
 
 
 ```{r summarize, echo=TRUE, eval=TRUE}
-
 # summarizes bootstrapping output
 sum_boot_moment <- trait_summarise_boot_moments(
   np_bootstrapped_moments
@@ -297,7 +294,6 @@ Currently the function supports normal, log-normal, and beta (values between 0 a
 The function returns a dataframe containing fitted distribution parameters.
 
 ```{r fit-dist, echo=TRUE, eval=TRUE}
-
 # fit distributions
 fitted_distributions <- trait_fit_distributions(
   filled_traits = trait_filling,
@@ -309,7 +305,6 @@ fitted_distributions
 
 
 ```{r fit-dist2, echo=TRUE, eval=FALSE}
-
 # fit several types of distributions
 fitted_distributions <- trait_fit_distributions(
   filled_traits = trait_filling,
@@ -328,7 +323,6 @@ The argument `raw` allows to extract raw distributions (see above).
 
 
 ```{r para-boot, echo=TRUE, eval=TRUE}
-
 # run parametric bootstrapping
 p_bootstrapped_moments <- trait_parametric_bootstrap(
   fitted_distributions = fitted_distributions,
@@ -347,7 +341,6 @@ In traitstrap both the parametric and nonparametric bootstrapping functions allo
 
 
 ```{r raw-dist-np, echo=TRUE, eval=TRUE}
-
 # run nonparametric bootstrapping
 raw_dist_np <- trait_np_bootstrap(
   selected_traits = trait_filling,
@@ -362,13 +355,11 @@ The raw data can be useful for visualizing the trait distributions.
 Use colour and facets to separate between the different traits, hierarchies and treatments.
 
 ```{r plot-raw-dist-np, echo=TRUE, eval=TRUE, fig.width = 6}
-
 ggplot(raw_dist_np, aes(x = log(Value), fill = Site)) +
   geom_density(alpha = 0.4) +
   scale_fill_manual(values = col_palettes$GrandBudapest1) +
   labs(x = "log(trait value)") +
   facet_wrap(facets = vars(Trait), scales = "free")
-
 ```
 
 ## Multivariate analyses
@@ -382,7 +373,6 @@ Note that we are also using the argument `complete_only` to specify that we are 
 Also, we are subsetting the data to make it run faster.
 
 ```{r multivariate-prep, warning=FALSE}
-
 library(FD)
 
 multivariate_traits <- trait_fill(
@@ -401,7 +391,6 @@ multivariate_traits <- trait_fill(
   complete_only = TRUE,
   leaf_id = "ID"
 )
-
 ```
 
 Then we are using the `trait_multivariate_bootstrap()` function to do the actual bootstrapping.
@@ -433,21 +422,18 @@ boot_multi <- trait_multivariate_bootstrap(
 )
 
 # data wrangling
-raoq_est <- boot_multi |> 
-  mutate(result = map(result, as.data.frame)) |> 
+raoq_est <- boot_multi |>
+  mutate(result = map(result, as.data.frame)) |>
   unnest(result)
-
 ```
 
 Let's plot RaoQ:
 
 ```{r multivariate-plot, warning=FALSE, fig.width = 6}
-
 ggplot(data = raoq_est, mapping = aes(x = RaoQ, fill = PlotID)) +
   geom_density(alpha = 0.5) +
   scale_fill_manual(values = col_palettes$GrandBudapest1) +
   xlim(c(0, 6))
-
 ```
 
 Next, we'll show how we can use a similar method to combine `trait_multivariate_bootstrap` with the functions `TPDs()` and `REND()` from the TPD package.
@@ -455,7 +441,6 @@ Next, we'll show how we can use a similar method to combine `trait_multivariate_
 For each replicated site, we convert the distribution into a trait probability distribution and then derive functional diversity metrics.
 
 ```{r multivariate-tpd, echo=TRUE, warning=FALSE, message=FALSE, fig.width = 6}
-
 library(TPD)
 
 boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
@@ -472,12 +457,14 @@ boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
 )
 
 # wrangling data
-tpd <- boot_tpd |> 
-  mutate(result = map(result, as.data.frame)) |> 
-  unnest(result) |> 
-  pivot_longer(cols = species.FRichness:species.FDivergence,
-               values_to = "value",
-               names_to = "metric") |> 
+tpd <- boot_tpd |>
+  mutate(result = map(result, as.data.frame)) |>
+  unnest(result) |>
+  pivot_longer(
+    cols = species.FRichness:species.FDivergence,
+    values_to = "value",
+    names_to = "metric"
+  ) |>
   mutate(metric = str_remove(metric, "species\\."))
 
 
@@ -503,7 +490,6 @@ Basically, this function summarizes from which level the traits are filled, and 
 Based on simulations, we recommend to collect traits for at least 80% of the community cover (Maitner et al. in prep).
 
 ```{r coverage-plot, echo=TRUE, eval=TRUE, fig.width = 6}
-
 # show coverage plot
 autoplot(trait_filling) +
   scale_fill_manual(values = col_palettes$GrandBudapest1) +
@@ -519,7 +505,6 @@ Traitstrap has a function `trait_missing()` which gives you a table with all mis
 
 
 ```{r missing-traits, echo=TRUE, eval=TRUE}
-
 # list missing traits
 trait_missing(
   filled_trait = trait_filling,

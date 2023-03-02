@@ -9,16 +9,20 @@ community <- community |>
 usethis::use_data(community)
 
 #### trait ####
-dataDownloader::get_file(node = "7mzjk", remote_path = "Svalbard",
-                         file = "traitsGradients_SV_2018.Rdata",
-                         path = "data-raw/")
+dataDownloader::get_file(
+  node = "7mzjk", remote_path = "Svalbard",
+  file = "traitsGradients_SV_2018.Rdata",
+  path = "data-raw/"
+)
 
 load("data-raw/traitsGradients_SV_2018.Rdata")
 
 trait <- traitsGradients_SV_2018 |>
   filter(Project == "T", Site %in% 1:2, Gradient == "C") |>
-  select(Site, PlotID, Taxon, ID, Plant_Height_cm, Wet_Mass_g,
-         Leaf_Thickness_Ave_mm) |>
+  select(
+    Site, PlotID, Taxon, ID, Plant_Height_cm, Wet_Mass_g,
+    Leaf_Thickness_Ave_mm
+  ) |>
   pivot_longer(c(Plant_Height_cm, Wet_Mass_g, Leaf_Thickness_Ave_mm),
     names_to = "Trait",
     values_to = "Value",

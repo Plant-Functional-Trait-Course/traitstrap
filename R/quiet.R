@@ -1,4 +1,3 @@
-
 #' Do something quietly
 #' @description Internal helper function
 #' used to prevent printed messages

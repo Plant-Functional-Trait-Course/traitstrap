@@ -25,7 +25,7 @@
 #'
 #' # Filter community data to make example faster
 #' community <- community |>
-#'   filter(PlotID %in% c("A","B"))
+#'   filter(PlotID %in% c("A", "B"))
 #'
 #' filled_traits <- trait_fill(
 #'   comm = community,
@@ -38,8 +38,9 @@
 #' # Note that more replicates and a greater sample size are advisable
 #' # Here we set them low to make the example run quickly
 #' boot_traits <- trait_np_bootstrap(filled_traits,
-#'                                   nrep = 20,
-#'                                   sample_size = 100)
+#'   nrep = 20,
+#'   sample_size = 100
+#' )
 #'
 #' trait_summarise_boot_moments(boot_traits)
 #' @export
@@ -47,7 +48,6 @@
 trait_summarise_boot_moments <- function(bootstrap_moments,
                                          parametric = TRUE,
                                          sd_mult = 1, ci = 0.95) {
-  
   attrib <- attr(bootstrap_moments, "attrib")
   groups <- c(
     as.character(attrib$scale_hierarchy),

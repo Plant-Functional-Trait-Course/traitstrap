@@ -102,8 +102,10 @@
 
 trait_fill <- function(comm,
                        traits,
-                       scale_hierarchy = c("Country", "Site",
-                                           "BlockID", "PlotID"),
+                       scale_hierarchy = c(
+                         "Country", "Site",
+                         "BlockID", "PlotID"
+                       ),
                        global = TRUE,
                        taxon_col = "taxon", trait_col = "trait",
                        value_col = "Value", abundance_col = "Cover",
@@ -235,7 +237,7 @@ trait_fill <- function(comm,
       group_by(.data[[leaf_id]]) |>
       mutate(.n = n())
     if (any(traits$.n > n_traits)) {
-      stop("Leaves can only have one measurement per trait. 
+      stop("Leaves can only have one measurement per trait.
        Check leaf ID are unique.")
     }
     traits <- traits |>
@@ -338,7 +340,7 @@ trait_fill <- function(comm,
         )
 
       result
-    }) |> 
+    }) |>
     list_rbind() # end of iterate over grouping hierarchy
 
   # check some output

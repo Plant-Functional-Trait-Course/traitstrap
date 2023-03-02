@@ -50,9 +50,11 @@ autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
     )
   }
 
-  filled_traits_summary <- fortify.filled_trait(filled_traits,
-                                                other_col_how,
-                                                ...)
+  filled_traits_summary <- fortify.filled_trait(
+    filled_traits,
+    other_col_how,
+    ...
+  )
 
   plot <- ggplot(filled_traits_summary, aes(
     x = .data$.id,
