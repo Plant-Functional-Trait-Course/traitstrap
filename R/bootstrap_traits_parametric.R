@@ -101,7 +101,7 @@ trait_parametric_bootstrap <- function(fitted_distributions,
   attrib <- attr(fitted_distributions, "attrib")
 
   bootstrap_moments <- map(
-    1:nrep,
+    seq_len(nrep),
     ~ {
       raw_dist <- fitted_distributions |>
         group_by_at(c(as.character(scale_hierarchy), trait_col)) |>

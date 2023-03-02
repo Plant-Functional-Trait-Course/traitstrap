@@ -118,7 +118,7 @@ trait_multivariate_bootstrap <- function(selected_traits,
     select(-.data[[id]])
 
   bootstrap_moments <- map(
-    1:nrep,
+    seq_len(nrep),
     ~ {
       raw_dist <- slice_sample(selected_traits_wide,
         n = sample_size,

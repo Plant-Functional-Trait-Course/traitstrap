@@ -62,7 +62,7 @@ trait_np_bootstrap <- function(selected_traits,
   attrib <- attr(selected_traits, "attrib")
   value_col <- attrib$value_col
   bootstrap_moments <- map(
-    1:nrep,
+    seq_len(nrep),
     ~ {
       raw_dist <- slice_sample(selected_traits,
         n = sample_size,
