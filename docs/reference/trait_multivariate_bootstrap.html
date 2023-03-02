@@ -19,7 +19,7 @@ weighted trait correlations, other bivariate or multivariate statistics"><!-- ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
       </span>
     </div>
 
@@ -113,46 +113,53 @@ If <code>raw = TRUE</code>, <code>nrep</code> is restricted to 1 to avoid memory
     <h2>Details</h2>
     <p>The observed and selected leaves are re-sampled in proportion to
 their weights, e.g. the abundance of a species or the biomass.
-Values across all individuals
-in a community are resampled <code>sample_size</code> times to incorporate the full
+Values across all individuals in a community are
+resampled <code>sample_size</code> times to incorporate the full
 spectrum of trait variation, generating <code>nrep</code> trait distributions.
-From these distributions the function estimates the mean and the higher
-moments including variance, skewness and kurtosis.</p>
-<p>#' The output of trait_np_bootstrap can be summarized using
-trait_summarize_boot_moments.</p>
+The function <code>fun</code> is applied to the trait distribution at the finest level
+of the filled trait hierarchy.</p>
+<p>Note that due to the flexibility of this function,
+the output CAN NOT be summarized using
+<code>trait_summarise_boot_moments</code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: dplyr</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: tidyr</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: purrr</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">community</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">trait</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">selected_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span>, traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
+<span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">PlotID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="va">Site</span> <span class="op">==</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
 <span class="r-in"><span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  taxon_col <span class="op">=</span> <span class="st">"Taxon"</span>, value_col <span class="op">=</span> <span class="st">"Value"</span>,</span></span>
 <span class="r-in"><span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>, abundance_col <span class="op">=</span> <span class="st">"Cover"</span>,</span></span>
 <span class="r-in"><span>  complete_only <span class="op">=</span> <span class="cn">TRUE</span>, leaf_id <span class="op">=</span> <span class="st">"ID"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu">trait_multivariate_bootstrap</span><span class="op">(</span><span class="va">selected_traits</span>, fun <span class="op">=</span> <span class="va">cor</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that more replicates and a greater sample size are advisable</span></span></span>
+<span class="r-in"><span><span class="co"># Here we set them low to make the example run quickly</span></span></span>
+<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu">trait_multivariate_bootstrap</span><span class="op">(</span><span class="va">selected_traits</span>,</span></span>
+<span class="r-in"><span>  fun <span class="op">=</span> <span class="va">cor</span>,</span></span>
+<span class="r-in"><span>  nrep <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">boot_traits_long</span> <span class="op">&lt;-</span> <span class="va">boot_traits</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>correlations <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">result</span>, <span class="op">~</span> <span class="fu"><a href="cor_to_df.html">cor_to_df</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">result</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">correlations</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">correlations</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">boot_traits_long</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">row</span>, <span class="st">"v"</span>, <span class="va">col</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
@@ -175,7 +182,7 @@ trait_summarize_boot_moments.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

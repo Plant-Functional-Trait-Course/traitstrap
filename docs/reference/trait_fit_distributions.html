@@ -20,7 +20,7 @@ This function returns a tibble containing the fitted parameters."><!-- mathjax -
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
       </span>
     </div>
 
@@ -97,19 +97,41 @@ by supplying the function with a named list of traits, e.g.
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">community</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">community</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">trait</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">filled_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span>, traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
+<span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PlotID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
 <span class="r-in"><span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  taxon_col <span class="op">=</span> <span class="st">"Taxon"</span>, value_col <span class="op">=</span> <span class="st">"Value"</span>,</span></span>
 <span class="r-in"><span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>, abundance_col <span class="op">=</span> <span class="st">"Cover"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fitted_distributions</span> <span class="op">&lt;-</span> <span class="fu">trait_fit_distributions</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  filled_traits <span class="op">=</span> <span class="va">filled_traits</span>,</span></span>
 <span class="r-in"><span>  distribution_type <span class="op">=</span> <span class="st">"normal"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 172 warnings in `summarize()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `quiet(get_dist_parms(data = .data[["Value"]], distribution_type</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   = unique(distribution_type)))`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 1: `global = "global"`, `Site = "1"`, `PlotID = "A"`, `Trait =</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   "Leaf_Thickness_Ave_mm"`, `Taxon = "bistorta vivipara"`, `Cover = 10`,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   `n_sample = 17`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `dnorm()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> NaNs produced</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 171 remaining warnings.</span>
 </code></pre></div>
     </div>
   </div>
@@ -124,7 +146,7 @@ by supplying the function with a named list of traits, e.g.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
