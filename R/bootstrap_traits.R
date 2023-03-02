@@ -26,7 +26,7 @@
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map list_rbind
 #' @examples
 #' library(dplyr)
 #' data(community)

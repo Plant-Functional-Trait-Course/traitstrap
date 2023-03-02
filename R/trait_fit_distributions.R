@@ -21,7 +21,6 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
 #' summarize select group_by_at
-#' @importFrom purrr map_dfr
 #' @importFrom stats var
 #' @importFrom fitdistrplus fitdist
 

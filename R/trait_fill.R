@@ -86,7 +86,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select any_of all_of mutate group_by filter left_join n
 #' @importFrom dplyr inner_join across ungroup
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map list_rbind
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
 #' @importFrom tibble lst

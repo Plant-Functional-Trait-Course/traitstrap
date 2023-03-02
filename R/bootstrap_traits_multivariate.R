@@ -28,7 +28,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise n_distinct
 #' @importFrom tidyr pivot_wider nest unnest
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map list_rbind
 #' @examples
 #' require(dplyr)
 #' require(tidyr)

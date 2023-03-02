@@ -32,7 +32,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
 #' @importFrom tidyr unnest
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map list_rbind
 #' @examples
 #' library(dplyr)
 #' data(community)
