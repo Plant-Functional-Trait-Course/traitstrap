@@ -3,7 +3,7 @@
 #' design, which allows to account for incomplete trait collections,
 #' traits from different spatial or temporal levels
 #' (i.e. local traits vs. databases) and experimental designs.
-#' @param comm a datafram in long format with community data
+#' @param comm a dataframe in long format with community data
 #' @param traits a dataframe in long format with trait data
 #' @param scale_hierarchy character vector of the sampling hierarchy from large
 #' to small (e.g. site/block/plot)

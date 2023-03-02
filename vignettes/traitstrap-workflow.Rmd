@@ -405,9 +405,9 @@ multivariate_traits <- trait_fill(
 ```
 
 Then we are using the `trait_multivariate_bootstrap()` function to do the actual bootstrapping.
-This function needs the output from the trait filling as `selected_traits`, number bootstraped of replications `nrep`, bootsrap size `sample_size` and `id`.
+This function needs the output from the trait filling as `selected_traits`, number bootstrapped of replications `nrep`, bootstrap size `sample_size` and `id`.
 The last argument is `fun`, that takes any function to apply to the data.
-In this case we are using diversity functions from the dbFD package.
+In this case we are using diversity functions from the `dbFD` package.
 
 Note that we are using a low number of replicates (nrep) to make it run faster. 
 
