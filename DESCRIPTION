@@ -19,7 +19,7 @@ BugReports: https://github.com/Plant-Functional-Trait-Course/traitstrap/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 2.10)
 Imports: 
