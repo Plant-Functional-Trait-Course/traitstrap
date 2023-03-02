@@ -8,8 +8,8 @@ test_that("trait_fill taxonomic filling", {
     site = c("A", "B"),
     plot = 1:2,
     trait = "trait"
-  ) %>%
-    mutate(taxon = paste(genus, taxon)) %>%
+  ) |>
+    mutate(taxon = paste(genus, taxon)) |>
     mutate(value = 1:16)
 
   mini_comm <- tidyr::crossing(
@@ -17,14 +17,14 @@ test_that("trait_fill taxonomic filling", {
     taxon = c("sp1", "sp2"),
     site = c("A", "B"),
     plot = 1:2
-  ) %>%
-    mutate(taxon = paste(genus, taxon)) %>%
+  ) |>
+    mutate(taxon = paste(genus, taxon)) |>
     mutate(cover = 5)
 
   #### test set 1 ####
   # fill site A plot 2 - should get value from A1.
   # Should be no genus level filling
-  mini_trait1 <- mini_trait %>%
+  mini_trait1 <- mini_trait |>
     filter(!(taxon == "G1 sp1" & site == "A" & plot == 2))
 
   ti_1 <- trait_fill(
@@ -106,7 +106,7 @@ test_that("trait_fill taxonomic filling", {
 
   #### test set 2 ####
   # fill site A G1 sp1 - should get value from site A G1 sp2
-  mini_trait2 <- mini_trait %>%
+  mini_trait2 <- mini_trait |>
     filter(taxon != "G1 sp1")
 
   ti_2 <- trait_fill(
@@ -121,8 +121,8 @@ test_that("trait_fill taxonomic filling", {
   )
 
   # for site A, should fill from G1 sp2 at site A
-  got <- ti_2 %>% filter(site == "A", taxon == "G1 sp1")
-  target <- mini_trait %>% filter(site == "A", taxon == "G1 sp2")
+  got <- ti_2 |> filter(site == "A", taxon == "G1 sp1")
+  target <- mini_trait |> filter(site == "A", taxon == "G1 sp2")
   expect_equal(
     sort(got$value),
     sort(target$value)

@@ -54,8 +54,10 @@ data(trait)
 # Filter trait and community data to make example faster
 
 community <- community |>
-       filter(PlotID \%in\% c("A","B"),
-            Site == 1)
+  filter(
+    PlotID \%in\% c("A", "B"),
+    Site == 1
+  )
 
 trait <- trait |>
   filter(Trait \%in\% c("Plant_Height_cm"))

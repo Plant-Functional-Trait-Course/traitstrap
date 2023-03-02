@@ -44,8 +44,10 @@ data(trait)
 
 # Filter community data to make example faster
 community <- community |>
-  filter(PlotID \%in\% c("A","B"),
-         Site == 1)
+  filter(
+    PlotID \%in\% c("A", "B"),
+    Site == 1
+  )
 selected_traits <- trait_fill(
   comm = community,
   traits = trait,
@@ -55,6 +57,7 @@ selected_traits <- trait_fill(
 )
 
 boot_traits <- trait_np_bootstrap(selected_traits,
-                                 nrep = 20,
-                                 sample_size = 200)
+  nrep = 20,
+  sample_size = 200
+)
 }

@@ -3,7 +3,7 @@
 #' design, which allows to account for incomplete trait collections,
 #' traits from different spatial or temporal levels
 #' (i.e. local traits vs. databases) and experimental designs.
-#' @param comm a datafram in long format with community data
+#' @param comm a dataframe in long format with community data
 #' @param traits a dataframe in long format with trait data
 #' @param scale_hierarchy character vector of the sampling hierarchy from large
 #' to small (e.g. site/block/plot)
@@ -83,10 +83,9 @@
 #' @return a tibble with extra class \code{filled_trait}
 #'
 #' @importFrom stats sd var weighted.mean
-#' @importFrom magrittr %>%
 #' @importFrom dplyr select any_of all_of mutate group_by filter left_join n
 #' @importFrom dplyr inner_join across ungroup
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map list_rbind
 #' @importFrom rlang !!! !! .data
 #' @importFrom glue glue glue_collapse
 #' @importFrom tibble lst
@@ -103,8 +102,10 @@
 
 trait_fill <- function(comm,
                        traits,
-                       scale_hierarchy = c("Country", "Site",
-                                           "BlockID", "PlotID"),
+                       scale_hierarchy = c(
+                         "Country", "Site",
+                         "BlockID", "PlotID"
+                       ),
                        global = TRUE,
                        taxon_col = "taxon", trait_col = "trait",
                        value_col = "Value", abundance_col = "Cover",
@@ -205,7 +206,7 @@ trait_fill <- function(comm,
     )
     warning(glue("other_col levels {bad_other} are in  names(traits). \\
                  These columns will be removed from traits"))
-    traits <- traits %>% select(-any_of(other_col))
+    traits <- traits |> select(-any_of(other_col))
   }
 
 
@@ -218,13 +219,13 @@ trait_fill <- function(comm,
                 global already exists. Maybe set 'global = FALSE'"))
     }
     # add global column to traits
-    traits <- traits %>% mutate(global = "global")
-    comm <- comm %>% mutate(global = "global")
+    traits <- traits |> mutate(global = "global")
+    comm <- comm |> mutate(global = "global")
     scale_hierarchy <- c("global", scale_hierarchy)
   }
 
   # remove NA trait values
-  traits <- traits %>% filter(!is.na(.data[[value_col]]))
+  traits <- traits |> filter(!is.na(.data[[value_col]]))
 
   ## remove leaves with incomplete set of traits if complete_only
   if (isTRUE(complete_only)) {
@@ -236,7 +237,7 @@ trait_fill <- function(comm,
       group_by(.data[[leaf_id]]) |>
       mutate(.n = n())
     if (any(traits$.n > n_traits)) {
-      stop("Leaves can only have one measurement per trait. 
+      stop("Leaves can only have one measurement per trait.
        Check leaf ID are unique.")
     }
     traits <- traits |>
@@ -271,8 +272,8 @@ trait_fill <- function(comm,
   }
 
   # calculate plot scale sum of abundances
-  comm <- comm %>%
-    group_by(across(all_of(c(as.character(scale_hierarchy), other_col)))) %>%
+  comm <- comm |>
+    group_by(across(all_of(c(as.character(scale_hierarchy), other_col)))) |>
     # calculate sum abundance
     mutate(sum_abun = sum(.data[[abundance_col]]))
 
@@ -283,8 +284,8 @@ trait_fill <- function(comm,
   )
 
   #### iterate over grouping hierarchy####
-  out <- scale_hierarchy %>%
-    map_dfr(~ {
+  out <- scale_hierarchy |>
+    map(~ {
       scale_level <- .x
 
       # drop scales from the hierarchy
@@ -297,14 +298,14 @@ trait_fill <- function(comm,
         scale_hierarchy[scale_hierarchy >= scale_level]
       )
 
-      traits <- traits %>% select(-any_of(scale_drop))
-      result <- comm %>%
-        ungroup() %>% # avoids dplyr problem #5473
+      traits <- traits |> select(-any_of(scale_drop))
+      result <- comm |>
+        ungroup() |> # avoids dplyr problem #5473
         # join to traits
         inner_join(traits,
           by = c(scale_keep, taxon_col),
           suffix = c("_comm", "_trait")
-        ) %>%
+        ) |>
         # group by kept scales
         group_by(
           across(all_of(c(
@@ -317,7 +318,7 @@ trait_fill <- function(comm,
         if (treatment_level == scale_level) {
           col_comm <- paste0(treatment_col, "_comm")
           col_trait <- paste0(treatment_col, "_trait")
-          result <- result %>%
+          result <- result |>
             filter( # same treatment OR first level (must be control)
               .data[[col_comm]] == .data[[col_trait]] |
                 .data[[col_trait]] == levels(.data[[col_trait]])[1]
@@ -326,12 +327,12 @@ trait_fill <- function(comm,
       }
 
       # calculate weights
-      result <- result %>%
-        ungroup() %>%
+      result <- result |>
+        ungroup() |>
         group_by(across(all_of(c(
           as.character(scale_hierarchy),
           taxon_col, trait_col, other_col
-        )))) %>%
+        )))) |>
         mutate(
           n_sample = n(),
           weight = .data[[abundance_col]] / .data$n_sample,
@@ -339,7 +340,8 @@ trait_fill <- function(comm,
         )
 
       result
-    }) # end of iterate over grouping hierarchy
+    }) |>
+    list_rbind() # end of iterate over grouping hierarchy
 
   # check some output
   if (nrow(out) == 0) {
@@ -349,35 +351,35 @@ trait_fill <- function(comm,
   }
 
   # get max number available
-  out <- out %>%
-    ungroup() %>%
+  out <- out |>
+    ungroup() |>
     group_by(across(all_of(c(
       as.character(scale_hierarchy),
       taxon_col, trait_col, other_col
-    )))) %>%
+    )))) |>
     mutate(max_n_in_sample = max(.data$n_sample))
 
   #### filter out lowest good level of hierarchy for each taxon & trait ####
   if (!keep_all) { # keep only finest scale trait data available
-    out <- out %>%
-      ungroup() %>%
+    out <- out |>
+      ungroup() |>
       group_by(across(all_of(c(
         as.character(scale_hierarchy),
         taxon_col, trait_col, other_col
-      )))) %>%
+      )))) |>
       filter(
         # group has more than minimum number in sample
         .data$n_sample >= min_n_in_sample |
           # OR maximum number when max is lower than required
           (.data$n_sample == .data$max_n_in_sample &
             .data$max_n_in_sample <= min_n_in_sample)
-      ) %>%
+      ) |>
       # filter lowest level available by group
       filter(.data$level == min(.data$level))
   }
 
-  out <- out %>%
-    ungroup() %>% # avoids dplyr problem #5473
+  out <- out |>
+    ungroup() |> # avoids dplyr problem #5473
     group_by(across(all_of(c(
       as.character(scale_hierarchy),
       trait_col, other_col
@@ -385,7 +387,7 @@ trait_fill <- function(comm,
 
   # add treatment group if used
   if (!is.null(treatment_col)) {
-    out <- out %>%
+    out <- out |>
       group_by(.data[[paste0(treatment_col, "_comm")]], .add = TRUE)
   }
 

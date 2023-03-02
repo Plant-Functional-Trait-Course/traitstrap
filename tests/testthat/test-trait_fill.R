@@ -7,19 +7,19 @@ test_that("trait_fill works", {
     site = c("A", "B"),
     plot = 1:2,
     trait = "trait"
-  ) %>%
+  ) |>
     mutate(value = 1:8)
 
   mini_comm <- tidyr::crossing(
     taxon =  c("sp1", "sp2"),
     site = c("A", "B"),
     plot = 1:2
-  ) %>%
+  ) |>
     mutate(cover = 5)
 
   #### test set 1 ####
   # select site A plot 2 - should get value from A1
-  mini_trait1 <- mini_trait %>%
+  mini_trait1 <- mini_trait |>
     filter(!(taxon == "sp1" & site == "A" & plot == 2))
 
   ti_1 <- trait_fill(
@@ -59,7 +59,7 @@ test_that("trait_fill works", {
 
   #### test set 2 ####
   # select site A sp1 - should get value from site B
-  mini_trait2 <- mini_trait %>%
+  mini_trait2 <- mini_trait |>
     filter(!(taxon == "sp1" & site == "A"))
 
   ti_2 <- trait_fill(

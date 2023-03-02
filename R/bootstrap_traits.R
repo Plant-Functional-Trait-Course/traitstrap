@@ -24,18 +24,19 @@
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
-#' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map list_rbind
 #' @examples
 #' library(dplyr)
 #' data(community)
 #' data(trait)
-#' 
+#'
 #' # Filter community data to make example faster
 #' community <- community |>
-#'   filter(PlotID %in% c("A","B"),
-#'          Site == 1)
+#'   filter(
+#'     PlotID %in% c("A", "B"),
+#'     Site == 1
+#'   )
 #' selected_traits <- trait_fill(
 #'   comm = community,
 #'   traits = trait,
@@ -44,9 +45,10 @@
 #'   trait_col = "Trait", abundance_col = "Cover"
 #' )
 #'
-#'boot_traits <- trait_np_bootstrap(selected_traits,
-#'                                  nrep = 20,
-#'                                  sample_size = 200)
+#' boot_traits <- trait_np_bootstrap(selected_traits,
+#'   nrep = 20,
+#'   sample_size = 200
+#' )
 #' @export
 
 trait_np_bootstrap <- function(selected_traits,
@@ -59,8 +61,8 @@ trait_np_bootstrap <- function(selected_traits,
 
   attrib <- attr(selected_traits, "attrib")
   value_col <- attrib$value_col
-  bootstrap_moments <- map_dfr(
-    1:nrep,
+  bootstrap_moments <- map(
+    seq_len(nrep),
     ~ {
       raw_dist <- slice_sample(selected_traits,
         n = sample_size,
@@ -70,7 +72,7 @@ trait_np_bootstrap <- function(selected_traits,
         return(raw_dist)
       } else {
         # get all the happy moments
-        raw_dist %>%
+        raw_dist |>
           summarise(
             mean = mean(.data[[value_col]]),
             variance = var(.data[[value_col]]),
@@ -80,7 +82,8 @@ trait_np_bootstrap <- function(selected_traits,
       }
     },
     .id = "n"
-  )
+  ) |>
+    list_rbind()
 
   attr(bootstrap_moments, "attrib") <- attrib
 

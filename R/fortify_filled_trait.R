@@ -8,7 +8,6 @@
 #'
 #' @return a tibble
 #'
-#' @importFrom magrittr %>%
 #' @importFrom dplyr group_by summarise distinct bind_cols ungroup any_of
 #' @importFrom dplyr filter
 #' @importFrom rlang .data
@@ -28,28 +27,28 @@ fortify.filled_trait <- function(filled_traits, other_col_how, ...) {
       choices = c("axis", "facet", "filter", "ignore")
     )
     if (other_col_how == "filter") {
-      filled_traits <- filled_traits %>% filter(...)
+      filled_traits <- filled_traits |> filter(...)
     }
     if (other_col_how == "axis") {
       scale_hierarchy <- c(scale_hierarchy, attrib$other_col)
     }
   }
 
-  id <- filled_traits %>%
-    ungroup() %>%
-    select(any_of(scale_hierarchy)) %>%
+  id <- filled_traits |>
+    ungroup() |>
+    select(any_of(scale_hierarchy)) |>
     apply(1, paste, collapse = "_")
 
-  filled_traits_summary <- filled_traits %>%
-    bind_cols(.id = id) %>%
+  filled_traits_summary <- filled_traits |>
+    bind_cols(.id = id) |>
     group_by(
       .data$.id,
       .data$level,
       .data[[attrib$trait_col]], .data[[attrib$taxon_col]],
       .add = TRUE
-    ) %>%
-    distinct(.data[[attrib$abundance_col]], .keep_all = TRUE) %>%
-    summarise(s = sum(.data[[attrib$abundance_col]]) / .data$sum_abun) %>%
+    ) |>
+    distinct(.data[[attrib$abundance_col]], .keep_all = TRUE) |>
+    summarise(s = sum(.data[[attrib$abundance_col]]) / .data$sum_abun) |>
     summarise(s = sum(.data$s))
 
   attr(filled_traits_summary, "attrib") <- attrib

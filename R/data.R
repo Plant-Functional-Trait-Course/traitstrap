@@ -10,7 +10,7 @@
 #'   \item{Site}{site name}
 #'   \item{PlotID}{plot name}
 #' }
-#' @source \url{http://https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
+#' @source \url{https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
 "community"
 
 #' Trait data
@@ -27,5 +27,5 @@
 #'   \item{Trait}{trait name with unit}
 #'   \item{Value}{trait value}
 #' }
-#' @source \url{http://https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
+#' @source \url{https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
 "trait"

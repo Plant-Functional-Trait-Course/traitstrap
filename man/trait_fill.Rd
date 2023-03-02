@@ -23,7 +23,7 @@ trait_fill(
 )
 }
 \arguments{
-\item{comm}{a datafram in long format with community data}
+\item{comm}{a dataframe in long format with community data}
 
 \item{traits}{a dataframe in long format with trait data}
 

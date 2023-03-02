@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/richardjtelford/traitstrap/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/richardjtelford/traitstrap/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/Plant-Functional-Trait-Course/traitstrap/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Plant-Functional-Trait-Course/traitstrap/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of traitstrap is to select traits in hierarchical sampling
@@ -13,9 +13,11 @@ designs.
 
 ## Installation
 
-You can install traitstrap from [GitHub](https://github.com/) with:
+You can install traitstrap from
+[GitHub](https://github.com/Plant-Functional-Trait-Course/traitstrap)
+with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("richardjtelford/traitstrap")
+remotes::install_github("Plant-Functional-Trait-Course/traitstrap")
 ```

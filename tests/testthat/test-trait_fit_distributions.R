@@ -56,11 +56,11 @@ test_that("returns parametric distribution tibbles of proper size", {
         filled_traits,
       distribution_type = "beta"
     )),
-    expected = filled_traits %>%
+    expected = filled_traits |>
       group_by_at(c(
         as.character(scale_hierarchy),
         taxon_col, trait_col
-      )) %>%
+      )) |>
       dplyr::n_groups()
   )
 })

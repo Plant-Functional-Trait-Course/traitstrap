@@ -11,7 +11,6 @@
 #'
 #' @return a ggplot
 #'
-#' @importFrom magrittr %>%
 #' @importFrom dplyr group_by summarise distinct bind_cols ungroup
 #' @importFrom rlang .data
 #' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes
@@ -51,9 +50,11 @@ autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
     )
   }
 
-  filled_traits_summary <- fortify.filled_trait(filled_traits,
-                                                other_col_how,
-                                                ...)
+  filled_traits_summary <- fortify.filled_trait(
+    filled_traits,
+    other_col_how,
+    ...
+  )
 
   plot <- ggplot(filled_traits_summary, aes(
     x = .data$.id,

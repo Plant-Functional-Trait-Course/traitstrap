@@ -16,51 +16,55 @@
 #' Values across all individuals in a community are
 #' resampled `sample_size` times to incorporate the full
 #' spectrum of trait variation, generating `nrep` trait distributions.
-#' The function `fun` is applied to the trait distribution at the finest level of the filled trait hierarchy.
-#' 
-#' Note that due to the flexibility of this function, the output CAN NOT be summarized using
-#' trait_summarize_boot_moments.
+#' The function `fun` is applied to the trait distribution at the finest level
+#'  of the filled trait hierarchy.
+#'
+#' Note that due to the flexibility of this function, 
+#' the output CAN NOT be summarized using
+#' `trait_summarise_boot_moments`.
 #'
 #' @return a tibble
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
-#' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise n_distinct
 #' @importFrom tidyr pivot_wider nest unnest
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map list_rbind
 #' @examples
 #' require(dplyr)
 #' require(tidyr)
 #' require(ggplot2)
 #' require(purrr)
-#' 
+#'
 #' data(community)
 #' data(trait)
-#' 
+#'
 #' selected_traits <- trait_fill(
-#'   comm = community %>%
-#'     filter(PlotID %in% c("A","B"),
-#'            Site == 1),
+#'   comm = community |>
+#'     filter(
+#'       PlotID %in% c("A", "B"),
+#'       Site == 1
+#'     ),
 #'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
 #'   taxon_col = "Taxon", value_col = "Value",
 #'   trait_col = "Trait", abundance_col = "Cover",
 #'   complete_only = TRUE, leaf_id = "ID"
 #' )
-#' 
+#'
 #' # Note that more replicates and a greater sample size are advisable
 #' # Here we set them low to make the example run quickly
 #' boot_traits <- trait_multivariate_bootstrap(selected_traits,
-#'                                             fun = cor,
-#'                                             nrep = 10,
-#'                                             sample_size = 100)
-#' 
+#'   fun = cor,
+#'   nrep = 10,
+#'   sample_size = 100
+#' )
+#'
 #' boot_traits_long <- boot_traits |>
 #'   mutate(correlations = map(result, ~ cor_to_df(.x))) |>
 #'   select(-result) |>
 #'   unnest(correlations)
-#' 
+#'
 #' boot_traits_long |>
 #'   ggplot(aes(x = paste(row, "v", col), y = value)) +
 #'   geom_violin() +
@@ -86,9 +90,9 @@ trait_multivariate_bootstrap <- function(selected_traits,
   trait_names <- unique(selected_traits[[attrib$trait_col]])
 
   # check complete traits
-  check_n_traits <- selected_traits %>%
+  check_n_traits <- selected_traits |>
     # remove leaves with incomplete data
-    ungroup(.data[[attrib$trait_col]]) %>%
+    ungroup(.data[[attrib$trait_col]]) |>
     group_by(.data[[id]], .add = TRUE) |>
     mutate(.n = n())
 
@@ -98,42 +102,43 @@ trait_multivariate_bootstrap <- function(selected_traits,
   }
 
   # pivot_wider
-  selected_traits_wide <- selected_traits %>%
+  selected_traits_wide <- selected_traits |>
     # remove unneeded columns
     select(
       -.data[[attrib$taxon_col]], -.data[[attrib$abundance_col]],
       -.data$n_sample, -.data$max_n_in_sample,
       -.data$level, -.data$sum_abun
-    ) %>%
+    ) |>
     # pivot
     pivot_wider(
       names_from = .data[[attrib$trait_col]],
       values_from = .data[[value_col]]
-    ) %>%
-    ungroup(.data[[id]]) %>%
+    ) |>
+    ungroup(.data[[id]]) |>
     select(-.data[[id]])
 
-  bootstrap_moments <- map_dfr(
-    1:nrep,
+  bootstrap_moments <- map(
+    seq_len(nrep),
     ~ {
       raw_dist <- slice_sample(selected_traits_wide,
         n = sample_size,
         replace = TRUE, weight_by = weight
-      ) %>%
-        select(-.data$weight) %>%
+      ) |>
+        select(-.data$weight) |>
         nest(data = all_of(trait_names))
       if (isTRUE(raw)) {
         return(raw_dist)
       } else {
         # get all the happy moments
-        raw_dist %>%
+        raw_dist |>
           summarise(
             result = map(.data$data, fun)
           )
       }
     },
     .id = "n"
-  )
+  ) |>
+    list_rbind()
 
   attr(bootstrap_moments, "attrib") <- attrib
 

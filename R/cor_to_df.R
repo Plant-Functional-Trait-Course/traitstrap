@@ -14,11 +14,11 @@
 cor_to_df <- function(corr) {
   if (nrow(corr) != ncol(corr)) stop("needs square matrix")
   corr <- as.dist(corr)
-  A <- attr(corr, "Size")
-  B <- attr(corr, "Labels")
+  size <- attr(corr, "Size")
+  labels <- attr(corr, "Labels")
   data.frame(
-    row = B[unlist(lapply(2:A, function(x) x:A))],
-    col = rep(B[-length(B)], (length(B) - 1):1),
+    row = labels[unlist(lapply(2:size, function(x) x:size))],
+    col = rep(labels[-length(labels)], (length(labels) - 1):1),
     value = as.vector(corr)
   )
 }
