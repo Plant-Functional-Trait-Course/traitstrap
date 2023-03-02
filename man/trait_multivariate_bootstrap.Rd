@@ -43,10 +43,12 @@ their weights, e.g. the abundance of a species or the biomass.
 Values across all individuals in a community are
 resampled \code{sample_size} times to incorporate the full
 spectrum of trait variation, generating \code{nrep} trait distributions.
-The function \code{fun} is applied to the trait distribution at the finest level of the filled trait hierarchy.
+The function \code{fun} is applied to the trait distribution at the finest level
+of the filled trait hierarchy.
 
-Note that due to the flexibility of this function, the output CAN NOT be summarized using
-trait_summarize_boot_moments.
+Note that due to the flexibility of this function,
+the output CAN NOT be summarized using
+\code{trait_summarise_boot_moments}.
 }
 \examples{
 require(dplyr)
@@ -59,8 +61,10 @@ data(trait)
 
 selected_traits <- trait_fill(
   comm = community |>
-    filter(PlotID \%in\% c("A","B"),
-           Site == 1),
+    filter(
+      PlotID \%in\% c("A", "B"),
+      Site == 1
+    ),
   traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
@@ -71,9 +75,10 @@ selected_traits <- trait_fill(
 # Note that more replicates and a greater sample size are advisable
 # Here we set them low to make the example run quickly
 boot_traits <- trait_multivariate_bootstrap(selected_traits,
-                                            fun = cor,
-                                            nrep = 10,
-                                            sample_size = 100)
+  fun = cor,
+  nrep = 10,
+  sample_size = 100
+)
 
 boot_traits_long <- boot_traits |>
   mutate(correlations = map(result, ~ cor_to_df(.x))) |>

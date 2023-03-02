@@ -36,7 +36,7 @@ data(trait)
 
 filled_traits <- trait_fill(
   comm = community |>
-    filter(PlotID \%in\% c("A","B")),
+    filter(PlotID \%in\% c("A", "B")),
   traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
   taxon_col = "Taxon", value_col = "Value",
@@ -46,5 +46,5 @@ filled_traits <- trait_fill(
 fitted_distributions <- trait_fit_distributions(
   filled_traits = filled_traits,
   distribution_type = "normal"
-  )
+)
 }

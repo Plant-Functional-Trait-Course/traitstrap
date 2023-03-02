@@ -16,7 +16,7 @@ A data frame with 705 rows and 6 variables:
 }
 }
 \source{
-\url{http://https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
+\url{https://www.uib.no/en/rg/EECRG/114808/plant-functional-traits-course-4}
 }
 \usage{
 trait
