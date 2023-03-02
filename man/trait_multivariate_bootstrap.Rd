@@ -58,7 +58,7 @@ data(community)
 data(trait)
 
 selected_traits <- trait_fill(
-  comm = community \%>\%
+  comm = community |>
     filter(PlotID \%in\% c("A","B"),
            Site == 1),
   traits = trait,

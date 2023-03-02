@@ -18,7 +18,6 @@
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
-#' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
 #' summarize select group_by_at
 #' @importFrom stats var
@@ -81,7 +80,7 @@ trait_fit_distributions <- function(filled_traits,
   # Beta checks
   if ("beta" %in% distribution_type) {
     # make sure every species x hierarchy combination has at least 2 data points
-    beta_counts <- filled_traits %>%
+    beta_counts <- filled_traits |>
       filter(.data[[trait_col]] %in%
         names(distribution_type)[distribution_type == "beta"])
 
@@ -92,10 +91,10 @@ trait_fit_distributions <- function(filled_traits,
     }
 
     # check that values are between 0 and 1
-    beta_vals <- filled_traits %>%
-      ungroup() %>%
+    beta_vals <- filled_traits |>
+      ungroup() |>
       filter(.data[[trait_col]] %in%
-        names(distribution_type)[distribution_type == "beta"]) %>%
+        names(distribution_type)[distribution_type == "beta"]) |>
       select(all_of(value_col))
 
     if (any(beta_vals > 1 | beta_vals < 0)) {
@@ -106,10 +105,10 @@ trait_fit_distributions <- function(filled_traits,
 
   # lognormal checks
   if ("lognormal" %in% distribution_type) {
-    ln_vals <- filled_traits %>%
-      ungroup() %>%
+    ln_vals <- filled_traits |>
+      ungroup() |>
       filter(.data[[trait_col]] %in%
-               names(distribution_type)[distribution_type == "lognormal"]) %>%
+               names(distribution_type)[distribution_type == "lognormal"]) |>
       select(all_of(value_col))
 
     if (any(ln_vals <= 0)) {
@@ -119,14 +118,14 @@ trait_fit_distributions <- function(filled_traits,
 
   # Main body
 
-  distribution_parms <- filled_traits %>%
+  distribution_parms <- filled_traits |>
     group_by(.data[[c(taxon_col)]],
       .data[[c(abundance_col)]], .data$n_sample,
       .add = TRUE
-    ) %>%
+    ) |>
     mutate(distribution_type = unlist(
       distribution_type[.data[[trait_col]]]
-    )) %>%
+    )) |>
     summarize(
       quiet(get_dist_parms(
         data = .data[[value_col]],

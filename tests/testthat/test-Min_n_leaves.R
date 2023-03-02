@@ -9,8 +9,8 @@ test_that("trait_fill minimum number in sample", {
     plot = 1:2,
     trait = "trait",
     n_sample = 1:5 # 5 samples per species-trait
-  ) %>%
-    mutate(taxon = paste(genus, taxon)) %>%
+  ) |>
+    mutate(taxon = paste(genus, taxon)) |>
     mutate(value = 1:80)
 
   mini_comm <- tidyr::crossing(
@@ -18,15 +18,15 @@ test_that("trait_fill minimum number in sample", {
     taxon = c("sp1", "sp2"),
     site = c("A", "B"),
     plot = 1:2
-  ) %>%
-    mutate(taxon = paste(genus, taxon)) %>%
+  ) |>
+    mutate(taxon = paste(genus, taxon)) |>
     mutate(cover = 5)
 
   #### test set 1 ####
   # site A plot 2 G1 sp1 has only 2 samples
   # fill should include samples from plot 2
 
-  mini_trait1 <- mini_trait %>%
+  mini_trait1 <- mini_trait |>
     filter(!(taxon == "G1 sp1" & site == "A" & plot == 2 & n_sample > 2))
 
   ti_1 <- trait_fill(
@@ -57,7 +57,7 @@ test_that("trait_fill minimum number in sample", {
   # site A G1 sp1 has only 2 samples in each plot = 4 overall
   # fill should be at global level
 
-  mini_trait2 <- mini_trait %>%
+  mini_trait2 <- mini_trait |>
     filter(!(taxon == "G1 sp1" & site == "A" & n_sample > 2))
 
   ti_2 <- trait_fill(
@@ -89,7 +89,7 @@ test_that("trait_fill minimum number in sample", {
   # G1 sp1 has only 1 sample in each plot = 4 overall !< min_n_in_sample
   # fill should be at global level
 
-  mini_trait3 <- mini_trait %>%
+  mini_trait3 <- mini_trait |>
     filter(!(taxon == "G1 sp1" & n_sample > 1))
 
   ti_3 <- trait_fill(

@@ -11,7 +11,6 @@
 #'
 #' @return a ggplot
 #'
-#' @importFrom magrittr %>%
 #' @importFrom dplyr group_by summarise distinct bind_cols ungroup
 #' @importFrom rlang .data
 #' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes

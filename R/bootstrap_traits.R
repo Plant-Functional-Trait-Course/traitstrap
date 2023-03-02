@@ -24,7 +24,6 @@
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
-#' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
 #' @importFrom purrr map list_rbind
 #' @examples
@@ -70,7 +69,7 @@ trait_np_bootstrap <- function(selected_traits,
         return(raw_dist)
       } else {
         # get all the happy moments
-        raw_dist %>%
+        raw_dist |>
           summarise(
             mean = mean(.data[[value_col]]),
             variance = var(.data[[value_col]]),

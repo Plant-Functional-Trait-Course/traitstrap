@@ -38,11 +38,11 @@ test_that("output is properly formatted", {
 
   expect_equal(
     object = nrow(pbs_out),
-    expected = filled_traits %>%
+    expected = filled_traits |>
       group_by_at(c(
         as.character(scale_hierarchy),
         trait_col
-      )) %>%
+      )) |>
       dplyr::n_groups() * nrep_pbs
   )
 })

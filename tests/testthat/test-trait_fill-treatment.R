@@ -7,7 +7,7 @@ test_that("trait_fill with treatment", {
     site = c("A", "B"),
     plot = 1:3,
     trait = "trait",
-  ) %>%
+  ) |>
     mutate(
       treatment = dplyr::recode(plot, `1` = "a", `2` = "b", `3` = "c"),
       treatment = factor(treatment, levels = c("c", "a", "b")),
@@ -19,7 +19,7 @@ test_that("trait_fill with treatment", {
     site = c("A", "B"),
     plot = 1:3,
     cover = 5
-  ) %>%
+  ) |>
     mutate(
       treatment = dplyr::recode(plot, `1` = "a", `2` = "b", `3` = "c"),
       treatment = factor(treatment, levels = c("c", "a", "b"))
@@ -27,7 +27,7 @@ test_that("trait_fill with treatment", {
 
   #### test set 1 ####
   # fill site A plot 2 (treat b) - should get value from A2b and then A3c.
-  mini_trait1 <- mini_trait %>%
+  mini_trait1 <- mini_trait |>
     filter(!(taxon == "sp1" & site == "A" & plot == 2))
 
   ti_1 <- trait_fill(
@@ -44,8 +44,8 @@ test_that("trait_fill with treatment", {
   )
 
   # check expected value of trait filled (A1 sp1)
-  got <- ti_1 %>% filter(site == "A", taxon == "sp1", plot == 2)
-  target <- mini_trait %>% filter(site == "A", taxon == "sp1", treatment == "c")
+  got <- ti_1 |> filter(site == "A", taxon == "sp1", plot == 2)
+  target <- mini_trait |> filter(site == "A", taxon == "sp1", treatment == "c")
   expect_equal(
     sort(got$value),
     sort(target$value)

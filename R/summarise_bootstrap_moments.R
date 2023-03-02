@@ -15,7 +15,6 @@
 #' @return tibble with the grouping variables and the mean of each moment
 #'  (+/- sd_mult * SD)
 #'
-#' @importFrom magrittr %>%
 #' @importFrom dplyr n group_by any_of summarise across rename
 #' @importFrom rlang .data
 
@@ -63,10 +62,10 @@ trait_summarise_boot_moments <- function(bootstrap_moments,
 
 
   # calculate means of moments
-  summ_bootstrap_moments <- bootstrap_moments %>%
-    ungroup() %>%
-    group_by(across(any_of(groups))) %>%
-    rename(MEAN = .data$mean) %>% # capitalise to simplify code below
+  summ_bootstrap_moments <- bootstrap_moments |>
+    ungroup() |>
+    group_by(across(any_of(groups))) |>
+    rename(MEAN = .data$mean) |> # capitalise to simplify code below
     summarise(
       n = n(),
       mean = mean(.data$MEAN),

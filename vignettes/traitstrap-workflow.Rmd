@@ -79,7 +79,7 @@ For more details see this [GitHub repo](https://github.com/Plant-Functional-Trai
 Note that some of the species names have been adapted. 
 
 ```{r data-prank, echo=FALSE, eval=TRUE}
-community <- community %>%
+community <- community |>
   mutate(Taxon = case_when(
     Taxon == "equisetum scirpoides" ~ "enquistetum scirpoides",
     Taxon == "micranthes hieracifolia" ~ "maitneranthes hieracifolia",
@@ -90,7 +90,7 @@ community <- community %>%
     TRUE ~ Taxon
   ))
 
-trait <- trait %>%
+trait <- trait |>
   mutate(Taxon = case_when(
     Taxon == "equisetum scirpoides" ~ "enquistetum scirpoides",
     Taxon == "micranthes hieracifolia" ~ "maitneranthes hieracifolia",
@@ -386,7 +386,7 @@ Also, we are subsetting the data to make it run faster.
 library(FD)
 
 multivariate_traits <- trait_fill(
-  comm = community %>%
+  comm = community |>
     # to make the example faster, we'll only use a subset of plots
     filter(
       Site == "1",
@@ -433,8 +433,8 @@ boot_multi <- trait_multivariate_bootstrap(
 )
 
 # data wrangling
-raoq_est <- boot_multi %>% 
-  mutate(result = map(result, as.data.frame)) %>% 
+raoq_est <- boot_multi |> 
+  mutate(result = map(result, as.data.frame)) |> 
   unnest(result)
 
 ```
@@ -466,14 +466,14 @@ boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
     TPDs(
       species = rep(1, 200),
       traits = x
-    ) %>%
+    ) |>
       REND(TPDs = .)
   }
 )
 
 # wrangling data
-tpd <- boot_tpd %>% 
-  mutate(result = map(result, as.data.frame)) %>% 
+tpd <- boot_tpd |> 
+  mutate(result = map(result, as.data.frame)) |> 
   unnest(result) |> 
   pivot_longer(cols = species.FRichness:species.FDivergence,
                values_to = "value",

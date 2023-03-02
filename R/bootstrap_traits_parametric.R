@@ -29,7 +29,6 @@
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
-#' @importFrom magrittr %>%
 #' @importFrom dplyr slice_sample group_by summarise
 #' @importFrom tidyr unnest
 #' @importFrom purrr map list_rbind
@@ -102,19 +101,19 @@ trait_parametric_bootstrap <- function(fitted_distributions,
   bootstrap_moments <- map(
     1:nrep,
     ~ {
-      raw_dist <- fitted_distributions %>%
-        group_by_at(c(as.character(scale_hierarchy), trait_col)) %>%
+      raw_dist <- fitted_distributions |>
+        group_by_at(c(as.character(scale_hierarchy), trait_col)) |>
         slice_sample(
           n = sample_size,
           replace = TRUE,
           weight_by = .data[[abundance_col]]
-        ) %>%
+        ) |>
         group_by_at(c(
           as.character(scale_hierarchy),
           trait_col, taxon_col,
           "parm1", "parm2", "distribution_type"
-        )) %>%
-        summarise(n_drawn = n(), .groups = "keep") %>%
+        )) |>
+        summarise(n_drawn = n(), .groups = "keep") |>
         mutate(
           draw_value =
             list(distribution_handler(
@@ -123,14 +122,14 @@ trait_parametric_bootstrap <- function(fitted_distributions,
               n = n_drawn,
               type = distribution_type
             ))
-        ) %>%
-        group_by_at(c(as.character(scale_hierarchy), trait_col)) %>%
+        ) |>
+        group_by_at(c(as.character(scale_hierarchy), trait_col)) |>
         unnest(draw_value)
 
       if (raw) {
         return(raw_dist)
       } else {
-        raw_dist %>%
+        raw_dist |>
           summarise(
             mean = mean(draw_value),
             variance = var(draw_value),

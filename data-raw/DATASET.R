@@ -3,8 +3,8 @@ library("dataDownloader")
 
 #### community ####
 load("data-raw/community.RData")
-community <- community %>%
-  mutate(Cover = as.numeric(Cover)) %>%
+community <- community |>
+  mutate(Cover = as.numeric(Cover)) |>
   filter(!is.na(Cover))
 usethis::use_data(community)
 
