@@ -4,11 +4,10 @@
 \alias{autoplot.filled_trait}
 \title{Coverage plot of filled Traits}
 \usage{
-\method{autoplot}{filled_trait}(filled_traits, other_col_how, ...)
+\method{autoplot}{filled_trait}(object, other_col_how, ...)
 }
 \arguments{
-\item{filled_traits}{output from \code{trait_np_bootstrap()} or
-\code{trait_parametric_bootstrap()}.}
+\item{object}{output from \code{trait_fill()}.}
 
 \item{other_col_how}{what to do with the other columns in other data.
 Options are to \code{filter} by one of the columns, add them to the x-\code{axis},

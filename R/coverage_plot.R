@@ -1,8 +1,7 @@
 #' Coverage plot of filled Traits
 #' @description Function calculates the trait coverage of the community
 #' for each level of the sampling hierarchy and makes a barplot.
-#' @param filled_traits output from `trait_np_bootstrap()` or
-#' `trait_parametric_bootstrap()`.
+#' @param object output from `trait_fill()`.
 #' @param other_col_how what to do with the other columns in other data.
 #'  Options are to `filter` by one of the columns, add them to the x-`axis`,
 #' `facet` by them, or to `ignore`.
@@ -14,7 +13,7 @@
 #' @importFrom dplyr group_by summarise distinct bind_cols ungroup
 #' @importFrom rlang .data
 #' @importFrom ggplot2 autoplot ggplot geom_col facet_wrap aes
-#' @importFrom ggplot2 scale_y_continuous labs fortify facet_grid
+#' @importFrom ggplot2 scale_y_continuous labs facet_grid
 #' @importFrom glue glue
 #' @examples
 #' require("ggplot2")
@@ -29,9 +28,9 @@
 #' autoplot(filled_traits)
 #' @export
 
-autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
+autoplot.filled_trait <- function(object, other_col_how, ...) {
   # get scale_hierarchy and concatenate to make an ID
-  attrib <- attr(filled_traits, "attrib")
+  attrib <- attr(object, "attrib")
 
   if (length(attrib$other_col) > 0 && missing(other_col_how)) {
     stop(
@@ -50,8 +49,8 @@ autoplot.filled_trait <- function(filled_traits, other_col_how, ...) {
     )
   }
 
-  filled_traits_summary <- fortify.filled_trait(
-    filled_traits,
+  filled_traits_summary <- fortify_filled_trait(
+    object,
     other_col_how,
     ...
   )
