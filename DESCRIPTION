@@ -1,6 +1,6 @@
 Package: traitstrap
-Title: Bootstrap Trait Values
-Version: 0.0.0.903
+Title: Bootstrap Trait Values to Calculate Moments
+Version: 0.0.1.0
 Authors@R: c(
   person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre"), 
         comment = c(ORCID = "https://orcid.org/0000-0001-9826-3076")), 
@@ -12,7 +12,8 @@ Authors@R: c(
            email = "bmaitner@gmail.com",
            comment = c(ORCID = "https://orcid.org/0000-0002-2118-9880"))
   )
-Description: Calculate trait moments from trait and community data.
+Description: Calculate trait moments from trait and community data using the 
+  methods developed in Maitner et al (2021) <doi:10.22541/au.162196147.76797968/v1>
 URL: https://github.com/Plant-Functional-Trait-Course/traitstrap/
 BugReports: https://github.com/Plant-Functional-Trait-Course/traitstrap/issues
 License: MIT + file LICENSE
