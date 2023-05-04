@@ -118,7 +118,7 @@ trait_fill <- function(comm,
   #### sanity checks on input (are columns present etc) ####
   comm_names <- names(comm)
   traits_names <- names(traits)
-  
+
   # check data have all scales in scale_hierarchy
   trait_check_scales(scale_hierarchy, comm_names)
 
@@ -146,7 +146,7 @@ trait_fill <- function(comm,
   trait_check_other_col(other_col, comm_names, traits_names)
 
   # remove and other col in traits
-    traits <- traits |> select(-any_of(other_col))
+  traits <- traits |> select(-any_of(other_col))
 
   #### prep ####
   # add global to scale_hierarchy if necessary

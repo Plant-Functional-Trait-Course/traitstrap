@@ -19,7 +19,7 @@ trait_check_taxon_col <- function(taxon_col, comm_names, traits_names) {
     )
     stop(glue("taxon_col {bad_taxon} not in names(comm)"))
   }
-  
+
   if (!all(taxon_col %in% traits_names)) {
     bad_taxon <- glue_collapse(
       x = taxon_col[!taxon_col %in% traits_names],
@@ -32,7 +32,7 @@ trait_check_taxon_col <- function(taxon_col, comm_names, traits_names) {
 trait_check_col <- function(col, names) {
   if (!(length(col) == 1 && col %in% names)) {
     col_name <- deparse(substitute(col))
-    df_name <- deparse(substitute(names)) |> 
+    df_name <- deparse(substitute(names)) |>
       sub(pattern = "_names", replacement = "")
     stop(glue("{col_name} '{trait_col}' not in names({df_name})"))
   }
@@ -46,7 +46,7 @@ trait_check_other_col <- function(other_col, comm_names, traits_names) {
     )
     stop(glue("other_col levels {bad_other} not in names(comm)"))
   }
-  
+
   if (any(other_col %in% traits_names)) {
     bad_other <- glue_collapse(
       x = other_col[!other_col %in% traits_names],
@@ -57,10 +57,12 @@ trait_check_other_col <- function(other_col, comm_names, traits_names) {
   }
 }
 
-trait_check_treatment <- function(treatment_col, comm_names, traits_names, comm, traits, treatment_level, scale_hierarchy) {
+trait_check_treatment <- function(
+    treatment_col, comm_names, traits_names,
+    comm, traits, treatment_level, scale_hierarchy) {
   trait_check_col(treatment_col, comm_names)
   trait_check_col(treatment_col, traits_names)
-  
+
   # treatment col must be factor
   if (!is.factor(comm[[treatment_col]])) {
     stop(glue("treatment_col {treatment_col} is not a factor in comm"))
@@ -68,8 +70,8 @@ trait_check_treatment <- function(treatment_col, comm_names, traits_names, comm,
   if (!is.factor(traits[[treatment_col]])) {
     stop(glue("treatment_col {treatment_col} is not a factor in traits"))
   }
-  
-  #treatment col levels must be identical in traits and comm
+
+  # treatment col levels must be identical in traits and comm
   if (!identical(
     levels(traits[[treatment_col]]),
     levels(comm[[treatment_col]])
@@ -77,7 +79,7 @@ trait_check_treatment <- function(treatment_col, comm_names, traits_names, comm,
   ) {
     stop("treatment_col has have different levels in comm and traits")
   }
-  
+
   # check treatment_level is valid
   if (is.null(treatment_level)) {
     stop("treatment_level must be specified when treatment_col is used")

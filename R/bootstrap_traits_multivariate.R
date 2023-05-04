@@ -19,7 +19,7 @@
 #' The function `fun` is applied to the trait distribution at the finest level
 #'  of the filled trait hierarchy.
 #'
-#' Note that due to the flexibility of this function, 
+#' Note that due to the flexibility of this function,
 #' the output CAN NOT be summarized using
 #' `trait_summarise_boot_moments`.
 #'
