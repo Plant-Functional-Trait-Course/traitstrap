@@ -11,6 +11,27 @@ trait_missing(filled_trait, comm)
 
 \item{comm}{community data}
 }
+\value{
+A \code{tibble} with columns
+#' \itemize{
+\item{Taxon }{Species names (actual name depends on \code{taxon_col}
+argument to \code{trait_fill()})}
+\item{max_abun }{Maximum abundance of that taxa.
+Be more concerned about taxa with high abundances.}
+\item{n_traits }{Number of traits for each species. Ideally all should equal the number of traits you have measured.}
+}
+}
 \description{
 Function gives overview of which taxa are missing traits.
+}
+\examples{
+data(community)
+data(trait)
+filled_traits <- trait_fill(
+  comm = community, traits = trait,
+  scale_hierarchy = c("Site", "PlotID"),
+  taxon_col = "Taxon", value_col = "Value",
+  trait_col = "Trait", abundance_col = "Cover"
+)
+trait_missing(filled_traits, community)
 }

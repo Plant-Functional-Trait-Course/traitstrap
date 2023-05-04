@@ -2,7 +2,14 @@
 #' @description Function gives overview of which taxa are missing traits.
 #' @param filled_trait output of trait_fill function.
 #' @param comm community data
-#' @returns A tibble with
+#' @returns A `tibble` with columns
+#' #' \itemize{
+#'  \item{Taxon }{Species names (actual name depends on `taxon_col`
+#'               argument to `trait_fill()`)}
+#'  \item{max_abun }{Maximum abundance of that taxa.
+#'                   Be more concerned about taxa with high abundances.}
+#'  \item{n_traits }{Number of traits for each species. Ideally all should equal the number of traits you have measured.}
+#'  }
 #' @importFrom dplyr left_join ungroup group_by across all_of summarise distinct
 #' @importFrom rlang .data
 #' @examples
@@ -33,5 +40,5 @@ trait_missing <- function(filled_trait, comm) {
       .data$max_abun
     ) |>
     group_by(.data[[attrib$taxon_col]], .data$max_abun) |>
-    summarise(n_traits = n())
+    summarise(n_traits = sum(!is.na(.data[[attrib$trait_col]])))
 }
