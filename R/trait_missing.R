@@ -2,9 +2,19 @@
 #' @description Function gives overview of which taxa are missing traits.
 #' @param filled_trait output of trait_fill function.
 #' @param comm community data
+#' @returns A tibble with
 #' @importFrom dplyr left_join ungroup group_by across all_of summarise distinct
 #' @importFrom rlang .data
-#'
+#' @examples
+#' data(community)
+#' data(trait)
+#' filled_traits <- trait_fill(
+#'   comm = community, traits = trait,
+#'   scale_hierarchy = c("Site", "PlotID"),
+#'   taxon_col = "Taxon", value_col = "Value",
+#'   trait_col = "Trait", abundance_col = "Cover"
+#' )
+#' trait_missing(filled_traits, community)
 #' @export
 trait_missing <- function(filled_trait, comm) {
   attrib <- attr(filled_trait, "attrib")
