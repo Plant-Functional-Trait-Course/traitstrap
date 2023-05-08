@@ -250,8 +250,8 @@ If the raw data is extracted, `nrep` is forced to 1 to avoid memory issues.
 ```{r non-parap-boot, echo=TRUE, eval=TRUE}
 # run nonparametric bootstrapping
 np_bootstrapped_moments <- trait_np_bootstrap(
-  trait_filling,
-  nrep = 200
+  trait_filling, 
+  nrep = 50
 )
 
 np_bootstrapped_moments
@@ -296,7 +296,7 @@ The function returns a dataframe containing fitted distribution parameters.
 ```{r fit-dist, echo=TRUE, eval=TRUE}
 # fit distributions
 fitted_distributions <- trait_fit_distributions(
-  filled_traits = trait_filling,
+  filled_traits = trait_filling, 
   distribution_type = "lognormal"
 )
 
@@ -308,7 +308,8 @@ fitted_distributions
 # fit several types of distributions
 fitted_distributions <- trait_fit_distributions(
   filled_traits = trait_filling,
-  distribution_type = list(Plant_Height_cm = "normal", Wet_Mass_g = "lognormal")
+  distribution_type = list(Plant_Height_cm = "normal", 
+                           Wet_Mass_g = "lognormal")
 )
 
 fitted_distributions
@@ -326,7 +327,7 @@ The argument `raw` allows to extract raw distributions (see above).
 # run parametric bootstrapping
 p_bootstrapped_moments <- trait_parametric_bootstrap(
   fitted_distributions = fitted_distributions,
-  nrep = 200
+  nrep = 50
 )
 
 p_bootstrapped_moments
@@ -380,7 +381,7 @@ multivariate_traits <- trait_fill(
     # to make the example faster, we'll only use a subset of plots
     filter(
       Site == "1",
-      PlotID %in% c("A", "B", "C")
+      PlotID %in% c("A", "B")
     ),
   traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
@@ -406,8 +407,7 @@ We will extract Rao's Quadratic Entropy, since that performs well with bootstrap
 ```{r multivariate-bootstrap, warning=FALSE}
 boot_multi <- trait_multivariate_bootstrap(
   selected_traits = multivariate_traits,
-  nrep = 20, # number of reps is set low for demo purposes
-  sample_size = 200,
+  nrep = 10, # number of reps is set low for demo purposes
   id = "ID",
   fun = function(x) {
     dbFD(
@@ -445,8 +445,7 @@ library(TPD)
 
 boot_tpd <- trait_multivariate_bootstrap(multivariate_traits,
   id = "ID",
-  nrep = 20, # Note that the number of reps is set low for demo purposes
-  sample_size = 200,
+  nrep = 10, # Note that the number of reps is set low for demo purposes
   fun = function(x) {
     TPDs(
       species = rep(1, 200),
