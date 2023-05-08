@@ -127,10 +127,10 @@ trait_fit_distributions <- function(filled_traits,
       distribution_type[.data[[trait_col]]]
     )) |>
     summarize(
-      quiet(get_dist_parms(
+      suppressWarnings(quiet(get_dist_parms(
         data = .data[[value_col]],
         distribution_type = unique(distribution_type)
-      )),
+      ))),
       .groups = "keep"
     )
 
