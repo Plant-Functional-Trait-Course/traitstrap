@@ -8,7 +8,7 @@
 #' @param ... optional filters for use with `other_col_how = "filter"`
 #' @description Shows at which level the data are coming from in each plot.
 #'
-#' @return a ggplot
+#' @return a ggplot2 plot
 #'
 #' @importFrom dplyr group_by summarise distinct bind_cols ungroup
 #' @importFrom rlang .data
