@@ -32,8 +32,8 @@ theme_set(theme_minimal(base_size = 12))
 knitr::include_graphics("../man/figures/Traitstrap_hex.png")
 ```
 
-This vignette explains how to use the traitstrap package (Telford et al).
-For more details on the methods see Maitner et al.
+This vignette explains how to use the traitstrap package (Telford et al 2023).
+For more details on the methods see [Maitner et al. (2021)](https://doi.org/10.22541/au.162196147.76797968/v1). 
 
 First of all, relax and turn on some music. We have prepared the [traitstrap playlist](https://tinyurl.com/traitstrap) for you!
 
@@ -343,7 +343,7 @@ In traitstrap both the parametric and nonparametric bootstrapping functions allo
 ```{r raw-dist-np, echo=TRUE, eval=TRUE}
 # run nonparametric bootstrapping
 raw_dist_np <- trait_np_bootstrap(
-  selected_traits = trait_filling,
+  filled_traits = trait_filling,
   raw = TRUE
 )
 
@@ -394,7 +394,7 @@ multivariate_traits <- trait_fill(
 ```
 
 Then we are using the `trait_multivariate_bootstrap()` function to do the actual bootstrapping.
-This function needs the output from the trait filling as `selected_traits`, number bootstrapped of replications `nrep`, bootstrap size `sample_size` and `id`.
+This function needs the output from the trait filling as `filled_traits`, number bootstrapped of replications `nrep`, bootstrap size `sample_size` and `id`.
 The last argument is `fun`, that takes any function to apply to the data.
 In this case we are using diversity functions from the `dbFD` package.
 
@@ -405,7 +405,7 @@ We will extract Rao's Quadratic Entropy, since that performs well with bootstrap
 
 ```{r multivariate-bootstrap, warning=FALSE}
 boot_multi <- trait_multivariate_bootstrap(
-  selected_traits = multivariate_traits,
+  filled_traits = multivariate_traits,
   nrep = 20, # number of reps is set low for demo purposes
   sample_size = 200,
   id = "ID",

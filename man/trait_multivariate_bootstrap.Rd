@@ -5,7 +5,7 @@
 \title{Bootstrap traits}
 \usage{
 trait_multivariate_bootstrap(
-  selected_traits,
+  filled_traits,
   nrep = 100,
   sample_size = 200,
   raw = FALSE,
@@ -14,7 +14,7 @@ trait_multivariate_bootstrap(
 )
 }
 \arguments{
-\item{selected_traits}{output from the trait_fill function.}
+\item{filled_traits}{output from the trait_fill function.}
 
 \item{nrep}{number of bootstrap replicates}
 
@@ -30,7 +30,8 @@ If \code{raw = TRUE}, \code{nrep} is restricted to 1 to avoid memory issues.}
 \item{fun}{bivariate or multivariate function to apply}
 }
 \value{
-a tibble
+a tibble with columns for the elements of the scale_hierarchy,
+and a list column result which includes the output of \code{fun}.
 }
 \description{
 Function for nonparametric bootstrap resampling to
@@ -38,7 +39,7 @@ calculate community
 weighted trait correlations, other bivariate or multivariate statistics
 }
 \details{
-The observed and selected leaves are re-sampled in proportion to
+The observed and filled leaves are re-sampled in proportion to
 their weights, e.g. the abundance of a species or the biomass.
 Values across all individuals in a community are
 resampled \code{sample_size} times to incorporate the full
@@ -59,7 +60,7 @@ require(purrr)
 data(community)
 data(trait)
 
-selected_traits <- trait_fill(
+filled_traits <- trait_fill(
   comm = community |>
     filter(
       PlotID \%in\% c("A", "B"),
@@ -74,7 +75,7 @@ selected_traits <- trait_fill(
 
 # Note that more replicates and a greater sample size are advisable
 # Here we set them low to make the example run quickly
-boot_traits <- trait_multivariate_bootstrap(selected_traits,
+boot_traits <- trait_multivariate_bootstrap(filled_traits,
   fun = cor,
   nrep = 10,
   sample_size = 100

@@ -5,6 +5,7 @@
 #' @param n Number of draws.  Defaults to 1
 #' @param type Distribution type to fit.
 #' One of "normal", "lognormal", or "beta"
+#' @returns numeric vector of length `n` from required distribution.
 #' @importFrom stats rnorm rlnorm rbeta
 #' @keywords internal
 

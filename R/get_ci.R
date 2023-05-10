@@ -5,6 +5,7 @@
 #' @param ci 0 to 1
 #' @param which "high" or "low"
 #' @param parametric if TRUE, sd used, if FALSE, quantile
+#' @returns numeric vector length 1
 #' @importFrom stats quantile
 #' @keywords internal
 

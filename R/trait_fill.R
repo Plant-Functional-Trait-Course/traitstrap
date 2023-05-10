@@ -80,7 +80,7 @@
 #' should occur a certain level, e.g. block or site.
 
 #'
-#' @return a tibble with extra class \code{filled_trait}
+#' @return a tibble with extra class `filled_trait`. 
 #'
 #' @importFrom stats sd var weighted.mean
 #' @importFrom dplyr select any_of all_of mutate group_by filter left_join n
@@ -116,108 +116,44 @@ trait_fill <- function(comm,
                        complete_only = FALSE,
                        leaf_id) {
   #### sanity checks on input (are columns present etc) ####
+  comm_names <- names(comm)
+  traits_names <- names(traits)
+
   # check data have all scales in scale_hierarchy
-  if (!all(scale_hierarchy %in% names(comm))) {
-    bad_scales <- glue_collapse(
-      x = scale_hierarchy[!scale_hierarchy %in% names(comm)],
-      sep = ", ", last = ", and "
-    )
-    stop(glue("scale_hierarchy levels {bad_scales} not in names(comm)"))
-  }
+  trait_check_scales(scale_hierarchy, comm_names)
 
   # check taxon_col is valid
-  if (!all(taxon_col %in% names(comm))) {
-    bad_taxon <- glue_collapse(
-      x = taxon_col[!taxon_col %in% names(comm)],
-      sep = ", ", last = ", and "
-    )
-    stop(glue("taxon_col {bad_taxon} not in names(comm)"))
-  }
-
-  if (!all(taxon_col %in% names(traits))) {
-    bad_taxon <- glue_collapse(
-      x = taxon_col[!taxon_col %in% names(traits)],
-      sep = ", ", last = ", and "
-    )
-    stop(glue("taxon_col {bad_taxon} not in names(traits)"))
-  }
+  trait_check_taxon_col(taxon_col, comm_names, traits_names)
 
   # check trait_col is valid
-  if (!(length(trait_col) == 1 && trait_col %in% names(traits))) {
-    stop(glue("trait_col '{trait_col}' not in names(traits)"))
-  }
+  trait_check_col(trait_col, traits_names)
 
   # check value_col is valid
-  if (!(length(value_col) == 1 && value_col %in% names(traits))) {
-    stop(glue("value_col '{value_col}' not in names(traits)"))
-  }
+  trait_check_col(value_col, traits_names)
 
   # check abundance_col is valid
-  if (!(length(abundance_col) == 1 && abundance_col %in% names(comm))) {
-    stop(glue("value_col '{abundance_col}' not in names(comm)"))
-  }
+  trait_check_col(abundance_col, comm_names)
 
   # if used, check treatment_col is valid
   if (is.null(treatment_col)) {
     use_treat <- FALSE
   } else {
     use_treat <- TRUE
-    if (!treatment_col %in% names(comm)) {
-      stop(glue("treatment_col {treatment_col} not in names(comm)"))
-    }
-    if (!treatment_col %in% names(traits)) {
-      stop(glue("treatment_col {treatment_col} not in names(traits)"))
-    }
-    if (!is.factor(comm[[treatment_col]])) {
-      stop(glue("treatment_col {treatment_col} is not a factor in comm"))
-    }
-    if (!is.factor(traits[[treatment_col]])) {
-      stop(glue("treatment_col {treatment_col} is not a factor in traits"))
-    }
-    if (!identical(
-      levels(traits[[treatment_col]]),
-      levels(comm[[treatment_col]])
-    )
-    ) {
-      stop("treatment_col has have different levels in comm and traits")
-    }
-    # check treatment_level is valid
-    if (is.null(treatment_level)) {
-      stop("treatment_level must be specified when treatment_col is used")
-    }
-    if (!treatment_level %in% scale_hierarchy) {
-      stop("treatment_level must be in scale_hierarchy")
-    }
+    trait_check_treatment(treatment_col, comm_names, traits_names, comm, traits, treatment_level, scale_hierarchy)
   }
 
   # check other_cols are valid
-  if (!all(other_col %in% names(comm))) {
-    bad_other <- glue_collapse(
-      x = other_col[!other_col %in% names(comm)],
-      sep = ", ", last = ", and "
-    )
-    stop(glue("other_col levels {bad_other} not in names(comm)"))
-  }
-  # check other_cols are not in traits
-  if (any(other_col %in% names(traits))) {
-    bad_other <- glue_collapse(
-      x = other_col[!other_col %in% names(traits)],
-      sep = ", ", last = ", and "
-    )
-    warning(glue("other_col levels {bad_other} are in  names(traits). \\
-                 These columns will be removed from traits"))
-    traits <- traits |> select(-any_of(other_col))
-  }
+  trait_check_other_col(other_col, comm_names, traits_names)
 
+  # remove and other col in traits
+  traits <- traits |> select(-any_of(other_col))
 
   #### prep ####
   # add global to scale_hierarchy if necessary
   if (isTRUE(global)) {
     # check not already a "global" column
-    if (any(names(traits) == "global")) {
-      stop(glue("Cannot add global column as column called\\
-                global already exists. Maybe set 'global = FALSE'"))
-    }
+    traits_check_global(traits_names)
+
     # add global column to traits
     traits <- traits |> mutate(global = "global")
     comm <- comm |> mutate(global = "global")
@@ -304,7 +240,8 @@ trait_fill <- function(comm,
         # join to traits
         inner_join(traits,
           by = c(scale_keep, taxon_col),
-          suffix = c("_comm", "_trait")
+          suffix = c("_comm", "_trait"),
+          relationship = "many-to-many"
         ) |>
         # group by kept scales
         group_by(

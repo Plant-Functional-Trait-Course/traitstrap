@@ -1,7 +1,7 @@
 #' Bootstrap traits
 #' @description Function for nonparametric bootstrap resampling to
 #' calculate community weighted trait mean and higher moments.
-#' @param selected_traits output from the trait_fill function.
+#' @param filled_traits output from the trait_fill function.
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size
 #' @param raw logical; argument to extract the raw data of the trait
@@ -20,7 +20,9 @@
 #' #' The output of `trait_np_bootstrap()` can be summarized using
 #' `trait_summarize_boot_moments()`.
 #'
-#' @return a tibble
+#' @return a tibble with columns for each grouping variable of `filled_traits`
+#'  (usually the elements of scale_hierarchy and the traits column), 
+#'  and the moments mean, variance, skewness, and kurtosis.
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
@@ -37,7 +39,7 @@
 #'     PlotID %in% c("A", "B"),
 #'     Site == 1
 #'   )
-#' selected_traits <- trait_fill(
+#' filled_traits <- trait_fill(
 #'   comm = community,
 #'   traits = trait,
 #'   scale_hierarchy = c("Site", "PlotID"),
@@ -45,13 +47,13 @@
 #'   trait_col = "Trait", abundance_col = "Cover"
 #' )
 #'
-#' boot_traits <- trait_np_bootstrap(selected_traits,
+#' boot_traits <- trait_np_bootstrap(filled_traits,
 #'   nrep = 20,
 #'   sample_size = 200
 #' )
 #' @export
 
-trait_np_bootstrap <- function(selected_traits,
+trait_np_bootstrap <- function(filled_traits,
                                nrep = 100,
                                sample_size = 200,
                                raw = FALSE) {
@@ -59,12 +61,12 @@ trait_np_bootstrap <- function(selected_traits,
     nrep <- 1
   }
 
-  attrib <- attr(selected_traits, "attrib")
+  attrib <- attr(filled_traits, "attrib")
   value_col <- attrib$value_col
   bootstrap_moments <- map(
     seq_len(nrep),
     ~ {
-      raw_dist <- slice_sample(selected_traits,
+      raw_dist <- slice_sample(filled_traits,
         n = sample_size,
         replace = TRUE, weight_by = weight
       )
@@ -89,6 +91,6 @@ trait_np_bootstrap <- function(selected_traits,
 
   # make bootstrap_moments an ordinary tibble
   class(bootstrap_moments) <-
-    class(bootstrap_moments)[!class(bootstrap_moments) == "selected_trait"]
+    class(bootstrap_moments)[!class(bootstrap_moments) == "filled_trait"]
   return(bootstrap_moments)
 }

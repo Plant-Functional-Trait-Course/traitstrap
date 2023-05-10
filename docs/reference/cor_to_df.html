@@ -18,7 +18,7 @@ extracts results from a correlation matrix"><!-- mathjax --><script src="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.0</span>
       </span>
     </div>
 
@@ -87,17 +87,17 @@ extracts results from a correlation matrix</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">cor_to_df</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    row col       value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    b   a  0.42100560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    c   a  0.46418747</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    d   a -0.11439447</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    e   a -0.84020889</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    c   b  0.96384717</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    d   b -0.88484222</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    e   b -0.01781539</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    d   c -0.92990598</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    e   c  0.02613647</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   e   d -0.39160198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    row col      value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    b   a -0.5727746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    c   a  0.6241797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    d   a  0.2829025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    e   a  0.8263505</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    c   b -0.6891802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    d   b  0.6228578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    e   b -0.9119689</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    d   c -0.2481077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    e   c  0.8495626</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   e   d -0.2884096</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

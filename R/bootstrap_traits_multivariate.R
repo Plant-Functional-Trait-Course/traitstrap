@@ -2,7 +2,7 @@
 #' @description Function for nonparametric bootstrap resampling to
 #' calculate community
 #' weighted trait correlations, other bivariate or multivariate statistics
-#' @param selected_traits output from the trait_fill function.
+#' @param filled_traits output from the trait_fill function.
 #' @param nrep number of bootstrap replicates
 #' @param sample_size bootstrap size
 #' @param raw logical; argument to extract the raw data of the trait
@@ -11,7 +11,7 @@
 #' If `raw = TRUE`, `nrep` is restricted to 1 to avoid memory issues.
 #' @param id column name of unique identifiers of each leaf
 #' @param fun bivariate or multivariate function to apply
-#' @details The observed and selected leaves are re-sampled in proportion to
+#' @details The observed and filled leaves are re-sampled in proportion to
 #' their weights, e.g. the abundance of a species or the biomass.
 #' Values across all individuals in a community are
 #' resampled `sample_size` times to incorporate the full
@@ -19,11 +19,12 @@
 #' The function `fun` is applied to the trait distribution at the finest level
 #'  of the filled trait hierarchy.
 #'
-#' Note that due to the flexibility of this function, 
+#' Note that due to the flexibility of this function,
 #' the output CAN NOT be summarized using
 #' `trait_summarise_boot_moments`.
 #'
-#' @return a tibble
+#' @return a tibble with columns for the elements of the scale_hierarchy, 
+#' and a list column result which includes the output of `fun`.
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
@@ -39,7 +40,7 @@
 #' data(community)
 #' data(trait)
 #'
-#' selected_traits <- trait_fill(
+#' filled_traits <- trait_fill(
 #'   comm = community |>
 #'     filter(
 #'       PlotID %in% c("A", "B"),
@@ -54,7 +55,7 @@
 #'
 #' # Note that more replicates and a greater sample size are advisable
 #' # Here we set them low to make the example run quickly
-#' boot_traits <- trait_multivariate_bootstrap(selected_traits,
+#' boot_traits <- trait_multivariate_bootstrap(filled_traits,
 #'   fun = cor,
 #'   nrep = 10,
 #'   sample_size = 100
@@ -73,7 +74,7 @@
 #'   labs(y = "Correlation", x = "")
 #' @export
 
-trait_multivariate_bootstrap <- function(selected_traits,
+trait_multivariate_bootstrap <- function(filled_traits,
                                          nrep = 100,
                                          sample_size = 200,
                                          raw = FALSE,
@@ -83,14 +84,14 @@ trait_multivariate_bootstrap <- function(selected_traits,
     nrep <- 1
   }
 
-  attrib <- attr(selected_traits, "attrib")
+  attrib <- attr(filled_traits, "attrib")
   value_col <- attrib$value_col
 
-  n_traits <- n_distinct(selected_traits[[attrib$trait_col]])
-  trait_names <- unique(selected_traits[[attrib$trait_col]])
+  n_traits <- n_distinct(filled_traits[[attrib$trait_col]])
+  trait_names <- unique(filled_traits[[attrib$trait_col]])
 
   # check complete traits
-  check_n_traits <- selected_traits |>
+  check_n_traits <- filled_traits |>
     # remove leaves with incomplete data
     ungroup(.data[[attrib$trait_col]]) |>
     group_by(.data[[id]], .add = TRUE) |>
@@ -102,7 +103,7 @@ trait_multivariate_bootstrap <- function(selected_traits,
   }
 
   # pivot_wider
-  selected_traits_wide <- selected_traits |>
+  filled_traits_wide <- filled_traits |>
     # remove unneeded columns
     select(
       -.data[[attrib$taxon_col]], -.data[[attrib$abundance_col]],
@@ -120,7 +121,7 @@ trait_multivariate_bootstrap <- function(selected_traits,
   bootstrap_moments <- map(
     seq_len(nrep),
     ~ {
-      raw_dist <- slice_sample(selected_traits_wide,
+      raw_dist <- slice_sample(filled_traits_wide,
         n = sample_size,
         replace = TRUE, weight_by = weight
       ) |>
@@ -144,6 +145,6 @@ trait_multivariate_bootstrap <- function(selected_traits,
 
   # make bootstrap_moments an ordinary tibble
   class(bootstrap_moments) <-
-    class(bootstrap_moments)[!class(bootstrap_moments) == "selected_trait"]
+    class(bootstrap_moments)[!class(bootstrap_moments) == "filled_trait"]
   return(bootstrap_moments)
 }
