@@ -9,7 +9,8 @@
 <!-- badges: end -->
 
 The goal of traitstrap is to select traits in hierarchical sampling
-designs.
+designs. For more details on the methods see [Maitner et
+al. (2021)](https://doi.org/10.22541/au.162196147.76797968/v1).
 
 ## Installation
 

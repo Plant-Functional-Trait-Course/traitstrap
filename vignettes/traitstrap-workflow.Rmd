@@ -32,8 +32,8 @@ theme_set(theme_minimal(base_size = 12))
 knitr::include_graphics("../man/figures/Traitstrap_hex.png")
 ```
 
-This vignette explains how to use the traitstrap package (Telford et al).
-For more details on the methods see Maitner et al.
+This vignette explains how to use the traitstrap package (Telford et al 2023).
+For more details on the methods see [Maitner et al. (2021)](https://doi.org/10.22541/au.162196147.76797968/v1). 
 
 First of all, relax and turn on some music. We have prepared the [traitstrap playlist](https://tinyurl.com/traitstrap) for you!
 
