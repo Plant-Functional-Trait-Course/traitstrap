@@ -17,6 +17,9 @@ get_ci(data, sd_mult = 1, ci = 0.95, which, parametric = TRUE)
 
 \item{parametric}{if TRUE, sd used, if FALSE, quantile}
 }
+\value{
+numeric vector length 1
+}
 \description{
 Internal helper function for generating CIs.
 }

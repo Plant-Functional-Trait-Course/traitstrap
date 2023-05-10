@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.0</span>
       </span>
     </div>
 
@@ -88,7 +88,8 @@
 <!-- fig.align = 'right',  -->
 <p><img src="../reference/figures/Traitstrap_hex.png" width="15%" style="float:right; padding:8px"></p>
 <p>This vignette explains how to use the traitstrap package (Telford et
-al). For more details on the methods see Maitner et al.</p>
+al 2023). For more details on the methods see <a href="https://doi.org/10.22541/au.162196147.76797968/v1" class="external-link">Maitner et
+al. (2021)</a>.</p>
 <p>First of all, relax and turn on some music. We have prepared the <a href="https://tinyurl.com/traitstrap" class="external-link">traitstrap playlist</a> for
 you!</p>
 <div class="section level2">
@@ -189,7 +190,7 @@ cover, size, biomass, or something similar.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> bistorta vigdis    10   1     C     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> bistorta vigdis     2   1     D     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> bistorta vigdis     1   1     F     </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 100 more rows</span></span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 100 more rows</span></span></span></code></pre>
 <p>The <strong>trait data</strong> should contain information about
 traits and trait values for as many species and individuals in the
 community data as possible. The data should be organized in the same way
@@ -210,7 +211,7 @@ example the trait data contains <strong>Taxon</strong>,
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2     C      festuca rubra           AMT1545 Wet_Mass_g      0.007<span style="text-decoration: underline;">24</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2     C      festuca rubra           AMT1545 Thickness_mm    0.257   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1     C      bistorta vigdis         ARP2422 Plant_Height_cm 1       </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 695 more rows</span></span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 695 more rows</span></span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="trait-filling">Trait filling<a class="anchor" aria-label="anchor" href="#trait-filling"></a>
@@ -283,20 +284,20 @@ filling.</p>
 <span><span class="va">trait_filling</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4,011 × 13</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait [42]</span></span></span>
-<span><span class="co">#&gt;    Taxon     Cover Site  PlotID global sum_a…¹ ID    Trait Value n_sam…²  weight</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> dryas oc…   0.1 1     A      global    38.2 ATC4… Plan…   1.3      17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> dryas oc…   0.1 1     A      global    38.2 ADC9… Plan…   1.4      17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> dryas oc…   0.1 1     A      global    38.2 AVU2… Plan…   1.5      17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> dryas oc…   0.1 1     A      global    38.2 AHU1… Plan…   2        17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> dryas oc…   0.1 1     A      global    38.2 AHS4… Plan…   2.5      17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> dryas oc…   0.1 1     A      global    38.2 AHR0… Plan…   2.4      17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> dryas oc…   0.1 1     A      global    38.2 ABE6… Plan…   0.6      17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> dryas oc…   0.1 1     A      global    38.2 BUP1… Plan…   2.2      17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> dryas oc…   0.1 1     A      global    38.2 ADE9… Plan…   1        17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> dryas oc…   0.1 1     A      global    38.2 ACH6… Plan…   3        17 0.005<span style="text-decoration: underline;">88</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 4,001 more rows, 2 more variables: level &lt;ord&gt;, max_n_in_sample &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   and abbreviated variable names ¹​sum_abun, ²​n_sample</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    Taxon   Cover Site  PlotID global sum_abun ID    Trait Value n_sample  weight</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> dryas …   0.1 1     A      global     38.2 ATC4… Plan…   1.3       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> dryas …   0.1 1     A      global     38.2 ADC9… Plan…   1.4       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> dryas …   0.1 1     A      global     38.2 AVU2… Plan…   1.5       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> dryas …   0.1 1     A      global     38.2 AHU1… Plan…   2         17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> dryas …   0.1 1     A      global     38.2 AHS4… Plan…   2.5       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> dryas …   0.1 1     A      global     38.2 AHR0… Plan…   2.4       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> dryas …   0.1 1     A      global     38.2 ABE6… Plan…   0.6       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> dryas …   0.1 1     A      global     38.2 BUP1… Plan…   2.2       17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> dryas …   0.1 1     A      global     38.2 ADE9… Plan…   1         17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> dryas …   0.1 1     A      global     38.2 ACH6… Plan…   3         17 0.005<span style="text-decoration: underline;">88</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4,001 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: level &lt;ord&gt;, max_n_in_sample &lt;int&gt;</span></span></span></code></pre></div>
 <p>Traitstrap also allows to include taxonomy and experimental design in
 the trait filling step.</p>
 <p>With the argument <code>taxon_col</code> the taxonomic hierarchy for
@@ -368,17 +369,17 @@ visualizing the trait distributions. If the raw data is extracted,
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID [14]</span></span></span>
 <span><span class="co">#&gt;    global Site  PlotID Trait             mean  variance skewness kurtosis</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plant_Height_cm 1.5    2.52        3.25     12.3  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Thickness_mm    0.221  0.003<span style="text-decoration: underline;">77</span>     1.19      1.55 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g      0.011<span style="text-decoration: underline;">1</span> 0.000<span style="text-decoration: underline;">056</span>7   0.554    -<span style="color: #BB0000;">1.07</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     B      Plant_Height_cm 1.53   2.49        3.13     11.8  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     B      Thickness_mm    0.198  0.001<span style="text-decoration: underline;">64</span>    -<span style="color: #BB0000;">0.017</span><span style="color: #BB0000; text-decoration: underline;">5</span>   -<span style="color: #BB0000;">0.602</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g      0.011<span style="text-decoration: underline;">7</span> 0.000<span style="text-decoration: underline;">046</span>5   0.537    -<span style="color: #BB0000;">1.04</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     C      Plant_Height_cm 1.68   4.18        2.82      7.85 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     C      Thickness_mm    0.207  0.003<span style="text-decoration: underline;">05</span>     2.28     12.3  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g      0.012<span style="text-decoration: underline;">1</span> 0.000<span style="text-decoration: underline;">117</span>    3.90     21.7  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     D      Plant_Height_cm 1.75   5.18        3.14     11.3  </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 8,390 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plant_Height_cm 1.60   2.97        3.08     10.7  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Thickness_mm    0.218  0.003<span style="text-decoration: underline;">95</span>     1.30      1.87 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g      0.010<span style="text-decoration: underline;">8</span> 0.000<span style="text-decoration: underline;">047</span>6   0.652    -<span style="color: #BB0000;">0.694</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     B      Plant_Height_cm 1.62   3.32        3.28     11.4  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     B      Thickness_mm    0.211  0.001<span style="text-decoration: underline;">79</span>    -<span style="color: #BB0000;">0.097</span><span style="color: #BB0000; text-decoration: underline;">4</span>   -<span style="color: #BB0000;">0.669</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g      0.011<span style="text-decoration: underline;">6</span> 0.000<span style="text-decoration: underline;">045</span>8   0.601    -<span style="color: #BB0000;">1.00</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     C      Plant_Height_cm 1.67   4.08        2.93      8.46 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     C      Thickness_mm    0.210  0.004<span style="text-decoration: underline;">30</span>     2.24      7.41 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g      0.011<span style="text-decoration: underline;">5</span> 0.000<span style="text-decoration: underline;">046</span>1   1.49      4.23 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     D      Plant_Height_cm 1.95   6.32        2.17      3.74 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8,390 more rows</span></span></span></code></pre></div>
 <p>One advantage of using a bootstrapping approach, is that we get much
 more than a mean trait value. We can also estimate the variance and
 other moments of these trait distributions. In traitstrap happy moments
@@ -401,22 +402,22 @@ the default is a 0.95 confidence level.</p>
 <span><span class="va">sum_boot_moment</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 × 17</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID [14]</span></span></span>
-<span><span class="co">#&gt;    global Site  PlotID Trait            n   mean ci_lo…¹ ci_hi…²     var ci_lo…³</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plant_Heigh…   200 1.62    1.49    1.75   3.24<span style="color: #949494;">e</span>+0 2.44<span style="color: #949494;">e</span>+0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Thickness_mm   200 0.214   0.209   0.218  3.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.95<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g     200 0.010<span style="text-decoration: underline;">9</span>  0.010<span style="text-decoration: underline;">4</span>  0.011<span style="text-decoration: underline;">3</span> 4.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 4.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     B      Plant_Heigh…   200 1.61    1.49    1.73   3.09<span style="color: #949494;">e</span>+0 2.36<span style="color: #949494;">e</span>+0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     B      Thickness_mm   200 0.203   0.200   0.206  1.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 1.54<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g     200 0.012<span style="text-decoration: underline;">2</span>  0.011<span style="text-decoration: underline;">7</span>  0.012<span style="text-decoration: underline;">7</span> 4.61<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 4.29<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     C      Plant_Heigh…   200 1.69    1.55    1.84   3.93<span style="color: #949494;">e</span>+0 3.01<span style="color: #949494;">e</span>+0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     C      Thickness_mm   200 0.205   0.201   0.209  2.80<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g     200 0.011<span style="text-decoration: underline;">7</span>  0.011<span style="text-decoration: underline;">0</span>  0.012<span style="text-decoration: underline;">4</span> 1.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 4.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     D      Plant_Heigh…   200 1.83    1.65    2.01   5.82<span style="color: #949494;">e</span>+0 4.59<span style="color: #949494;">e</span>+0</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 32 more rows, 7 more variables: ci_high_var &lt;dbl&gt;, skew &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt;    global Site  PlotID Trait           n   mean ci_low_mean ci_high_mean     var</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plant_Heig…   200 1.63        1.49         1.77   3.35<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Thickness_…   200 0.214       0.209        0.218  3.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g    200 0.010<span style="text-decoration: underline;">9</span>      0.010<span style="text-decoration: underline;">4</span>       0.011<span style="text-decoration: underline;">4</span> 4.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     B      Plant_Heig…   200 1.61        1.48         1.74   3.05<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     B      Thickness_…   200 0.203       0.200        0.206  1.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g    200 0.012<span style="text-decoration: underline;">1</span>      0.011<span style="text-decoration: underline;">6</span>       0.012<span style="text-decoration: underline;">7</span> 4.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     C      Plant_Heig…   200 1.70        1.56         1.83   3.95<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     C      Thickness_…   200 0.205       0.201        0.208  2.72<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g    200 0.011<span style="text-decoration: underline;">7</span>      0.010<span style="text-decoration: underline;">9</span>       0.012<span style="text-decoration: underline;">5</span> 1.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     D      Plant_Heig…   200 1.81        1.63         1.99   5.76<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 32 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: ci_low_var &lt;dbl&gt;, ci_high_var &lt;dbl&gt;, skew &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ci_low_skew &lt;dbl&gt;, ci_high_skew &lt;dbl&gt;, kurt &lt;dbl&gt;, ci_low_kurt &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ci_high_kurt &lt;dbl&gt;, and abbreviated variable names ¹​ci_low_mean,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ²​ci_high_mean, ³​ci_low_var</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ci_high_kurt &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="parametric-bootstrapping">Parametric bootstrapping<a class="anchor" aria-label="anchor" href="#parametric-bootstrapping"></a>
@@ -445,34 +446,24 @@ parameters.</p>
 <span>  filled_traits <span class="op">=</span> <span class="va">trait_filling</span>,</span>
 <span>  distribution_type <span class="op">=</span> <span class="st">"lognormal"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: There were 604 warnings in `summarize()`.</span></span>
-<span><span class="co">#&gt; The first warning was:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `quiet(get_dist_parms(data = .data[["Value"]], distribution_type</span></span>
-<span><span class="co">#&gt;   = unique(distribution_type)))`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In group 1: `global = "global"`, `Site = "1"`, `PlotID = "A"`, `Trait =</span></span>
-<span><span class="co">#&gt;   "Plant_Height_cm"`, `Taxon = "bistorta vigdis"`, `Cover = 10`, `n_sample =</span></span>
-<span><span class="co">#&gt;   17`.</span></span>
-<span><span class="co">#&gt; Caused by warning in `dlnorm()`:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> NaNs produced</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 603 remaining warnings.</span></span>
 <span></span>
 <span><span class="va">fitted_distributions</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 303 × 15</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait, Taxon, Cover, n_sample [303]</span></span></span>
-<span><span class="co">#&gt;    global Site  PlotID Trait      Taxon Cover n_sam…¹ distr…²  parm1 parm2 sd1  </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plant_Hei… bist…  10        17 lognor…  0.156 0.587 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Plant_Hei… drya…   0.1      17 lognor…  0.434 0.810 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Plant_Hei… fest…   1        11 lognor…  1.61  0.377 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     A      Plant_Hei… luzu…   0.5      10 lognor…  1.45  0.287 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     A      Plant_Hei… luzu…   1        14 lognor…  0.405 0.501 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     A      Plant_Hei… sali…  20        22 lognor… -<span style="color: #BB0000;">0.320</span> 1.08  <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     A      Plant_Hei… saxi…   2         6 lognor…  1.13  0.469 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     A      Plant_Hei… saxi…   2         2 lognor…  0.693 0     <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     A      Plant_Hei… sile…   1         3 lognor… -<span style="color: #BB0000;">0.221</span> 0.277 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     A      Thickness… bist…  10        17 lognor… -<span style="color: #BB0000;">1.55</span>  0.194 <span style="color: #BB0000;">NA</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 293 more rows, 4 more variables: sd2 &lt;lgl&gt;, ks &lt;dbl&gt;, cvm &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ad &lt;dbl&gt;, and abbreviated variable names ¹​n_sample, ²​distribution_type</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    global Site  PlotID Trait Taxon Cover n_sample distribution_type  parm1 parm2</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plan… bist…  10         17 lognormal          0.156 0.587</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Plan… drya…   0.1       17 lognormal          0.434 0.810</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Plan… fest…   1         11 lognormal          1.61  0.377</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     A      Plan… luzu…   0.5       10 lognormal          1.45  0.287</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     A      Plan… luzu…   1         14 lognormal          0.405 0.501</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     A      Plan… sali…  20         22 lognormal         -<span style="color: #BB0000;">0.320</span> 1.08 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     A      Plan… saxi…   2          6 lognormal          1.13  0.469</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     A      Plan… saxi…   2          2 lognormal          0.693 0    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     A      Plan… sile…   1          3 lognormal         -<span style="color: #BB0000;">0.221</span> 0.277</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     A      Thic… bist…  10         17 lognormal         -<span style="color: #BB0000;">1.55</span>  0.194</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 293 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: sd1 &lt;lgl&gt;, sd2 &lt;lgl&gt;, ks &lt;dbl&gt;, cvm &lt;dbl&gt;, ad &lt;dbl&gt;</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># fit several types of distributions</span></span>
 <span><span class="va">fitted_distributions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_fit_distributions.html">trait_fit_distributions</a></span><span class="op">(</span></span>
@@ -504,17 +495,17 @@ specified by the parameter <code>nrep.</code> The argument
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait [42]</span></span></span>
 <span><span class="co">#&gt;    global Site  PlotID Trait             mean  variance skewness kurtosis</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plant_Height_cm 1.75   3.99         3.99   26.1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Thickness_mm    0.212  0.004<span style="text-decoration: underline;">02</span>      2.52    9.57  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g      0.010<span style="text-decoration: underline;">7</span> 0.000<span style="text-decoration: underline;">051</span>7    1.10    1.32  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     B      Plant_Height_cm 1.63   3.08         2.39    7.94  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     B      Thickness_mm    0.199  0.001<span style="text-decoration: underline;">71</span>      0.526  -<span style="color: #BB0000;">0.013</span><span style="color: #BB0000; text-decoration: underline;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g      0.011<span style="text-decoration: underline;">8</span> 0.000<span style="text-decoration: underline;">046</span>1    1.32    2.75  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     C      Plant_Height_cm 1.86   3.82         2.71   11.4   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     C      Thickness_mm    0.203  0.002<span style="text-decoration: underline;">23</span>      2.18    9.48  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g      0.011<span style="text-decoration: underline;">0</span> 0.000<span style="text-decoration: underline;">045</span>7    1.83    5.66  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     D      Plant_Height_cm 1.88   7.73         4.47   28.8   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 8,390 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> global 1     A      Plant_Height_cm 1.68   3.64         3.21    15.2  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> global 1     A      Thickness_mm    0.218  0.004<span style="text-decoration: underline;">61</span>      2.30     8.02 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> global 1     A      Wet_Mass_g      0.010<span style="text-decoration: underline;">9</span> 0.000<span style="text-decoration: underline;">047</span>2    0.814    0.105</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> global 1     B      Plant_Height_cm 1.74   2.84         1.89     4.31 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> global 1     B      Thickness_mm    0.203  0.001<span style="text-decoration: underline;">69</span>      0.191   -<span style="color: #BB0000;">0.135</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> global 1     B      Wet_Mass_g      0.010<span style="text-decoration: underline;">4</span> 0.000<span style="text-decoration: underline;">038</span>0    1.27     1.65 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> global 1     C      Plant_Height_cm 1.59   2.46         1.61     1.93 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> global 1     C      Thickness_mm    0.202  0.002<span style="text-decoration: underline;">89</span>      1.98     8.62 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> global 1     C      Wet_Mass_g      0.011<span style="text-decoration: underline;">6</span> 0.000<span style="text-decoration: underline;">109</span>     5.79    49.2  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> global 1     D      Plant_Height_cm 1.67   3.43         1.89     3.41 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8,390 more rows</span></span></span></code></pre></div>
 <p>The output of trait_parametric_bootstrap can be summarized using
 <code>trait_summarize_boot_moments()</code> (see above).</p>
 </div>
@@ -526,27 +517,27 @@ functions allow returning raw trait distributions.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run nonparametric bootstrapping</span></span>
 <span><span class="va">raw_dist_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_np_bootstrap.html">trait_np_bootstrap</a></span><span class="op">(</span></span>
-<span>  selected_traits <span class="op">=</span> <span class="va">trait_filling</span>,</span>
+<span>  filled_traits <span class="op">=</span> <span class="va">trait_filling</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">raw_dist_np</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8,400 × 13</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   global, Site, PlotID, Trait [42]</span></span></span>
-<span><span class="co">#&gt;    Taxon      Cover Site  PlotID global sum_a…¹ ID    Trait Value n_sam…² weight</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> salix pol…    20 1     A      global    38.2 AQT8… Plan…   0.3      22 0.909 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> salix pol…    20 1     A      global    38.2 BRL7… Plan…   1.3      22 0.909 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> luzula ni…     1 1     A      global    38.2 BUX4… Plan…   1.8      14 0.071<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> salix pol…    20 1     A      global    38.2 BRN7… Plan…   1        22 0.909 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> silene ac…     1 1     A      global    38.2 AUD1… Plan…   1         3 0.333 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> salix pol…    20 1     A      global    38.2 BRN7… Plan…   1        22 0.909 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> salix pol…    20 1     A      global    38.2 AXV9… Plan…   0.8      22 0.909 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> salix pol…    20 1     A      global    38.2 AQT8… Plan…   0.3      22 0.909 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> salix pol…    20 1     A      global    38.2 ASM7… Plan…   0.8      22 0.909 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> silene ac…     1 1     A      global    38.2 AUE6… Plan…   0.5       3 0.333 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 8,390 more rows, 2 more variables: level &lt;ord&gt;, max_n_in_sample &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   and abbreviated variable names ¹​sum_abun, ²​n_sample</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    Taxon    Cover Site  PlotID global sum_abun ID    Trait Value n_sample weight</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> bistort…    10 1     A      global     38.2 BRK4… Plan…   1         17 0.588 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> bistort…    10 1     A      global     38.2 ARQ4… Plan…   4.2       17 0.588 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> salix p…    20 1     A      global     38.2 BRL7… Plan…   1.3       22 0.909 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> salix p…    20 1     A      global     38.2 AQX2… Plan…   0.4       22 0.909 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> salix p…    20 1     A      global     38.2 AMP6… Plan…  10         22 0.909 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> saxifra…     2 1     A      global     38.2 ANF4… Plan…   2          2 1     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> bistort…    10 1     A      global     38.2 ASR3… Plan…   2         17 0.588 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> festuca…     1 1     A      global     38.2 ACS4… Plan…   5.2       11 0.090<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> bistort…    10 1     A      global     38.2 ASJ7… Plan…   1.6       17 0.588 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> salix p…    20 1     A      global     38.2 AXV9… Plan…   0.8       22 0.909 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8,390 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: level &lt;ord&gt;, max_n_in_sample &lt;int&gt;</span></span></span></code></pre></div>
 <p>The raw data can be useful for visualizing the trait
 distributions.</p>
 <p>Use colour and facets to separate between the different traits,
@@ -610,7 +601,7 @@ Also, we are subsetting the data to make it run faster.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Then we are using the <code><a href="../reference/trait_multivariate_bootstrap.html">trait_multivariate_bootstrap()</a></code>
 function to do the actual bootstrapping. This function needs the output
-from the trait filling as <code>selected_traits</code>, number
+from the trait filling as <code>filled_traits</code>, number
 bootstrapped of replications <code>nrep</code>, bootstrap size
 <code>sample_size</code> and <code>id</code>. The last argument is
 <code>fun</code>, that takes any function to apply to the data. In this
@@ -624,7 +615,7 @@ will extract Rao’s Quadratic Entropy, since that performs well with
 bootstrapping.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trait_multivariate_bootstrap.html">trait_multivariate_bootstrap</a></span><span class="op">(</span></span>
-<span>  selected_traits <span class="op">=</span> <span class="va">multivariate_traits</span>,</span>
+<span>  filled_traits <span class="op">=</span> <span class="va">multivariate_traits</span>,</span>
 <span>  nrep <span class="op">=</span> <span class="fl">20</span>, <span class="co"># number of reps is set low for demo purposes</span></span>
 <span>  sample_size <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>  id <span class="op">=</span> <span class="st">"ID"</span>,</span>
@@ -725,30 +716,30 @@ you a table with all missing values.</p>
 <span>  filled_trait <span class="op">=</span> <span class="va">trait_filling</span>,</span>
 <span>  comm <span class="op">=</span> <span class="va">community</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Taxon [20]</span></span></span>
-<span><span class="co">#&gt;    Taxon                      max_abun n_traits</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> alopecurus ovatus               2          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> bistorta vigdis                25          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> calamagrostis neglecta         60          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> cassiope tetragona              5          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> dryas octopetala               20          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> enquistetum scirpoides          2          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> festuca rubra                   1          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> juncus biglumis                 0.5        1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> luzula confusa                  5          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> luzula nivalis                  5          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> maitneranthes hieracifolia      0.5        1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> oxyria tanyna                   2          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> poa pratensis                   1          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> salix polaris                  43          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> saxifraga hirculus              2          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> saxifraga oppositifolia         2          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> silene acaudis                  1          3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> stelfordaria humifusa           0.5        1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> stellaria longipes              0.1        1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> trisetum spicatum               3          3</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Taxon, max_abun [20]</span></span></span>
+<span><span class="co">#&gt;    Taxon                      max_abun     n n_traits</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> alopecurus ovatus               2       5        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> bistorta vigdis                25      14        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> calamagrostis neglecta         60       4        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> cassiope tetragona              5       3        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> dryas octopetala               20       9        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> enquistetum scirpoides          2       6        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> festuca rubra                   1       7        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> juncus biglumis                 0.5     2        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> luzula confusa                  5      10        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> luzula nivalis                  5       8        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> maitneranthes hieracifolia      0.5     2        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> oxyria tanyna                   2       5        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> poa pratensis                   1       6        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> salix polaris                  43      14        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> saxifraga hirculus              2       3        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> saxifraga oppositifolia         2       1        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> silene acaudis                  1       1        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> stelfordaria humifusa           0.5     1        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> stellaria longipes              0.1     4        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> trisetum spicatum               3       5        3</span></span></code></pre></div>
 </div>
   </div>
 

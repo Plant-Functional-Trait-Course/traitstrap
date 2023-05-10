@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.0</span>
       </span>
     </div>
 
@@ -73,7 +73,58 @@
 <dd><p>community data</p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
 
+<p>A <code>tibble</code> with columns
+#'</p><ul><li><p>Taxon Species names (actual name depends on <code>taxon_col</code>
+argument to <code><a href="trait_fill.html">trait_fill()</a></code>)</p></li>
+<li><p>max_abun Maximum abundance of that taxa.
+Be more concerned about taxa missing traits with high abundances.</p></li>
+<li><p>n Number of occurrences of the taxon.
+Be more concerned about taxa missing traits with many occurrences.</p></li>
+<li><p>n_traits Number of traits for each species.
+Ideally all should equal the number of traits you have measured.</p></li>
+</ul></div>
+
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">community</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">trait</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">filled_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span>, traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
+<span class="r-in"><span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  taxon_col <span class="op">=</span> <span class="st">"Taxon"</span>, value_col <span class="op">=</span> <span class="st">"Value"</span>,</span></span>
+<span class="r-in"><span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>, abundance_col <span class="op">=</span> <span class="st">"Cover"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">trait_missing</span><span class="op">(</span><span class="va">filled_traits</span>, <span class="va">community</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   Taxon, max_abun [20]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Taxon                   max_abun     n n_traits</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> alopecurus ovatus            2       5        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> bistorta vivipara           25      14        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> calamagrostis neglecta      60       4        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> cassiope tetragona           5       3        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> dryas octopetala            20       9        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> equisetum scirpoides         2       6        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> festuca rubra                1       7        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> juncus biglumis              0.5     2        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> luzula confusa               5      10        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> luzula nivalis               5       8        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> micranthes hieracifolia      0.5     2        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> oxyria digyna                2       5        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> poa pratensis                1       6        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> salix polaris               43      14        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> saxifraga hirculus           2       3        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> saxifraga oppositifolia      2       1        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> silene acaulis               1       1        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> stellaria humifusa           0.5     1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> stellaria longipes           0.1     4        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> trisetum spicatum            3       5        3</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

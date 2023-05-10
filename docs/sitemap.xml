@@ -25,9 +25,6 @@
     <loc>/reference/autoplot.filled_trait.html</loc>
   </url>
   <url>
-    <loc>/reference/autoplot.imputed_trait.html</loc>
-  </url>
-  <url>
     <loc>/reference/community.html</loc>
   </url>
   <url>
@@ -37,10 +34,7 @@
     <loc>/reference/distribution_handler.html</loc>
   </url>
   <url>
-    <loc>/reference/fortify.filled_trait.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fortify.imputed_trait.html</loc>
+    <loc>/reference/fortify_filled_trait.html</loc>
   </url>
   <url>
     <loc>/reference/get_ci.html</loc>
@@ -62,9 +56,6 @@
   </url>
   <url>
     <loc>/reference/trait_fit_distributions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/trait_impute.html</loc>
   </url>
   <url>
     <loc>/reference/trait_missing.html</loc>

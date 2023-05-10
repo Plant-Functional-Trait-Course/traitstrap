@@ -19,7 +19,7 @@ Shows at which level the data are coming from in each plot."><!-- mathjax --><sc
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.0</span>
       </span>
     </div>
 
@@ -65,14 +65,13 @@ for each level of the sampling hierarchy and makes a barplot.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for filled_trait</span></span>
-<span><span class="fu">autoplot</span><span class="op">(</span><span class="va">filled_traits</span>, <span class="va">other_col_how</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">autoplot</span><span class="op">(</span><span class="va">object</span>, <span class="va">other_col_how</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>filled_traits</dt>
-<dd><p>output from <code><a href="trait_np_bootstrap.html">trait_np_bootstrap()</a></code> or
-<code><a href="trait_parametric_bootstrap.html">trait_parametric_bootstrap()</a></code>.</p></dd>
+    <dl><dt>object</dt>
+<dd><p>output from <code><a href="trait_fill.html">trait_fill()</a></code>.</p></dd>
 
 
 <dt>other_col_how</dt>
@@ -89,7 +88,7 @@ Options are to <code>filter</code> by one of the columns, add them to the x-<cod
     <h2>Value</h2>
     
 
-<p>a ggplot</p>
+<p>a ggplot2 plot</p>
     </div>
 
     <div id="ref-examples">

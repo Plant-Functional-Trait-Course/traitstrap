@@ -9,19 +9,16 @@
 #'
 #' @details The distributions can either be a single distribution type which is
 #' used for all traits, or traits can be assigned specific distributions types
-#' by supplying the function with a named list of traits, e.g.
-#' `list(height = "normal", mass = "lognormal"))`.
+#' by supplying the function with a named vector of traits, e.g.
+#' `c(height = "normal", mass = "lognormal"))`.
 #'
-#' The function returns a dataframe containing fitted distribution parameters.
-#'
-#' @return a tibble
+#' @return a tibble containing fitted distribution parameters for each trait in each species for each plot.
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom dplyr slice_sample group_by summarise
 #' summarize select group_by_at
 #' @importFrom stats var
-#' @importFrom fitdistrplus fitdist
 
 #' @examples
 #' library(dplyr)
@@ -60,20 +57,19 @@ trait_fit_distributions <- function(filled_traits,
 
   # If only a single type of distribution was supplied, apply it to all traits
   if (length(distribution_type) == 1) {
-    distributions <- unique(as.data.frame(filled_traits)[, trait_col])
-    dist_list <- replicate(n = length(distributions), expr = distribution_type)
-    names(dist_list) <- distributions
-    distribution_type <- as.list(dist_list)
-    rm(dist_list, distributions)
+    distributions <- unique(filled_traits[[trait_col]])
+    distribution_type <- rep(x = distribution_type, 
+                             times = length(distributions))
+    names(distribution_type) <- distributions
   } # if statement
 
   # Data checks
 
   # check distribution type is supported
-  if (any(!unique(distribution_type) %in% c("beta", "normal", "lognormal"))) {
+  if (!all(unique(distribution_type) %in% c("beta", "normal", "lognormal"))) {
     x <- distribution_type[!distribution_type %in%
       c("beta", "normal", "lognormal")]
-    stop(glue("distribution type '{x}' not supported "))
+    stop(glue("Distribution type '{x}' not supported "))
   }
 
 
@@ -123,17 +119,16 @@ trait_fit_distributions <- function(filled_traits,
       .data[[c(abundance_col)]], .data$n_sample,
       .add = TRUE
     ) |>
-    mutate(distribution_type = unlist(
+    mutate(distribution_type =
       distribution_type[.data[[trait_col]]]
-    )) |>
+    ) |>
     summarize(
-      quiet(get_dist_parms(
+      quiet(suppressWarnings(get_dist_parms(
         data = .data[[value_col]],
-        distribution_type = unique(distribution_type)
-      )),
+        distribution_type = .data$distribution_type[1]
+      ))),
       .groups = "keep"
     )
-
 
   # set arguments as attributes so next functions have access to them
   attr(distribution_parms, "attrib") <- attributes(filled_traits)$attrib

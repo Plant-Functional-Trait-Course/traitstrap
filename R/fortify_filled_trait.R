@@ -1,5 +1,5 @@
 #' Fortify filled Traits
-#' @param filled_traits filled traits from trait_fill
+#' @param object filled traits from `trait_fill()`.
 #' @param other_col_how what to do with the other columns in other data.
 #'  Options are to `filter` by one of the columns, add them to the x-`axis`,
 #'  `facet` by them, or to `ignore`.
@@ -15,9 +15,9 @@
 #' @export
 
 
-fortify.filled_trait <- function(filled_traits, other_col_how, ...) {
+fortify_filled_trait <- function(object, other_col_how, ...) {
   # get scale_hierarchy and concatenate to make an ID
-  attrib <- attr(filled_traits, "attrib")
+  attrib <- attr(object, "attrib")
   scale_hierarchy <- as.character(attrib$scale_hierarchy)
   scale_hierarchy <- scale_hierarchy[scale_hierarchy != "global"]
 
@@ -34,12 +34,12 @@ fortify.filled_trait <- function(filled_traits, other_col_how, ...) {
     }
   }
 
-  id <- filled_traits |>
+  id <- object |>
     ungroup() |>
     select(any_of(scale_hierarchy)) |>
     apply(1, paste, collapse = "_")
 
-  filled_traits_summary <- filled_traits |>
+  filled_traits_summary <- object |>
     bind_cols(.id = id) |>
     group_by(
       .data$.id,
