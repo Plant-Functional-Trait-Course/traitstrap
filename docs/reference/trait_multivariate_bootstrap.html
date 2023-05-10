@@ -19,7 +19,7 @@ weighted trait correlations, other bivariate or multivariate statistics"><!-- ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.0</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@ weighted trait correlations, other bivariate or multivariate statistics</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">trait_multivariate_bootstrap</span><span class="op">(</span></span>
-<span>  <span class="va">selected_traits</span>,</span>
+<span>  <span class="va">filled_traits</span>,</span>
 <span>  nrep <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  sample_size <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -76,7 +76,7 @@ weighted trait correlations, other bivariate or multivariate statistics</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>selected_traits</dt>
+    <dl><dt>filled_traits</dt>
 <dd><p>output from the trait_fill function.</p></dd>
 
 
@@ -107,11 +107,12 @@ If <code>raw = TRUE</code>, <code>nrep</code> is restricted to 1 to avoid memory
     <h2>Value</h2>
     
 
-<p>a tibble</p>
+<p>a tibble with columns for the elements of the scale_hierarchy,
+and a list column result which includes the output of <code>fun</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The observed and selected leaves are re-sampled in proportion to
+    <p>The observed and filled leaves are re-sampled in proportion to
 their weights, e.g. the abundance of a species or the biomass.
 Values across all individuals in a community are
 resampled <code>sample_size</code> times to incorporate the full
@@ -135,7 +136,7 @@ the output CAN NOT be summarized using
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">community</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">trait</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">selected_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">filled_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="va">PlotID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
@@ -150,7 +151,7 @@ the output CAN NOT be summarized using
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Note that more replicates and a greater sample size are advisable</span></span></span>
 <span class="r-in"><span><span class="co"># Here we set them low to make the example run quickly</span></span></span>
-<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu">trait_multivariate_bootstrap</span><span class="op">(</span><span class="va">selected_traits</span>,</span></span>
+<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu">trait_multivariate_bootstrap</span><span class="op">(</span><span class="va">filled_traits</span>,</span></span>
 <span class="r-in"><span>  fun <span class="op">=</span> <span class="va">cor</span>,</span></span>
 <span class="r-in"><span>  nrep <span class="op">=</span> <span class="fl">10</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">100</span></span></span>

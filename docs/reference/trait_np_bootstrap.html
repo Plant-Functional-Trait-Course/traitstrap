@@ -18,7 +18,7 @@ calculate community weighted trait mean and higher moments."><!-- mathjax --><sc
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traitstrap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.0</span>
       </span>
     </div>
 
@@ -62,12 +62,12 @@ calculate community weighted trait mean and higher moments.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">trait_np_bootstrap</span><span class="op">(</span><span class="va">selected_traits</span>, nrep <span class="op">=</span> <span class="fl">100</span>, sample_size <span class="op">=</span> <span class="fl">200</span>, raw <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">trait_np_bootstrap</span><span class="op">(</span><span class="va">filled_traits</span>, nrep <span class="op">=</span> <span class="fl">100</span>, sample_size <span class="op">=</span> <span class="fl">200</span>, raw <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>selected_traits</dt>
+    <dl><dt>filled_traits</dt>
 <dd><p>output from the trait_fill function.</p></dd>
 
 
@@ -90,7 +90,11 @@ avoid memory issues.</p></dd>
     <h2>Value</h2>
     
 
-<p>a tibble</p>
+<p>a tibble with columns for each grouping variable of <code>filled_traits</code></p>
+
+
+<p>(usually the elements of scale_hierarchy and the traits column),
+and the moments mean, variance, skewness, and kurtosis.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -117,7 +121,7 @@ moments including variance, skewness and kurtosis.</p>
 <span class="r-in"><span>    <span class="va">PlotID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    <span class="va">Site</span> <span class="op">==</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">selected_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">filled_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="trait_fill.html">trait_fill</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  comm <span class="op">=</span> <span class="va">community</span>,</span></span>
 <span class="r-in"><span>  traits <span class="op">=</span> <span class="va">trait</span>,</span></span>
 <span class="r-in"><span>  scale_hierarchy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="st">"PlotID"</span><span class="op">)</span>,</span></span>
@@ -125,7 +129,7 @@ moments including variance, skewness and kurtosis.</p>
 <span class="r-in"><span>  trait_col <span class="op">=</span> <span class="st">"Trait"</span>, abundance_col <span class="op">=</span> <span class="st">"Cover"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu">trait_np_bootstrap</span><span class="op">(</span><span class="va">selected_traits</span>,</span></span>
+<span class="r-in"><span><span class="va">boot_traits</span> <span class="op">&lt;-</span> <span class="fu">trait_np_bootstrap</span><span class="op">(</span><span class="va">filled_traits</span>,</span></span>
 <span class="r-in"><span>  nrep <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fl">200</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
