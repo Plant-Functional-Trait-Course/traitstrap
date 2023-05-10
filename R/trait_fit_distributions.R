@@ -44,6 +44,7 @@
 #' @export
 trait_fit_distributions <- function(filled_traits,
                                     distribution_type = "normal") {
+  
   # Check filled traits
   if (!inherits(filled_traits, "filled_trait")) {
     stop("filled traits are not appropriately formatted.
@@ -129,7 +130,7 @@ trait_fit_distributions <- function(filled_traits,
     summarize(
       suppressWarnings(quiet(get_dist_parms(
         data = .data[[value_col]],
-        distribution_type = unique(distribution_type)
+        distribution_type = unique(.data$distribution_type)
       ))),
       .groups = "keep"
     )
