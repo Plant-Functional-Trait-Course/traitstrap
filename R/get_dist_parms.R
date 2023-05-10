@@ -13,23 +13,13 @@ get_dist_parms <- function(data, distribution_type) {
     stop("This function only handles one distribution type at a time.")
   }
 
-  # Check that distribution type is supported
-  if (!distribution_type %in% c("normal", "beta", "lognormal")) {
-    stop("Unsupported distribution type")
-  }
-
   # Set distr for fitdist
-  if (distribution_type == "normal") {
-    distr <- "norm"
-  }
-
-  if (distribution_type == c("lognormal")) {
-    distr <- "lnorm"
-  }
-
-  if (distribution_type == "beta") {
-    distr <- "beta"
-  }
+  distr <- switch(distribution_type, 
+             normal = "norm", 
+             lognormal = "lnorm", 
+             beta = "beta",
+             stop(glue("Distribution type '{distribution_type}' not supported "))
+          )
 
   # Hack to have fit a distribution with only one point for normal or lognormal
   if (distribution_type %in% c("normal", "lognormal") && length(data) == 1) {
