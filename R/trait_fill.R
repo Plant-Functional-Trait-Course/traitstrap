@@ -240,7 +240,8 @@ trait_fill <- function(comm,
         # join to traits
         inner_join(traits,
           by = c(scale_keep, taxon_col),
-          suffix = c("_comm", "_trait")
+          suffix = c("_comm", "_trait"),
+          relationship = "many-to-many"
         ) |>
         # group by kept scales
         group_by(
