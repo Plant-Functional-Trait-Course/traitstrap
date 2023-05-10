@@ -287,7 +287,7 @@ This function takes as input:
 * an object of class filled traits (as produced by the function `trait_fill`), and 
 * the type of distribution to be fitted.
 
-Either a single distribution type can be used for all traits, or traits can be assigned specific distributions types by supplying the function with a named list of traits (e.g. `list(height = "normal", mass = "lognormal")`).
+Either a single distribution type can be used for all traits, or traits can be assigned specific distributions types by supplying the function with a named vector of traits (e.g. `c(height = "normal", mass = "lognormal")`).
 
 Currently the function supports normal, log-normal, and beta (values between 0 and 1) distributions.
 
@@ -308,7 +308,7 @@ fitted_distributions
 # fit several types of distributions
 fitted_distributions <- trait_fit_distributions(
   filled_traits = trait_filling,
-  distribution_type = list(Plant_Height_cm = "normal", 
+  distribution_type = c(Plant_Height_cm = "normal", 
                            Wet_Mass_g = "lognormal")
 )
 
