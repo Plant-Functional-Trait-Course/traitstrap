@@ -123,10 +123,10 @@ trait_fit_distributions <- function(filled_traits,
       distribution_type[.data[[trait_col]]]
     ) |>
     summarize(
-      (get_dist_parms(
+      quiet(suppressWarnings(get_dist_parms(
         data = .data[[value_col]],
         distribution_type = .data$distribution_type[1]
-      )),
+      ))),
       .groups = "keep"
     )
 
