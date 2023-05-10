@@ -13,7 +13,7 @@ trait_fit_distributions(filled_traits, distribution_type = "normal")
 Character or named list. Currently accepts "normal","lognormal", and "beta".}
 }
 \value{
-a tibble
+a tibble containing fitted distribution parameters for each trait in each species for each plot.
 }
 \description{
 Function to fit parametric distributions for each
@@ -24,10 +24,8 @@ This function returns a tibble containing the fitted parameters.
 \details{
 The distributions can either be a single distribution type which is
 used for all traits, or traits can be assigned specific distributions types
-by supplying the function with a named list of traits, e.g.
-\verb{list(height = "normal", mass = "lognormal"))}.
-
-The function returns a dataframe containing fitted distribution parameters.
+by supplying the function with a named vector of traits, e.g.
+\verb{c(height = "normal", mass = "lognormal"))}.
 }
 \examples{
 library(dplyr)

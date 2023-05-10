@@ -64,7 +64,7 @@ Set to TRUE when imputing for \code{trait_multivariate_bootstrap}}
 Only needed when \code{complete_only} is TRUE.}
 }
 \value{
-a tibble with extra class \code{filled_trait}
+a tibble with extra class \code{filled_trait}.
 }
 \description{
 A function for trait filling using a hierarchical sampling

@@ -16,7 +16,7 @@ Options are to \code{filter} by one of the columns, add them to the x-\code{axis
 \item{...}{optional filters for use with \code{other_col_how = "filter"}}
 }
 \value{
-a ggplot
+a ggplot2 plot
 }
 \description{
 Function calculates the trait coverage of the community

@@ -16,6 +16,9 @@ distribution_handler(parm1, parm2, n = 1, type)
 \item{type}{Distribution type to fit.
 One of "normal", "lognormal", or "beta"}
 }
+\value{
+numeric vector of length \code{n} from required distribution.
+}
 \description{
 Internal helper function for drawing traits
 }

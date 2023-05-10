@@ -17,8 +17,11 @@ A \code{tibble} with columns
 \item{Taxon }{Species names (actual name depends on \code{taxon_col}
 argument to \code{trait_fill()})}
 \item{max_abun }{Maximum abundance of that taxa.
-Be more concerned about taxa with high abundances.}
-\item{n_traits }{Number of traits for each species. Ideally all should equal the number of traits you have measured.}
+Be more concerned about taxa missing traits with high abundances.}
+\item{n }{Number of occurrences of the taxon.
+Be more concerned about taxa missing traits with many occurrences.}
+\item{n_traits }{Number of traits for each species.
+Ideally all should equal the number of traits you have measured.}
 }
 }
 \description{

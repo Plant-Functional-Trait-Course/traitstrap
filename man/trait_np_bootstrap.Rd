@@ -4,10 +4,10 @@
 \alias{trait_np_bootstrap}
 \title{Bootstrap traits}
 \usage{
-trait_np_bootstrap(selected_traits, nrep = 100, sample_size = 200, raw = FALSE)
+trait_np_bootstrap(filled_traits, nrep = 100, sample_size = 200, raw = FALSE)
 }
 \arguments{
-\item{selected_traits}{output from the trait_fill function.}
+\item{filled_traits}{output from the trait_fill function.}
 
 \item{nrep}{number of bootstrap replicates}
 
@@ -19,7 +19,9 @@ The default is \code{raw = FALSE}. If \code{raw = TRUE}, \code{nrep} is restrict
 avoid memory issues.}
 }
 \value{
-a tibble
+a tibble with columns for each grouping variable of \code{filled_traits}
+(usually the elements of scale_hierarchy and the traits column),
+and the moments mean, variance, skewness, and kurtosis.
 }
 \description{
 Function for nonparametric bootstrap resampling to
@@ -48,7 +50,7 @@ community <- community |>
     PlotID \%in\% c("A", "B"),
     Site == 1
   )
-selected_traits <- trait_fill(
+filled_traits <- trait_fill(
   comm = community,
   traits = trait,
   scale_hierarchy = c("Site", "PlotID"),
@@ -56,7 +58,7 @@ selected_traits <- trait_fill(
   trait_col = "Trait", abundance_col = "Cover"
 )
 
-boot_traits <- trait_np_bootstrap(selected_traits,
+boot_traits <- trait_np_bootstrap(filled_traits,
   nrep = 20,
   sample_size = 200
 )
