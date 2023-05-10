@@ -12,9 +12,7 @@
 #' by supplying the function with a named list of traits, e.g.
 #' `list(height = "normal", mass = "lognormal"))`.
 #'
-#' The function returns a dataframe containing fitted distribution parameters.
-#'
-#' @return a tibble
+#' @return a tibble containing fitted distribution parameters for each trait in each species for each plot.
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis

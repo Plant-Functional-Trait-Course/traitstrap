@@ -20,7 +20,9 @@
 #' #' The output of `trait_np_bootstrap()` can be summarized using
 #' `trait_summarize_boot_moments()`.
 #'
-#' @return a tibble
+#' @return a tibble with columns for each grouping variable of selected_traits
+#'  (usually the elements of scale_hierarchy and the traits column), 
+#'  and the moments mean, variance, skewness, and kurtosis.
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis

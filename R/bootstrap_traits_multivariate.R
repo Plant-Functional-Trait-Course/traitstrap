@@ -23,7 +23,8 @@
 #' the output CAN NOT be summarized using
 #' `trait_summarise_boot_moments`.
 #'
-#' @return a tibble
+#' @return a tibble with columns for the elements of the scale_hierarchy, 
+#' and a list column result which includes the output of `fun`.
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis

@@ -80,7 +80,7 @@
 #' should occur a certain level, e.g. block or site.
 
 #'
-#' @return a tibble with extra class \code{filled_trait}
+#' @return a tibble with extra class `filled_trait`. 
 #'
 #' @importFrom stats sd var weighted.mean
 #' @importFrom dplyr select any_of all_of mutate group_by filter left_join n
