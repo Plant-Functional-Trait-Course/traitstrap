@@ -1,6 +1,6 @@
 Package: traitstrap
 Title: Bootstrap Trait Values to Calculate Moments
-Version: 0.0.1.0
+Version: 0.1.0
 Authors@R: c(
   person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre"), 
         comment = c(ORCID = "https://orcid.org/0000-0001-9826-3076")), 
