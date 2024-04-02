@@ -19,7 +19,7 @@ trait_fill(
   keep_all = FALSE,
   min_n_in_sample = 5,
   complete_only = FALSE,
-  leaf_id
+  leaf_id = NULL
 )
 }
 \arguments{

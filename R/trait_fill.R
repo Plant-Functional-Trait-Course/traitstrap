@@ -114,7 +114,7 @@ trait_fill <- function(comm,
                        keep_all = FALSE,
                        min_n_in_sample = 5,
                        complete_only = FALSE,
-                       leaf_id) {
+                       leaf_id = NULL) {
   #### sanity checks on input (are columns present etc) ####
   comm_names <- names(comm)
   traits_names <- names(traits)
@@ -166,7 +166,7 @@ trait_fill <- function(comm,
   ## remove leaves with incomplete set of traits if complete_only
   if (isTRUE(complete_only)) {
     n_traits <- n_distinct(traits[[trait_col]])
-    if (missing(leaf_id) || !leaf_id %in% names(traits)) {
+    if (is.null(leaf_id) || !leaf_id %in% names(traits)) {
       stop("leaf_id is missing or not in the traits data")
     }
     traits <- traits |>
@@ -332,7 +332,7 @@ trait_fill <- function(comm,
   attrib <- tibble::lst(
     scale_hierarchy, taxon_col, trait_col,
     value_col, abundance_col, other_col,
-    treatment_col, treatment_level
+    treatment_col, treatment_level, leaf_id
   )
   attr(out, "attrib") <- attrib
 

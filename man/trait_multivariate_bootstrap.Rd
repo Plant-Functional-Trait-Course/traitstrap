@@ -47,6 +47,8 @@ spectrum of trait variation, generating \code{nrep} trait distributions.
 The function \code{fun} is applied to the trait distribution at the finest level
 of the filled trait hierarchy.
 
+Unexpected columns in \code{filled_traits} are deleted with a warning.
+
 Note that due to the flexibility of this function,
 the output CAN NOT be summarized using
 \code{trait_summarise_boot_moments}.
