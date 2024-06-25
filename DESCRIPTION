@@ -2,11 +2,11 @@ Package: traitstrap
 Title: Bootstrap Trait Values to Calculate Moments
 Version: 0.1.0
 Authors@R: c(
-  person("Richard J.", "Telford", email = "richard.telford@uib.no", role = c("aut", "cre"), 
+  person(given = c("Richard", "James"), "Telford", email = "richard.telford@uib.no", role = c("aut", "cre"), 
         comment = c(ORCID = "https://orcid.org/0000-0001-9826-3076")), 
-  person("Aud H.", "Halbritter", email = "aud.halbritter@uib.no", role = c("aut"),
+  person(given = c("Aud", "Helen"), "Halbritter", email = "aud.halbritter@uib.no", role = c("aut"),
         comment = c(ORCID = "https://orcid.org/0000-0003-2597-6328")),
-   person(given = "Brian S.",
+   person(given = c("Brian", "S."),
            family = "Maitner",
            role = c("aut"),
            email = "bmaitner@gmail.com",
@@ -19,7 +19,7 @@ BugReports: https://github.com/Plant-Functional-Trait-Course/traitstrap/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.2.0)
 Imports: 
