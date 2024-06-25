@@ -13,7 +13,6 @@ trait_missing(filled_trait, comm)
 }
 \value{
 A \code{tibble} with columns
-#' \itemize{
 \item{Taxon }{Species names (actual name depends on \code{taxon_col}
 argument to \code{trait_fill()})}
 \item{max_abun }{Maximum abundance of that taxa.
@@ -22,7 +21,6 @@ Be more concerned about taxa missing traits with high abundances.}
 Be more concerned about taxa missing traits with many occurrences.}
 \item{n_traits }{Number of traits for each species.
 Ideally all should equal the number of traits you have measured.}
-}
 }
 \description{
 Function gives overview of which taxa are missing traits.
