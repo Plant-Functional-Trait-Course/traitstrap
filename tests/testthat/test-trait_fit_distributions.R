@@ -18,7 +18,6 @@ test_that("returns parametric distribution tibbles of proper size", {
   )
 
 
-
   expect_true(all(c("parametric_distributions", "tbl") %in%
 
     class(trait_fit_distributions(

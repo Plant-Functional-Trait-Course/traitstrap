@@ -250,7 +250,7 @@ If the raw data is extracted, `nrep` is forced to 1 to avoid memory issues.
 ```{r non-parap-boot, echo=TRUE, eval=TRUE}
 # run nonparametric bootstrapping
 np_bootstrapped_moments <- trait_np_bootstrap(
-  trait_filling, 
+  trait_filling,
   nrep = 50
 )
 
@@ -296,7 +296,7 @@ The function returns a dataframe containing fitted distribution parameters.
 ```{r fit-dist, echo=TRUE, eval=TRUE}
 # fit distributions
 fitted_distributions <- trait_fit_distributions(
-  filled_traits = trait_filling, 
+  filled_traits = trait_filling,
   distribution_type = "lognormal"
 )
 
@@ -308,8 +308,10 @@ fitted_distributions
 # fit several types of distributions
 fitted_distributions <- trait_fit_distributions(
   filled_traits = trait_filling,
-  distribution_type = c(Plant_Height_cm = "normal", 
-                           Wet_Mass_g = "lognormal")
+  distribution_type = c(
+    Plant_Height_cm = "normal",
+    Wet_Mass_g = "lognormal"
+  )
 )
 
 fitted_distributions

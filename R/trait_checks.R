@@ -58,8 +58,9 @@ trait_check_other_col <- function(other_col, comm_names, traits_names) {
 }
 
 trait_check_treatment <- function(
-    treatment_col, comm_names, traits_names,
-    comm, traits, treatment_level, scale_hierarchy) {
+  treatment_col, comm_names, traits_names,
+  comm, traits, treatment_level, scale_hierarchy
+) {
   trait_check_col(treatment_col, comm_names)
   trait_check_col(treatment_col, traits_names)
 

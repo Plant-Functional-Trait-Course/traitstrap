@@ -21,7 +21,7 @@
 #' `trait_summarize_boot_moments()`.
 #'
 #' @return a tibble with columns for each grouping variable of `filled_traits`
-#'  (usually the elements of scale_hierarchy and the traits column), 
+#'  (usually the elements of scale_hierarchy and the traits column),
 #'  and the moments mean, variance, skewness, and kurtosis.
 #'
 #' @importFrom stats var

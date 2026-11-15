@@ -11,7 +11,7 @@
 #' If `raw = TRUE`, `nrep` is restricted to 1 to avoid memory issues.
 #' @param id column name of unique identifiers of each leaf
 #' @param fun bivariate or multivariate function to apply
-#' 
+#'
 #' @details The observed and filled leaves are re-sampled in proportion to
 #' their weights, e.g. the abundance of a species or the biomass.
 #' Values across all individuals in a community are
@@ -19,14 +19,14 @@
 #' spectrum of trait variation, generating `nrep` trait distributions.
 #' The function `fun` is applied to the trait distribution at the finest level
 #'  of the filled trait hierarchy.
-#'  
+#'
 #'  Unexpected columns in `filled_traits` are deleted with a warning.
 #'
 #' Note that due to the flexibility of this function,
 #' the output CAN NOT be summarized using
 #' `trait_summarise_boot_moments`.
 #'
-#' @return a tibble with columns for the elements of the scale_hierarchy, 
+#' @return a tibble with columns for the elements of the scale_hierarchy,
 #' and a list column result which includes the output of `fun`.
 #'
 #' @importFrom stats var
@@ -35,7 +35,7 @@
 #' @importFrom tidyr pivot_wider nest unnest any_of
 #' @importFrom purrr map list_rbind
 #' @importFrom glue glue
-#' 
+#'
 #' @examples
 #' require(dplyr)
 #' require(tidyr)
@@ -113,22 +113,24 @@ trait_multivariate_bootstrap <- function(filled_traits,
       -.data[[attrib$taxon_col]], -.data[[attrib$abundance_col]],
       -.data$n_sample, -.data$max_n_in_sample,
       -.data$level, -.data$sum_abun
-    ) 
-  
+    )
+
   # check for extra columns and remove with warning if necessary
-  expected_columns <- c(as.character(attrib$scale_hierarchy), attrib$taxon_col, 
-                        attrib$trait_col, attrib$value_col,
-                        attrib$abundance_col, attrib$other_col,
-                        attrib$treatment_col, attrib$leaf_id,
-                        "weight") 
+  expected_columns <- c(
+    as.character(attrib$scale_hierarchy), attrib$taxon_col,
+    attrib$trait_col, attrib$value_col,
+    attrib$abundance_col, attrib$other_col,
+    attrib$treatment_col, attrib$leaf_id,
+    "weight"
+  )
   if (!all(colnames(filled_traits) %in% expected_columns)) {
     warning(glue("Columns {colnames(filled_traits)[!(colnames(filled_traits) %in% expected_columns)]} were not expected and have been removed."))
-    filled_traits <- filled_traits |> 
+    filled_traits <- filled_traits |>
       select(any_of(expected_columns))
   }
-    
-    # pivot
-    filled_traits_wide <- filled_traits |> 
+
+  # pivot
+  filled_traits_wide <- filled_traits |>
     pivot_wider(
       names_from = .data[[attrib$trait_col]],
       values_from = .data[[value_col]]

@@ -7,7 +7,7 @@
 #'               argument to `trait_fill()`)}
 #'  \item{max_abun }{Maximum abundance of that taxa.
 #'                Be more concerned about taxa missing traits with high abundances.}
-#'  \item{n }{Number of occurrences of the taxon. 
+#'  \item{n }{Number of occurrences of the taxon.
 #'    Be more concerned about taxa missing traits with many occurrences.}
 #'  \item{n_traits }{Number of traits for each species.
 #'    Ideally all should equal the number of traits you have measured.}
@@ -27,16 +27,16 @@
 trait_missing <- function(filled_trait, comm) {
   attrib <- attr(filled_trait, "attrib")
 
-  filled_trait <- filled_trait |> 
-    group_by(.data[[attrib$taxon_col]]) |> 
+  filled_trait <- filled_trait |>
+    group_by(.data[[attrib$taxon_col]]) |>
     distinct(.data[[attrib$trait_col]])
-  
+
   comm |>
     group_by(.data[[attrib$taxon_col]]) |>
     summarise(
       max_abun = max(.data[[attrib$abundance_col]]),
       n = n()
-      ) |>
+    ) |>
     left_join(
       filled_trait,
       by = attrib$taxon_col,

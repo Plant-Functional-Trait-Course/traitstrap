@@ -58,8 +58,10 @@ trait_fit_distributions <- function(filled_traits,
   # If only a single type of distribution was supplied, apply it to all traits
   if (length(distribution_type) == 1) {
     distributions <- unique(filled_traits[[trait_col]])
-    distribution_type <- rep(x = distribution_type, 
-                             times = length(distributions))
+    distribution_type <- rep(
+      x = distribution_type,
+      times = length(distributions)
+    )
     names(distribution_type) <- distributions
   } # if statement
 
@@ -119,8 +121,9 @@ trait_fit_distributions <- function(filled_traits,
       .data[[c(abundance_col)]], .data$n_sample,
       .add = TRUE
     ) |>
-    mutate(distribution_type =
-      distribution_type[.data[[trait_col]]]
+    mutate(
+      distribution_type =
+        distribution_type[.data[[trait_col]]]
     ) |>
     summarize(
       quiet(suppressWarnings(get_dist_parms(
