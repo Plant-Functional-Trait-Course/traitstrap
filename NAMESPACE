@@ -10,61 +10,79 @@ export(trait_multivariate_bootstrap)
 export(trait_np_bootstrap)
 export(trait_parametric_bootstrap)
 export(trait_summarise_boot_moments)
-importFrom(dplyr,across)
-importFrom(dplyr,all_of)
-importFrom(dplyr,any_of)
-importFrom(dplyr,bind_cols)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,distinct)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,group_by_at)
-importFrom(dplyr,groups)
-importFrom(dplyr,inner_join)
-importFrom(dplyr,left_join)
-importFrom(dplyr,matches)
-importFrom(dplyr,mutate)
-importFrom(dplyr,n)
-importFrom(dplyr,n_distinct)
-importFrom(dplyr,rename)
-importFrom(dplyr,rename_with)
-importFrom(dplyr,select)
-importFrom(dplyr,slice_sample)
-importFrom(dplyr,summarise)
-importFrom(dplyr,summarize)
-importFrom(dplyr,ungroup)
-importFrom(e1071,kurtosis)
-importFrom(e1071,skewness)
-importFrom(fitdistrplus,fitdist)
-importFrom(fitdistrplus,gofstat)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,autoplot)
-importFrom(ggplot2,facet_grid)
-importFrom(ggplot2,facet_wrap)
-importFrom(ggplot2,fortify)
-importFrom(ggplot2,geom_col)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,scale_y_continuous)
-importFrom(glue,glue)
-importFrom(glue,glue_collapse)
-importFrom(purrr,list_rbind)
-importFrom(purrr,map)
-importFrom(purrr,set_names)
-importFrom(rlang,"!!!")
-importFrom(rlang,"!!")
-importFrom(rlang,.data)
-importFrom(stats,as.dist)
-importFrom(stats,quantile)
-importFrom(stats,rbeta)
-importFrom(stats,rlnorm)
-importFrom(stats,rnorm)
-importFrom(stats,sd)
-importFrom(stats,var)
-importFrom(stats,weighted.mean)
+importFrom(dplyr,
+  across,
+  all_of,
+  any_of,
+  bind_cols,
+  bind_rows,
+  distinct,
+  filter,
+  group_by,
+  group_by_at,
+  groups,
+  inner_join,
+  left_join,
+  matches,
+  mutate,
+  n,
+  n_distinct,
+  rename,
+  rename_with,
+  select,
+  slice_sample,
+  summarise,
+  summarize,
+  ungroup
+)
+importFrom(e1071,
+  kurtosis,
+  skewness
+)
+importFrom(fitdistrplus,
+  fitdist,
+  gofstat
+)
+importFrom(ggplot2,
+  aes,
+  autoplot,
+  facet_grid,
+  facet_wrap,
+  fortify,
+  geom_col,
+  ggplot,
+  labs,
+  scale_y_continuous
+)
+importFrom(glue,
+  glue,
+  glue_collapse
+)
+importFrom(purrr,
+  list_rbind,
+  map,
+  set_names
+)
+importFrom(rlang,
+  "!!!",
+  "!!",
+  .data
+)
+importFrom(stats,
+  as.dist,
+  quantile,
+  rbeta,
+  rlnorm,
+  rnorm,
+  sd,
+  var,
+  weighted.mean
+)
 importFrom(stringr,str_remove)
 importFrom(tibble,lst)
-importFrom(tidyr,any_of)
-importFrom(tidyr,nest)
-importFrom(tidyr,pivot_wider)
-importFrom(tidyr,unnest)
+importFrom(tidyr,
+  any_of,
+  nest,
+  pivot_wider,
+  unnest
+)
