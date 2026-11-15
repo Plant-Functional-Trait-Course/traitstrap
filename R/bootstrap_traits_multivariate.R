@@ -124,7 +124,13 @@ trait_multivariate_bootstrap <- function(filled_traits,
     "weight"
   )
   if (!all(colnames(filled_traits) %in% expected_columns)) {
-    warning(glue("Columns {colnames(filled_traits)[!(colnames(filled_traits) %in% expected_columns)]} were not expected and have been removed."))
+    warning(
+      glue(
+        "Columns ",
+        "{colnames(filled_traits)[!(colnames(filled_traits) %in% expected_columns)]} ",
+        "were not expected and have been removed."
+      )
+    )
     filled_traits <- filled_traits |>
       select(any_of(expected_columns))
   }
@@ -166,5 +172,5 @@ trait_multivariate_bootstrap <- function(filled_traits,
   # make bootstrap_moments an ordinary tibble
   class(bootstrap_moments) <-
     class(bootstrap_moments)[!class(bootstrap_moments) == "filled_trait"]
-  return(bootstrap_moments)
+  bootstrap_moments
 }

@@ -12,12 +12,13 @@
 #' by supplying the function with a named vector of traits, e.g.
 #' `c(height = "normal", mass = "lognormal"))`.
 #'
-#' @return a tibble containing fitted distribution parameters for each trait in each species for each plot.
+#' @return a tibble containing fitted distribution parameters for each trait in
+#' each species for each plot.
 #'
 #' @importFrom stats var
 #' @importFrom e1071 skewness kurtosis
 #' @importFrom dplyr slice_sample group_by summarise
-#' summarize select group_by_at
+#'  summarize select group_by_at
 #' @importFrom stats var
 
 #' @examples
@@ -141,5 +142,5 @@ trait_fit_distributions <- function(filled_traits,
     class(distribution_parms)
   )
 
-  return(distribution_parms)
+  distribution_parms
 } # fx

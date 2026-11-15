@@ -19,9 +19,12 @@ test_that("returns dataframes", {
 
   test_vector <- rbeta(n = 100, shape1 = .5, shape2 = .5)
   expect_equal(
-    object = class(get_dist_parms(
-      data = test_vector, distribution_type = "beta"
-    )),
+    object = class(
+      get_dist_parms(
+        data = test_vector, 
+        distribution_type = "beta"
+      )
+    ),
     expected = "data.frame"
   )
 })

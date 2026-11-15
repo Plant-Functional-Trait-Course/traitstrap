@@ -151,5 +151,5 @@ trait_parametric_bootstrap <- function(fitted_distributions,
   class(bootstrap_moments) <-
     class(bootstrap_moments)[!class(bootstrap_moments) ==
       "parametric_distributions"]
-  return(bootstrap_moments)
+  bootstrap_moments
 } # end fx

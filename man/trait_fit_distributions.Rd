@@ -13,7 +13,8 @@ trait_fit_distributions(filled_traits, distribution_type = "normal")
 Character or named list. Currently accepts "normal","lognormal", and "beta".}
 }
 \value{
-a tibble containing fitted distribution parameters for each trait in each species for each plot.
+a tibble containing fitted distribution parameters for each trait in
+each species for each plot.
 }
 \description{
 Function to fit parametric distributions for each

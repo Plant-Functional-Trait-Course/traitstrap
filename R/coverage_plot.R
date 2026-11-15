@@ -71,5 +71,5 @@ autoplot.filled_trait <- function(object, other_col_how, ...) {
     plot <- plot + facet_wrap(facets = attrib$trait_col)
   }
 
-  return(plot)
+  plot
 }

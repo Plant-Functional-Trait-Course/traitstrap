@@ -53,5 +53,5 @@ fortify_filled_trait <- function(object, other_col_how, ...) {
 
   attr(filled_traits_summary, "attrib") <- attrib
 
-  return(filled_traits_summary)
+  filled_traits_summary
 }

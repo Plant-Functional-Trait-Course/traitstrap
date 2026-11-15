@@ -52,7 +52,7 @@ get_dist_parms <- function(data, distribution_type) {
   }
 
   # Return results
-  return(data.frame(
+  data.frame(
     distribution_type = distribution_type,
     parm1 = fit$estimate[[1]],
     parm2 = fit$estimate[[2]],
@@ -61,5 +61,5 @@ get_dist_parms <- function(data, distribution_type) {
     ks = gof$ks,
     cvm = gof$cvm,
     ad = gof$ad
-  ))
+  )
 }

@@ -139,7 +139,10 @@ trait_fill <- function(comm,
     use_treat <- FALSE
   } else {
     use_treat <- TRUE
-    trait_check_treatment(treatment_col, comm_names, traits_names, comm, traits, treatment_level, scale_hierarchy)
+    trait_check_treatment(
+      treatment_col, comm_names, traits_names, comm,
+      traits, treatment_level, scale_hierarchy
+    )
   }
 
   # check other_cols are valid
@@ -338,5 +341,5 @@ trait_fill <- function(comm,
 
   class(out) <- c("filled_trait", class(out))
 
-  return(out)
+  out
 }

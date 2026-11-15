@@ -107,5 +107,5 @@ trait_summarise_boot_moments <- function(bootstrap_moments,
     )
 
 
-  return(summ_bootstrap_moments)
+  summ_bootstrap_moments
 }

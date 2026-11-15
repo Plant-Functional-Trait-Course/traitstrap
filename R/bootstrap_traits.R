@@ -92,5 +92,5 @@ trait_np_bootstrap <- function(filled_traits,
   # make bootstrap_moments an ordinary tibble
   class(bootstrap_moments) <-
     class(bootstrap_moments)[!class(bootstrap_moments) == "filled_trait"]
-  return(bootstrap_moments)
+  bootstrap_moments
 }

@@ -61,5 +61,5 @@ trait_fill_multi_level <- function(comm, traits,
   # add class
   class(result) <- c("filled_trait", class(result))
   # return
-  return(result)
+  result
 }
