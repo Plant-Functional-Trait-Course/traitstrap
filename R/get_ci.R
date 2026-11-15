@@ -10,6 +10,7 @@
 #' @keywords internal
 
 get_ci <- function(data, sd_mult = 1, ci = 0.95, which, parametric = TRUE) {
+  stopifnot(which %in% c("high", "low"))
   if (isTRUE(parametric)) {
     switch(which,
       high = mean(data) + sd(data) * sd_mult,

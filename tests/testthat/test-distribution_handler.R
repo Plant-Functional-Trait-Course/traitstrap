@@ -23,8 +23,8 @@ test_that("returns numeric", {
   )
 })
 
-test_that("nonsupported distributions return NULL", {
-  expect_null(object = distribution_handler(
+test_that("nonsupported distributions gives error", {
+  expect_error(object = distribution_handler(
     parm1 = 0, parm2 = 1, n = 1, type = "Unicron"
   ))
 })
